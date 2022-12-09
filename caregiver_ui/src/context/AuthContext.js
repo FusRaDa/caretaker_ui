@@ -1,7 +1,8 @@
-import { createContext } from "react";
+import { createContext, useState, useEffect } from "react";
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
-import ServerAddress from '../ServerAddress'
+import ServerAddress from "../utils/ServerAddress";
+
 
 const AuthContext = createContext()
 
@@ -24,6 +25,7 @@ export const AuthProvider = ({children}) => {
       },
       body: JSON.stringify({'username':e.target.username.value, 'password':e.target.password.value})
     })
+    
     let data = await response.json() //token
     if(response.status === 200) {
       setAuthTokens(data)
@@ -44,6 +46,10 @@ export const AuthProvider = ({children}) => {
       },
       body: JSON.stringify({'refresh':authTokens?.refresh}) //refresh token
     })
+    .catch(() => {
+      navigate('/error_page')
+    })
+
     let data = await response.json() 
 
     if (response.status === 200) {
@@ -53,8 +59,10 @@ export const AuthProvider = ({children}) => {
     } else {
       logoutUser()
     }
+
     if (loading) {
       setLoading(false)
+      console.log('loading is false')
     }
   }
 
@@ -89,7 +97,7 @@ export const AuthProvider = ({children}) => {
 
   return (
     <AuthContext.Provider value={contextData} >
-      {loading ? null : children}
+      {children}
     </AuthContext.Provider>
   )
 }

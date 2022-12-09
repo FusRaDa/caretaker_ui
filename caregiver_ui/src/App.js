@@ -1,7 +1,8 @@
-import { Route, Router, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import TimeStamps from "./timestamp/TimeStamps";
 import { ProviderComposer, provider } from "./utils/Compose";
+import ErrorPage from "./utils/ErrorPage";
 import Login from "./utils/Login";
 import PrivateRoute from "./utils/PrivateRoute";
 
@@ -10,15 +11,19 @@ function App() {
     <div>
       <Router>
         <ProviderComposer providers={[
-          provider(AuthProvider)
+          provider(AuthProvider),
         ]}>
 
           <Routes>
+
+
             <Route element={<PrivateRoute/>}>
-              <Route element={<TimeStamps/>} path='/' exact />
+              <Route exact path='/' element={<TimeStamps/>}/>
             </Route>
 
+
             <Route element={<Login/>} path='/login' exact />
+            <Route element={<ErrorPage/>} path='/error_page' exact />
 
           
           </Routes>
