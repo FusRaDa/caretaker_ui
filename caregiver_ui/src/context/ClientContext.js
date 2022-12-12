@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import ServerAddress from "../utils/ServerAddress";
 import AuthContext from "./AuthContext";
 
 
@@ -27,7 +28,6 @@ export const ClientProvider = ({children}) => {
     let data = await response.json()
     if (response.status === 200) {
       setClients(data)
-      console.log(data)
     } else {
       alert('error')
     }

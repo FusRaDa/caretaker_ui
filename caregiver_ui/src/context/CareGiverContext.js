@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import ServerAddress from "../utils/ServerAddress";
 import AuthContext from "./AuthContext";
 import TimeStampContext from "./TimeStampContext";
 
@@ -27,7 +28,6 @@ export const CareGiverProvider = ({children}) => {
     let data = await response.json()
     if (response.status === 200) {
       setCareGivers(data)
-      console.log(data)
     } else {
       alert('error')
     }
