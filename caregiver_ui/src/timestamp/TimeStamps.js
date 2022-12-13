@@ -7,11 +7,20 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Container from "react-bootstrap/Container"
 
+//table components
+import SelectColumnFilter from "./SelectColumnFilter"
+
 
 const TimeStamps = () => {
 
-  let {timeStamps, setUpdating} = useContext(TimeStampContext)
+  let {timeStamps, setUpdating, setPageNum, setPageSize} = useContext(TimeStampContext)
   let [data, setData] = useState([])
+
+  let changePage = (pageIndex, pageSize) => {
+    setPageNum(pageIndex)
+    setPageSize(pageSize)
+    setUpdating(true)
+  }
 
   let fetchData = useCallback(() => {
 
@@ -25,10 +34,14 @@ const TimeStamps = () => {
     {
       Header: 'Caregiver',
       accessor: 'caregiver.full_name',
+      Filter: SelectColumnFilter,
+      filter: 'includes',
     },
     {
       Header: 'Client',
       accessor: 'client.full_name',
+      Filter: SelectColumnFilter,
+      filter: 'includes',
     },
     {
       Header: 'Start Time',

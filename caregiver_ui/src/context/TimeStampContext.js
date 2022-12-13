@@ -47,6 +47,8 @@ export const TimeStampProvider = ({children}) => {
   let contextData = {
     timeStamps: timeStamps,
     setUpdating: setUpdating,
+    setPageNum: setPageNum,
+    setPageSize: setPageSize,
   }
 
   return (
