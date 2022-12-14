@@ -6,7 +6,7 @@ import TimeStampTableStyles from './TimeStampTableStyles'
 import SelectColumnFilter from './SelectColumnFilter'
 
 
-const TimeStampTable = ({columns, data, fetchData, changePage}) => {
+const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPages}) => {
 
   const defaultColumn = useMemo(() => ({
     Filter: SelectColumnFilter,
@@ -20,7 +20,7 @@ const TimeStampTable = ({columns, data, fetchData, changePage}) => {
     prepareRow,
    
     //pagination
-    rows,
+    page,
     canPreviousPage, 
     canNextPage, 
     pageOptions,
@@ -28,17 +28,19 @@ const TimeStampTable = ({columns, data, fetchData, changePage}) => {
     gotoPage,
     nextPage,
     previousPage,
+    setPageSize,
     state: { pageIndex, pageSize },
   } = useTable(
     {
       initialState: {
         hiddenColumns: ['pk'],
-        // pageIndex: localStorage.getItem('currentPageIndex') !== null ? +localStorage.getItem('currentPageIndex') : 1,
-        // pageSize: localStorage.getItem('currentPageSize') !== null ? +localStorage.getItem('currentPageSize'): 10,
+        pageIndex: localStorage.getItem('currentPageIndex') !== null ? +localStorage.getItem('currentPageIndex') : 1,
+        pageSize: localStorage.getItem('currentPageSize') !== null ? +localStorage.getItem('currentPageSize'): 10,
       },
     columns,
     data,
     defaultColumn,
+    pageCount: totalPages,
     manualPagination: true,
     autoResetPage: false
     },
@@ -85,7 +87,7 @@ const TimeStampTable = ({columns, data, fetchData, changePage}) => {
           </thead>
       
           <tbody {...getTableBodyProps()}>
-            {rows.map(row => {
+            {page.map(row => {
               prepareRow(row)
               return (
                 <tr {...row.getRowProps()}>
@@ -99,6 +101,18 @@ const TimeStampTable = ({columns, data, fetchData, changePage}) => {
                 </tr>
               )
             })}
+
+            <tr>
+              {loading ? (
+                // Use our custom loading state to show a loading indicator
+                <td colSpan="10000">Loading...</td>
+              ) : (
+                <td colSpan="10000">
+                  Showing {page.length} of ~{pageCount * pageSize}{' '}
+                  results
+                </td>
+              )}
+            </tr>
 
           </tbody>
         </table>
@@ -134,6 +148,20 @@ const TimeStampTable = ({columns, data, fetchData, changePage}) => {
             style={{ width: '100px' }}
           />
           </span>{' '}
+
+          <select
+            value={pageSize}
+            onChange={e => {
+              setPageSize(Number(e.target.value))
+            }}
+          >
+            {[10, 20, 30, 40, 50].map(pageSize => (
+              <option key={pageSize} value={pageSize}>
+                Show {pageSize}
+              </option>
+            ))}
+          </select>
+
         </div>
 
       </div>

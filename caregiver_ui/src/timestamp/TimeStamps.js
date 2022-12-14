@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from "react"
+import { useCallback, useContext, useState } from "react"
 
 import TimeStampContext from "../context/TimeStampContext"
 import TimeStampTable from "./TimeStampTable"
@@ -13,22 +13,26 @@ import SelectColumnFilter from "./SelectColumnFilter"
 
 const TimeStamps = () => {
 
-  let {timeStamps, setUpdating} = useContext(TimeStampContext)
+  let {timeStamps, setUpdating, setPageNum, setPageSize} = useContext(TimeStampContext)
   let [data, setData] = useState([])
+  let [totalPages, setTotalPages] = useState(0)
 
-  let [pageNum, setPageNum] = useState(1)
-  let [pageSize, setPageSize] = useState(10)
+  let [loading, setLoading] = useState(0)
 
   let changePage = (pageIndex, pageSize) => {
-    setPageNum(pageIndex)
+    setPageNum(pageIndex + 1)
     setPageSize(pageSize)
     setUpdating(true)
   }
 
   let fetchData = useCallback(() => {
 
+    setLoading(true)
+
     if (Object.keys(timeStamps).length !== 0) {
       setData(timeStamps.results)
+      setTotalPages(timeStamps.total_pages)
+      setLoading(false)
     }
 
   }, [timeStamps])
@@ -95,6 +99,8 @@ const TimeStamps = () => {
           data={data}
           fetchData={fetchData}
           changePage={changePage}
+          loading={loading}
+          totalPages={totalPages}
           />
         </Col>
       </Row>

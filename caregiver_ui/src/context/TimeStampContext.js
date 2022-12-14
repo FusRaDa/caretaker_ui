@@ -12,10 +12,13 @@ export const TimeStampProvider = ({children}) => {
   let [timeStamps, setTimeStamps] = useState([])
   let [updating, setUpdating] = useState(false)
 
+  let [pageNum, setPageNum] = useState(1)
+  let [pageSize, setPageSize] = useState(10)
+
   // `${ServerAddress}/api/timestamp/?p=${pageNum}&page_size=${pageSize}`
 
   let getTimeStamps = async () => {
-    let response = await fetch(`${ServerAddress}/api/timestamp/`, {
+    let response = await fetch(`${ServerAddress}/api/timestamp/?p=${pageNum}&page_size=${pageSize}`, {
       method: 'GET',
       headers: {
         'Content-Type':'application/json',
@@ -29,6 +32,7 @@ export const TimeStampProvider = ({children}) => {
     let data = await response.json()
     if (response.status === 200) {
       setTimeStamps(data)
+      console.log(data)
     } else {
       alert('error')
     }
@@ -45,6 +49,8 @@ export const TimeStampProvider = ({children}) => {
   let contextData = {
     timeStamps: timeStamps,
     setUpdating: setUpdating,
+    setPageNum: setPageNum,
+    setPageSize: setPageSize,
   }
 
   return (
