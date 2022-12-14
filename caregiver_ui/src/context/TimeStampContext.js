@@ -11,9 +11,6 @@ export const TimeStampProvider = ({children}) => {
   let {authTokens, user} = useContext(AuthContext)
   let [timeStamps, setTimeStamps] = useState([])
   let [updating, setUpdating] = useState(false)
-  
-  let [pageNum, setPageNum] = useState(1)
-  let [pageSize, setPageSize] = useState(10)
 
   // `${ServerAddress}/api/timestamp/?p=${pageNum}&page_size=${pageSize}`
 
@@ -42,13 +39,12 @@ export const TimeStampProvider = ({children}) => {
     if (user) {
       getTimeStamps()
     }
+    // eslint-disable-next-line 
   }, [updating, user])
 
   let contextData = {
     timeStamps: timeStamps,
     setUpdating: setUpdating,
-    setPageNum: setPageNum,
-    setPageSize: setPageSize,
   }
 
   return (

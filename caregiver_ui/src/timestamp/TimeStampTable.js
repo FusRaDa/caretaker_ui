@@ -1,15 +1,15 @@
 import { useEffect, useMemo } from 'react'
-import { useTable, useFilters, usePagination } from 'react-table'
+import { useTable, useFilters, usePagination, useSortBy } from 'react-table'
 import TimeStampTableStyles from './TimeStampTableStyles'
 
 //filters
-import DefaultColumnFilter from './DefaultColumnFilter'
+import SelectColumnFilter from './SelectColumnFilter'
 
 
-const TimeStampTable = ({columns, data, fetchData}) => {
+const TimeStampTable = ({columns, data, fetchData, changePage}) => {
 
   const defaultColumn = useMemo(() => ({
-    Filter: DefaultColumnFilter,
+    Filter: SelectColumnFilter,
     // EditCell : EditableCell,
   }), []) 
 
@@ -21,14 +21,14 @@ const TimeStampTable = ({columns, data, fetchData}) => {
    
     //pagination
     rows,
-    // canPreviousPage, 
-    // canNextPage, 
-    // pageOptions,
-    // pageCount,
-    // gotoPage,
-    // nextPage,
-    // previousPage,
-    // state: { pageIndex, pageSize },
+    canPreviousPage, 
+    canNextPage, 
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    state: { pageIndex, pageSize },
   } = useTable(
     {
       initialState: {
@@ -39,19 +39,24 @@ const TimeStampTable = ({columns, data, fetchData}) => {
     columns,
     data,
     defaultColumn,
-    
-    // manualPagination: true,
-    // pageCount: controlledPageCount,
-    // autoResetPage: false
+    manualPagination: true,
+    autoResetPage: false
     },
     useFilters,
-    // usePagination,
-   
+    useSortBy,
+    usePagination,
   )
 
   useEffect(() => {
     fetchData()
   }, [fetchData])
+
+  useEffect(() => {
+    changePage(pageIndex, pageSize)
+    localStorage.setItem("currentPageIndex", pageIndex)
+    localStorage.setItem("currentPageSize", pageSize)
+    // eslint-disable-next-line 
+  }, [pageIndex, pageSize])
   
   return (
     <TimeStampTableStyles>
@@ -61,9 +66,18 @@ const TimeStampTable = ({columns, data, fetchData}) => {
             {headerGroups.map(headerGroup => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map(column => (
-                  <th {...column.getHeaderProps()}>
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                     {column.render('Header')}
+                
                     <div>{column.canFilter ? column.render('Filter') : null}</div>
+
+                    <span>
+                    {column.isSorted
+                      ? column.isSortedDesc
+                        ? ' 🔽'
+                        : ' 🔼'
+                      : ''}
+                    </span>
                   </th>
                 ))}
               </tr>
@@ -89,7 +103,7 @@ const TimeStampTable = ({columns, data, fetchData}) => {
           </tbody>
         </table>
 
-        {/* <div className='pagination'>
+        <div className='pagination'>
           <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
             {'<<'}
           </button>
@@ -120,7 +134,7 @@ const TimeStampTable = ({columns, data, fetchData}) => {
             style={{ width: '100px' }}
           />
           </span>{' '}
-        </div> */}
+        </div>
 
       </div>
     </TimeStampTableStyles>

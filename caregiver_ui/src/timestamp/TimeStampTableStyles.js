@@ -16,12 +16,6 @@ const TimeStampTableStyles = styled.div
     border-right: 1px solid black;
   }
 
-  .batch_row: hover {
-    background-color: grey;
-    color: white;
-    cursor: pointer;
-  }
-
   table {
     width: 100%;
     border-spacing: 0;
@@ -53,6 +47,7 @@ const TimeStampTableStyles = styled.div
   }
 
   .pagination {
+    border-top: 1px solid black;
     padding: 0.5rem;
   }
 `
