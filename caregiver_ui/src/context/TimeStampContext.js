@@ -8,7 +8,7 @@ export default TimeStampContext
 
 export const TimeStampProvider = ({children}) => {
 
-  let {authTokens, user} = useContext(AuthContext)
+  let {authTokens, user, logoutUser} = useContext(AuthContext)
   let [timeStamps, setTimeStamps] = useState([])
   let [updating, setUpdating] = useState(false)
 
@@ -34,7 +34,8 @@ export const TimeStampProvider = ({children}) => {
       setTimeStamps(data)
       console.log(data)
     } else {
-      alert('error')
+      // logoutUser()
+      alert('page not found')
     }
   }
 
@@ -44,7 +45,7 @@ export const TimeStampProvider = ({children}) => {
       getTimeStamps()
     }
     // eslint-disable-next-line 
-  }, [updating, user])
+  }, [updating])
 
   let contextData = {
     timeStamps: timeStamps,

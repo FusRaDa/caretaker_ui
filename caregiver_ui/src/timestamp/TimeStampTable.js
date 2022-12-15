@@ -34,7 +34,7 @@ const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPag
     {
       initialState: {
         hiddenColumns: ['pk'],
-        pageIndex: localStorage.getItem('currentPageIndex') !== null ? +localStorage.getItem('currentPageIndex') : 1,
+        pageIndex: localStorage.getItem('currentPageIndex') !== null ? +localStorage.getItem('currentPageIndex') : 0,
         pageSize: localStorage.getItem('currentPageSize') !== null ? +localStorage.getItem('currentPageSize'): 10,
       },
     columns,

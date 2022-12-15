@@ -9,18 +9,27 @@ import Container from "react-bootstrap/Container"
 
 //table components
 import SelectColumnFilter from "./SelectColumnFilter"
+import Button from "react-bootstrap/Button"
+import Modal from 'react-bootstrap/Modal';
+import CreateTimeStamp from "./CreateTimeStamp"
 
 
 const TimeStamps = () => {
 
   let {timeStamps, setUpdating, setPageNum, setPageSize} = useContext(TimeStampContext)
   let [data, setData] = useState([])
-  let [totalPages, setTotalPages] = useState(0)
 
+  //pagination
+  let [totalPages, setTotalPages] = useState(0)
   let [loading, setLoading] = useState(0)
 
+  //modal
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   let changePage = (pageIndex, pageSize) => {
-    setPageNum(pageIndex + 1)
+    setPageNum(pageIndex + 1) //pageIndex starts at 0 by default
     setPageSize(pageSize)
     setUpdating(true)
   }
@@ -92,6 +101,13 @@ const TimeStamps = () => {
  
   return (
     <Container>
+
+      <Row>
+        <Col>
+          <Button onClick={handleShow}>Add Timestamp</Button>
+        </Col>
+      </Row>
+
       <Row>
         <Col>
           <TimeStampTable 
@@ -104,6 +120,24 @@ const TimeStamps = () => {
           />
         </Col>
       </Row>
+
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Add Timestamp</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <CreateTimeStamp/>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary">Submit</Button>
+        </Modal.Footer>
+      </Modal>
+
     </Container>
    
   )

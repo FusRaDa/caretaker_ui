@@ -9,7 +9,7 @@ export default ClientContext
 
 export const ClientProvider = ({children}) => {
 
-  let {authTokens, user} = useContext(AuthContext)
+  let {authTokens, user, logoutUser} = useContext(AuthContext)
   let [clients, setClients] = useState([])
   let [updating, setUpdating] = useState(false)
 
@@ -29,7 +29,7 @@ export const ClientProvider = ({children}) => {
     if (response.status === 200) {
       setClients(data)
     } else {
-      alert('error')
+      logoutUser()
     }
   }
 

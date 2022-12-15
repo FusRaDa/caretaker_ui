@@ -9,7 +9,7 @@ export default CareGiverContext
 
 export const CareGiverProvider = ({children}) => {
 
-  let {authTokens, user} = useContext(AuthContext)
+  let {authTokens, user, logoutUser} = useContext(AuthContext)
   let [careGivers, setCareGivers] = useState([])
   let [updating, setUpdating] = useState(false)
 
@@ -29,7 +29,7 @@ export const CareGiverProvider = ({children}) => {
     if (response.status === 200) {
       setCareGivers(data)
     } else {
-      alert('error')
+      logoutUser()
     }
   }
 
