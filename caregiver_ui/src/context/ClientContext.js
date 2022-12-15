@@ -11,7 +11,7 @@ export const ClientProvider = ({children}) => {
 
   let {authTokens, user, logoutUser} = useContext(AuthContext)
   let [clients, setClients] = useState([])
-  let [updating, setUpdating] = useState(false)
+  let [updatingClients, setUpdatingClients] = useState(false)
 
   let getClients = async () => {
     let response = await fetch(`${ServerAddress}/api/client/`, {
@@ -28,21 +28,22 @@ export const ClientProvider = ({children}) => {
     let data = await response.json()
     if (response.status === 200) {
       setClients(data)
+      console.log(data)
     } else {
       logoutUser()
     }
   }
 
   useEffect(() => {
-    setUpdating(false)
+    setUpdatingClients(false)
     if (user) {
       getClients()
     }
-  }, [updating, user])
+  }, [updatingClients])
 
   let contextData = {
     clients: clients,
-    setUpdating: setUpdating,
+    setUpdatingClients: setUpdatingClients,
   }
 
   return (

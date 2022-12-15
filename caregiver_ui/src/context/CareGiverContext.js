@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import ServerAddress from "../utils/ServerAddress";
 import AuthContext from "./AuthContext";
-import TimeStampContext from "./TimeStampContext";
 
 const CareGiverContext = createContext()
 
@@ -11,7 +10,7 @@ export const CareGiverProvider = ({children}) => {
 
   let {authTokens, user, logoutUser} = useContext(AuthContext)
   let [careGivers, setCareGivers] = useState([])
-  let [updating, setUpdating] = useState(false)
+  let [updatingCareGivers, setUpdatingCareGivers] = useState(false)
 
   let getCareGivers = async () => {
     let response = await fetch(`${ServerAddress}/api/caregiver/`, {
@@ -28,27 +27,28 @@ export const CareGiverProvider = ({children}) => {
     let data = await response.json()
     if (response.status === 200) {
       setCareGivers(data)
+      console.log(data)
     } else {
       logoutUser()
     }
   }
 
   useEffect(() => {
-    setUpdating(false)
+    setUpdatingCareGivers(false)
     if (user) {
       getCareGivers()
     }
-  }, [updating, user])
+  }, [updatingCareGivers])
 
   let contextData = {
     careGivers: careGivers,
-    setUpdating: setUpdating,
+    setUpdatingCareGivers: setUpdatingCareGivers,
   }
 
   return (
-    <TimeStampContext.Provider value={contextData}>
+    <CareGiverContext.Provider value={contextData}>
       {children}
-    </TimeStampContext.Provider>
+    </CareGiverContext.Provider>
   )
 
 }

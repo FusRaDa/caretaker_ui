@@ -9,6 +9,7 @@ import ErrorPage from "./utils/ErrorPage";
 import Header from "./utils/Header";
 import PrivateRoute from "./utils/PrivateRoute";
 import Welcome from "./utils/Welcome";
+import CareGiverTimeStamps from "./caregiver/CareGiverTimeStamps";
 
 function App() {
   return (
@@ -23,9 +24,9 @@ function App() {
           <Header/>
           <Routes>
 
-
             <Route element={<PrivateRoute/>}>
-              <Route exact path='/' element={<TimeStamps/>}/>
+              <Route exact path='/' element={<TimeStamps/>} />
+              <Route exact path='/caregiver' element={<CareGiverTimeStamps/>} />
             </Route>
 
 

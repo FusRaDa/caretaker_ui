@@ -1,23 +1,27 @@
 import { useCallback, useContext, useState } from "react"
 
-import TimeStampContext from "../context/TimeStampContext"
-import TimeStampTable from "./TimeStampTable"
-
+//styles
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Container from "react-bootstrap/Container"
 
+//context
+import TimeStampContext from "../context/TimeStampContext"
+
 //table components
-import SelectColumnFilter from "./SelectColumnFilter"
 import Button from "react-bootstrap/Button"
 import Modal from 'react-bootstrap/Modal';
-import CreateTimeStamp from "./CreateTimeStamp"
+import CareGiverTimeStampTable from "../timestamp/CareGiverTimeStampTable"
+import SelectColumnFilter from "../timestamp/SelectColumnFilter"
 
 
-const TimeStamps = () => {
+const CareGiverTimeStamps = () => {
 
-  let {timeStamps, setUpdatingTimeStamps, setPageNum, setPageSize} = useContext(TimeStampContext)
   let [data, setData] = useState([])
+  let {getCareGiverTimeStamps, careGiverTimeStamps} = useContext(TimeStampContext)
+
+  let [pageNum, setPageNum] = useState(1)
+  let [pageSize, setPageSize] = useState(10)
 
   //pagination
   let [totalPages, setTotalPages] = useState(0)
@@ -28,23 +32,23 @@ const TimeStamps = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+
   let changePage = (pageIndex, pageSize) => {
     setPageNum(pageIndex + 1) //pageIndex starts at 0 by default
     setPageSize(pageSize)
-    setUpdatingTimeStamps(true)
   }
 
   let fetchData = useCallback(() => {
 
     setLoading(true)
 
-    if (Object.keys(timeStamps).length !== 0) {
-      setData(timeStamps.results)
-      setTotalPages(timeStamps.total_pages)
+    if (Object.keys(careGiverTimeStamps).length !== 0) {
+      setData(careGiverTimeStamps.results)
+      setTotalPages(careGiverTimeStamps.total_pages)
       setLoading(false)
     }
 
-  }, [timeStamps])
+  }, [careGiverTimeStamps])
 
   const columns = [
     {
@@ -104,19 +108,13 @@ const TimeStamps = () => {
 
       <Row>
         <Col>
-          <h2>All Timestamps Records</h2>
-        </Col>
-      </Row>
-
-      <Row>
-        <Col>
           <Button onClick={handleShow}>Add Timestamp</Button>
         </Col>
       </Row>
 
       <Row>
         <Col>
-          <TimeStampTable 
+          <CareGiverTimeStampTable 
           columns={columns}
           data={data}
           fetchData={fetchData}
@@ -137,7 +135,7 @@ const TimeStamps = () => {
           <Modal.Title>Add a Timestamp</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <CreateTimeStamp handleClose={handleClose}/>
+          create a timestamp for care giver!
         </Modal.Body>
       </Modal>
 
@@ -146,4 +144,4 @@ const TimeStamps = () => {
   )
 }
 
-export default TimeStamps
+export default CareGiverTimeStamps

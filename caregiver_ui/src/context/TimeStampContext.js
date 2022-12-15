@@ -8,17 +8,19 @@ export default TimeStampContext
 
 export const TimeStampProvider = ({children}) => {
 
+  //all timestamps
   let {authTokens, user, logoutUser} = useContext(AuthContext)
   let [timeStamps, setTimeStamps] = useState([])
-  let [updating, setUpdating] = useState(false)
+  let [updatingTimeStamps, setUpdatingTimeStamps] = useState(false)
 
   let [pageNum, setPageNum] = useState(1)
   let [pageSize, setPageSize] = useState(10)
 
-  // `${ServerAddress}/api/timestamp/?p=${pageNum}&page_size=${pageSize}`
+  //caregivertimestamps
+  let [careGiverTimeStamps, setCareGiverTimeStamps] = useState([])
 
   let getTimeStamps = async () => {
-    let response = await fetch(`${ServerAddress}/api/timestamp/?p=${pageNum}&page_size=${pageSize}`, {
+    let response = await fetch(`${ServerAddress}/api/timestamp/?p=${pageNum}&page_size=${pageSize}/`, {
       method: 'GET',
       headers: {
         'Content-Type':'application/json',
@@ -39,19 +41,47 @@ export const TimeStampProvider = ({children}) => {
     }
   }
 
+  let getCareGiverTimeStamps = async (pk, index, size) => {
+
+    if (index === null) {
+      index = 1
+    }
+    if (size === null) {
+      size = 50
+    }
+
+    let response = await fetch(`${ServerAddress}/api/timestamp/${pk}/?p=${index}&page_size=${size}/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type':'application/json',
+        'Authorization':'Bearer ' + String(authTokens.access)
+      }
+    })
+    .catch(() => {
+      console.log('server failed')
+    })
+
+    let data = await response.json()
+    if (response.status === 200) {
+      setCareGiverTimeStamps(data)
+    }
+  }
+  
   useEffect(() => {
-    setUpdating(false)
+    setUpdatingTimeStamps(false)
     if (user) {
       getTimeStamps()
     }
     // eslint-disable-next-line 
-  }, [updating])
+  }, [updatingTimeStamps])
 
   let contextData = {
     timeStamps: timeStamps,
-    setUpdating: setUpdating,
+    setUpdatingTimeStamps: setUpdatingTimeStamps,
     setPageNum: setPageNum,
     setPageSize: setPageSize,
+    getCareGiverTimeStamps: getCareGiverTimeStamps,
+    careGiverTimeStamps: careGiverTimeStamps,
   }
 
   return (
@@ -59,5 +89,4 @@ export const TimeStampProvider = ({children}) => {
       {children}
     </TimeStampContext.Provider>
   )
-
 }
