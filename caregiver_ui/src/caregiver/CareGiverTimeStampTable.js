@@ -1,9 +1,9 @@
 import { useEffect, useMemo } from 'react'
 import { useTable, useFilters, usePagination, useSortBy } from 'react-table'
-import TimeStampTableStyles from './TimeStampTableStyles'
+import TimeStampTableStyles from '../timestamp/TimeStampTableStyles'
 
 //filters
-import SelectColumnFilter from './SelectColumnFilter'
+import SelectColumnFilter from '../timestamp/SelectColumnFilter'
 
 const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading, totalPages}) => {
 

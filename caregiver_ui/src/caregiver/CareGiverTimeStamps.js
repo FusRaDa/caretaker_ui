@@ -4,15 +4,15 @@ import { useCallback, useContext, useState } from "react"
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Container from "react-bootstrap/Container"
+import Button from "react-bootstrap/Button"
+import Modal from 'react-bootstrap/Modal';
 
 //context
 import TimeStampContext from "../context/TimeStampContext"
 
 //table components
-import Button from "react-bootstrap/Button"
-import Modal from 'react-bootstrap/Modal';
-import CareGiverTimeStampTable from "../timestamp/CareGiverTimeStampTable"
 import SelectColumnFilter from "../timestamp/SelectColumnFilter"
+import CareGiverTimeStampTable from "./CareGiverTimeStampTable"
 
 
 const CareGiverTimeStamps = () => {

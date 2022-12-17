@@ -36,7 +36,7 @@ export const TimeStampProvider = ({children}) => {
       setTimeStamps(data)
       console.log(data)
     } else {
-      // logoutUser()
+      logoutUser()
       alert('page not found')
     }
   }
