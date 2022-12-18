@@ -46,6 +46,7 @@ export const AuthProvider = ({children}) => {
       body: JSON.stringify({'refresh':authTokens?.refresh}) //refresh token
     })
     .catch(() => {
+      logoutUser()
       navigate('/error_page')
     })
 

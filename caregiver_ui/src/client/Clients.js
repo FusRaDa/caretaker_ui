@@ -19,8 +19,8 @@ const Clients = () => {
   let [searchClients, setSearchClients] = useState(null)
   let [selectedClient, setSelectedClient] = useState(null)
 
-  let chooseClient = () => {
-    let data = clients.results.find(client => client.pk === pk)
+  let chooseClient = (pk) => {
+    let data = clients.find(client => client.pk === pk)
     setSelectedClient(data)
   }
 
@@ -44,7 +44,7 @@ const Clients = () => {
             </Form>
 
             <ListGroup>
-              {clients.results
+              {clients
                 .filter(client => searchClients !== null ? client.full_name.toLowerCase().includes(searchClients) : client)
                 .map(client => (
                   <ListGroup.Item action key={client.pk} onClick={() => chooseClient(client.pk)}>
@@ -57,7 +57,7 @@ const Clients = () => {
 
         </Col>
         
-        <Col>
+        {selectedClient !== null && <Col>
           <Card>
           <Card.Header>{`${selectedClient.full_name}'s Information`}</Card.Header>
             <ListGroup>
@@ -67,7 +67,7 @@ const Clients = () => {
             </ListGroup>
             <Button>{`View ${selectedClient.full_name}'s Timestamps`}</Button>
           </Card>
-        </Col>
+        </Col>}
 
       </Row>
     </Container>

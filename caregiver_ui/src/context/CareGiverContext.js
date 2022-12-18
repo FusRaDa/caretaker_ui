@@ -29,7 +29,7 @@ export const CareGiverProvider = ({children}) => {
       setCareGivers(data)
       console.log(data)
     } else {
-      logoutUser()
+      alert('error')
     }
   }
 

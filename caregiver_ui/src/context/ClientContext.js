@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 import ServerAddress from "../utils/ServerAddress";
 import AuthContext from "./AuthContext";
 
-
 const ClientContext = createContext()
 
 export default ClientContext
@@ -30,7 +29,7 @@ export const ClientProvider = ({children}) => {
       setClients(data)
       console.log(data)
     } else {
-      logoutUser()
+      alert('error')
     }
   }
 

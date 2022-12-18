@@ -28,7 +28,9 @@ const Header = () => {
               {user ? (
                 <Nav>
                   <Nav.Link onClick={() => navigate('/')}>Home</Nav.Link>
-                  <Nav.Link onClick={() => navigate('/assay')}>Assays</Nav.Link>
+                  <Nav.Link onClick={() => navigate('/caregivers')}>Caregivers</Nav.Link>
+                  <Nav.Link onClick={() => navigate('/clients')}>Clients</Nav.Link>
+                  <Nav.Link onClick={() => navigate('/timestamps')}>All Timestamps</Nav.Link>
                   <Nav.Link onClick={logoutUser}>Logout</Nav.Link>
                 </Nav>
          

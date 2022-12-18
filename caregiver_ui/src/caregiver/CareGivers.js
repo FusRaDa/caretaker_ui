@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import CareGiverContext from "../context/CareGiverContext"
 
 //styles
@@ -18,8 +18,8 @@ const Caregivers = () => {
   let [searchCareGivers, setSearchCareGivers] = useState(null)
   let [selectedCareGiver, setSelectedCareGiver] = useState(null)
 
-  let chooseCareGiver = () => {
-    let data = careGivers.results.find(cg => cg.pk === pk)
+  let chooseCareGiver = (pk) => {
+    let data = careGivers.find(cg => cg.pk === pk)
     setSelectedCareGiver(data)
   }
 
@@ -27,6 +27,10 @@ const Caregivers = () => {
     let search = document.getElementById('caregiver_search').value
     setSearchCareGivers(search)
   }
+
+  useEffect(() => {
+
+  })
 
   return (
     <Container>
@@ -43,7 +47,7 @@ const Caregivers = () => {
             </Form>
 
             <ListGroup>
-              {careGivers.results
+              {careGivers
                 .filter(cg => searchCareGivers !== null ? cg.full_name.toLowerCase().includes(searchCareGivers) : cg)
                 .map(cg => (
                   <ListGroup.Item action key={cg.pk} onClick={() => chooseCareGiver(cg.pk)}>
@@ -53,10 +57,9 @@ const Caregivers = () => {
               }
             </ListGroup>
           </Card>
-
         </Col>
         
-        <Col>
+        {selectedCareGiver !== null && <Col>
           <Card>
           <Card.Header>{`${selectedCareGiver.full_name}'s Information`}</Card.Header>
             <ListGroup>
@@ -66,14 +69,11 @@ const Caregivers = () => {
             </ListGroup>
             <Button>{`View ${selectedCareGiver.full_name}'s Timestamps`}</Button>
           </Card>
-        </Col>
+        </Col>}
 
       </Row>
     </Container>
   )
-
-  
-
 }
 
 export default Caregivers

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { ClientProvider } from "./context/ClientContext";
 import { CareGiverProvider } from "./context/CareGiverContext";
@@ -9,7 +9,10 @@ import ErrorPage from "./utils/ErrorPage";
 import Header from "./utils/Header";
 import PrivateRoute from "./utils/PrivateRoute";
 import Welcome from "./utils/Welcome";
-import CareGiverTimeStamps from "./caregiver/CareGiverTimeStamps";
+import Caregivers from "./caregiver/CareGivers";
+import Clients from "./client/Clients";
+import Home from "./Home";
+
 
 function App() {
   return (
@@ -17,23 +20,23 @@ function App() {
       <Router>
         <ProviderComposer providers={[
           provider(AuthProvider),
-          provider(ClientProvider),
           provider(CareGiverProvider),
+          provider(ClientProvider),
           provider(TimeStampProvider),
         ]}>
           <Header/>
           <Routes>
 
             <Route element={<PrivateRoute/>}>
-              <Route exact path='/' element={<TimeStamps/>} />
-              <Route exact path='/caregiver' element={<CareGiverTimeStamps/>} />
+              <Route element={<Home/>} exact path='/' />
+              <Route element={<Caregivers/>} exact path='/caregivers' />
+              <Route element={<Clients/>} exact path='/clients'/>
+              <Route element={<TimeStamps/>} exact path='/timestamps'/>
             </Route>
-
 
             <Route element={<Welcome/>} path='/login' exact />
             <Route element={<ErrorPage/>} path='/error_page' exact />
 
-          
           </Routes>
         </ProviderComposer>
       </Router>
