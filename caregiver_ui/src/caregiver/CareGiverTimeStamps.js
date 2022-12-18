@@ -11,11 +11,14 @@ import Modal from 'react-bootstrap/Modal';
 //table components
 import SelectColumnFilter from "../timestamp/SelectColumnFilter"
 import CareGiverTimeStampTable from "./CareGiverTimeStampTable"
+import ServerAddress from "../utils/ServerAddress"
+import AuthContext from "../context/AuthContext"
 
 
 const CareGiverTimeStamps = () => {
 
   let {pk} = useParams()
+  let {authTokens} = useContext(AuthContext)
 
   let [data, setData] = useState([])
  
@@ -39,7 +42,7 @@ const CareGiverTimeStamps = () => {
       size = 50
     }
 
-    let response = await fetch(`${ServerAddress}/api/timestamp/${pk}/?p=${index}&page_size=${size}/`, {
+    let response = await fetch(`${ServerAddress}/api/timestamp/${pk}/?p=${index + 1}&page_size=${size}/`, {
       method: 'GET',
       headers: {
         'Content-Type':'application/json',

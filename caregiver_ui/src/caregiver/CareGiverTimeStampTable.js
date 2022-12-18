@@ -54,8 +54,8 @@ const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading,
 
   useEffect(() => {
     changePage(pageIndex, pageSize)
-    localStorage.setItem("currentPageIndex", pageIndex)
-    localStorage.setItem("currentPageSize", pageSize)
+    localStorage.setItem("caregiverPageIndex", pageIndex)
+    localStorage.setItem("caregiverPageSize", pageSize)
     // eslint-disable-next-line 
   }, [pageIndex, pageSize])
   

@@ -37,32 +37,6 @@ export const TimeStampProvider = ({children}) => {
     }
   }
 
-  let getCareGiverTimeStamps = async (pk, index, size) => {
-
-    if (index === null) {
-      index = 1
-    }
-    if (size === null) {
-      size = 50
-    }
-
-    let response = await fetch(`${ServerAddress}/api/timestamp/${pk}/?p=${index}&page_size=${size}/`, {
-      method: 'GET',
-      headers: {
-        'Content-Type':'application/json',
-        'Authorization':'Bearer ' + String(authTokens.access)
-      }
-    })
-    .catch(() => {
-      console.log('server failed')
-    })
-
-    let data = await response.json()
-    if (response.status === 200) {
-      setCareGiverTimeStamps(data)
-    }
-  }
-  
   useEffect(() => {
     setUpdatingTimeStamps(false)
     if (user) {
