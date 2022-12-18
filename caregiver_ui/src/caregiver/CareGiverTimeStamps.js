@@ -1,4 +1,5 @@
 import { useCallback, useContext, useState } from "react"
+import { useParams } from "react-router-dom"
 
 //styles
 import Row from 'react-bootstrap/Row'
@@ -7,9 +8,6 @@ import Container from "react-bootstrap/Container"
 import Button from "react-bootstrap/Button"
 import Modal from 'react-bootstrap/Modal';
 
-//context
-import TimeStampContext from "../context/TimeStampContext"
-
 //table components
 import SelectColumnFilter from "../timestamp/SelectColumnFilter"
 import CareGiverTimeStampTable from "./CareGiverTimeStampTable"
@@ -17,25 +15,49 @@ import CareGiverTimeStampTable from "./CareGiverTimeStampTable"
 
 const CareGiverTimeStamps = () => {
 
-  let [data, setData] = useState([])
-  let {getCareGiverTimeStamps, careGiverTimeStamps} = useContext(TimeStampContext)
+  let {pk} = useParams()
 
-  let [pageNum, setPageNum] = useState(1)
-  let [pageSize, setPageSize] = useState(10)
+  let [data, setData] = useState([])
+ 
+  let [careGiverTimeStamps, setCareGiverTimeStamps] = useState([])
 
   //pagination
   let [totalPages, setTotalPages] = useState(0)
   let [loading, setLoading] = useState(0)
 
   //modal
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [show, setShow] = useState(false)
+  const handleClose = () => setShow(false)
+  const handleShow = () => setShow(true)
 
+  let getCareGiverTimeStamps = async (pk, index, size) => {
+
+    if (index === null) {
+      index = 1
+    }
+    if (size === null) {
+      size = 50
+    }
+
+    let response = await fetch(`${ServerAddress}/api/timestamp/${pk}/?p=${index}&page_size=${size}/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type':'application/json',
+        'Authorization':'Bearer ' + String(authTokens.access)
+      }
+    })
+    .catch(() => {
+      console.log('server failed')
+    })
+
+    let data = await response.json()
+    if (response.status === 200) {
+      setCareGiverTimeStamps(data)
+    }
+  }
 
   let changePage = (pageIndex, pageSize) => {
-    setPageNum(pageIndex + 1) //pageIndex starts at 0 by default
-    setPageSize(pageSize)
+    getCareGiverTimeStamps(pk, pageIndex, pageSize)
   }
 
   let fetchData = useCallback(() => {

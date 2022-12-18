@@ -16,9 +16,6 @@ export const TimeStampProvider = ({children}) => {
   let [pageNum, setPageNum] = useState(1)
   let [pageSize, setPageSize] = useState(10)
 
-  //caregivertimestamps
-  let [careGiverTimeStamps, setCareGiverTimeStamps] = useState([])
-
   let getTimeStamps = async () => {
     let response = await fetch(`${ServerAddress}/api/timestamp/?p=${pageNum}&page_size=${pageSize}/`, {
       method: 'GET',
@@ -79,8 +76,6 @@ export const TimeStampProvider = ({children}) => {
     setUpdatingTimeStamps: setUpdatingTimeStamps,
     setPageNum: setPageNum,
     setPageSize: setPageSize,
-    getCareGiverTimeStamps: getCareGiverTimeStamps,
-    careGiverTimeStamps: careGiverTimeStamps,
   }
 
   return (

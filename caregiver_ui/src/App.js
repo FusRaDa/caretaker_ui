@@ -12,6 +12,7 @@ import Welcome from "./utils/Welcome";
 import Caregivers from "./caregiver/CareGivers";
 import Clients from "./client/Clients";
 import Home from "./Home";
+import CareGiverTimeStamps from "./caregiver/CareGiverTimeStamps";
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
             <Route element={<PrivateRoute/>}>
               <Route element={<Home/>} exact path='/' />
               <Route element={<Caregivers/>} exact path='/caregivers' />
+              <Route element={<CareGiverTimeStamps/>} exact path='/caregivers/:pk' />
               <Route element={<Clients/>} exact path='/clients'/>
               <Route element={<TimeStamps/>} exact path='/timestamps'/>
             </Route>

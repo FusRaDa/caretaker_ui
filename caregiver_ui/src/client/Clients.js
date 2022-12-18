@@ -54,20 +54,19 @@ const Clients = () => {
               }
             </ListGroup>
           </Card>
-
         </Col>
         
-        {selectedClient !== null && <Col>
+        <Col>
           <Card>
-          <Card.Header>{`${selectedClient.full_name}'s Information`}</Card.Header>
+          <Card.Header>{selectedClient !== null ? `${selectedClient.full_name}'s Information` : "Select a Client"}</Card.Header>
             <ListGroup>
-              <ListGroup.Item>First Name: {selectedClient.first_name}</ListGroup.Item>
-              <ListGroup.Item>Last Name: {selectedClient.last_name}</ListGroup.Item>
-              <ListGroup.Item>Phone Number: {selectedClient.phone_number}</ListGroup.Item>
+              <ListGroup.Item>First Name: {selectedClient !== null ?  selectedClient.first_name : null}</ListGroup.Item>
+              <ListGroup.Item>Last Name: {selectedClient !== null ? selectedClient.last_name : null}</ListGroup.Item>
+              <ListGroup.Item>Phone Number: {selectedClient !== null ? selectedClient.phone_number : null}</ListGroup.Item>
             </ListGroup>
-            <Button>{`View ${selectedClient.full_name}'s Timestamps`}</Button>
+            {selectedClient !== null && <Button>{`View ${selectedClient.full_name}'s Timestamps`}</Button>}
           </Card>
-        </Col>}
+        </Col>
 
       </Row>
     </Container>

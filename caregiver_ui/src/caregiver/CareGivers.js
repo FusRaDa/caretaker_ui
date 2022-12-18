@@ -9,9 +9,12 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
+import { useNavigate } from "react-router-dom";
 
 
 const Caregivers = () => {
+
+  const navigate = useNavigate()
 
   let {careGivers} = useContext(CareGiverContext)
 
@@ -27,10 +30,6 @@ const Caregivers = () => {
     let search = document.getElementById('caregiver_search').value
     setSearchCareGivers(search)
   }
-
-  useEffect(() => {
-
-  })
 
   return (
     <Container>
@@ -59,17 +58,20 @@ const Caregivers = () => {
           </Card>
         </Col>
         
-        {selectedCareGiver !== null && <Col>
+        <Col>
           <Card>
-          <Card.Header>{`${selectedCareGiver.full_name}'s Information`}</Card.Header>
+          <Card.Header>{selectedCareGiver !== null ? `${selectedCareGiver.full_name}'s Information` : "Select a Caregiver"}</Card.Header>
             <ListGroup>
-              <ListGroup.Item>First Name: {selectedCareGiver.first_name}</ListGroup.Item>
-              <ListGroup.Item>Last Name: {selectedCareGiver.last_name}</ListGroup.Item>
-              <ListGroup.Item>Phone Number: {selectedCareGiver.phone_number}</ListGroup.Item>
+              <ListGroup.Item>First Name: {selectedCareGiver !== null ? selectedCareGiver.first_name : null}</ListGroup.Item>
+              <ListGroup.Item>Last Name: {selectedCareGiver !== null ? selectedCareGiver.last_name : null}</ListGroup.Item>
+              <ListGroup.Item>Phone Number: {selectedCareGiver !== null ? selectedCareGiver.phone_number : null}</ListGroup.Item>
             </ListGroup>
-            <Button>{`View ${selectedCareGiver.full_name}'s Timestamps`}</Button>
+              {selectedCareGiver !== null && 
+              <Button onClick={() => navigate(`/caregivers/${selectedCareGiver.pk}`)}>
+              {`View ${selectedCareGiver.full_name}'s Timestamps`}
+              </Button>}
           </Card>
-        </Col>}
+        </Col>
 
       </Row>
     </Container>
