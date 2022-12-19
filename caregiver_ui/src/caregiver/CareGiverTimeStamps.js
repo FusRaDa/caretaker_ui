@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState } from "react"
+import { useCallback, useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 
 //styles
@@ -13,6 +13,7 @@ import SelectColumnFilter from "../timestamp/SelectColumnFilter"
 import CareGiverTimeStampTable from "./CareGiverTimeStampTable"
 import ServerAddress from "../utils/ServerAddress"
 import AuthContext from "../context/AuthContext"
+import CreateCareGiverTimeStamp from "./CreateCareGiverTimeStamp"
 
 
 const CareGiverTimeStamps = () => {
@@ -21,27 +22,23 @@ const CareGiverTimeStamps = () => {
   let {authTokens} = useContext(AuthContext)
 
   let [data, setData] = useState([])
- 
+  let [careGiver, setCareGiver] = useState([])
   let [careGiverTimeStamps, setCareGiverTimeStamps] = useState([])
+
+  let [currentPageIndex, setCurrentPageIndex] = useState(0)
+  let [currentPageSize, setCurrentPageSize] = useState(10)
 
   //pagination
   let [totalPages, setTotalPages] = useState(0)
   let [loading, setLoading] = useState(0)
 
   //modal
-  const [show, setShow] = useState(false)
-  const handleClose = () => setShow(false)
-  const handleShow = () => setShow(true)
+  let [show, setShow] = useState(false)
+  let handleClose = () => setShow(false)
+  let handleShow = () => setShow(true)
 
-  let getCareGiverTimeStamps = async (pk, index, size) => {
-
-    if (index === null) {
-      index = 1
-    }
-    if (size === null) {
-      size = 50
-    }
-
+  let getCareGiverTimeStamps = async (index, size) => {
+    
     let response = await fetch(`${ServerAddress}/api/timestamp/${pk}/?p=${index + 1}&page_size=${size}/`, {
       method: 'GET',
       headers: {
@@ -57,10 +54,57 @@ const CareGiverTimeStamps = () => {
     if (response.status === 200) {
       setCareGiverTimeStamps(data)
     }
+    
+    // if page is not found just go to first page
+    if (response.status === 404) {
+      response = await fetch(`${ServerAddress}/api/timestamp/${pk}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type':'application/json',
+          'Authorization':'Bearer ' + String(authTokens.access)
+        }
+      })
+      .catch(() => {
+        console.log('server failed')
+      })
+
+      let data = await response.json()
+      setCareGiverTimeStamps(data)
+    }
+  }
+
+  let getCareGiver = async () => {
+    let response = await fetch(`${ServerAddress}/api/caregiver/${pk}/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type':'application/json',
+        'Authorization':'Bearer ' + String(authTokens.access)
+      }
+    })
+    .catch(() => {
+      console.log('server failed')
+    })
+    
+    let data = await response.json()
+    if (response.status === 200) {
+      setCareGiver(data)
+    }
+  }
+
+  useEffect(() => {
+    getCareGiver()
+    // eslint-disable-next-line
+  }, [])
+
+  let updateData = () => {
+    getCareGiverTimeStamps(currentPageIndex, currentPageSize )
+    fetchData()
   }
 
   let changePage = (pageIndex, pageSize) => {
-    getCareGiverTimeStamps(pk, pageIndex, pageSize)
+    getCareGiverTimeStamps(pageIndex, pageSize)
+    setCurrentPageIndex(pageIndex)
+    setCurrentPageSize(pageSize)
   }
 
   let fetchData = useCallback(() => {
@@ -72,6 +116,8 @@ const CareGiverTimeStamps = () => {
       setTotalPages(careGiverTimeStamps.total_pages)
       setLoading(false)
     }
+
+    console.log('fetch caregiver timestamps')
 
   }, [careGiverTimeStamps])
 
@@ -146,6 +192,7 @@ const CareGiverTimeStamps = () => {
           changePage={changePage}
           loading={loading}
           totalPages={totalPages}
+          pk={pk}
           />
         </Col>
       </Row>
@@ -160,12 +207,11 @@ const CareGiverTimeStamps = () => {
           <Modal.Title>Add a Timestamp</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          create a timestamp for care giver!
+          <CreateCareGiverTimeStamp handleClose={handleClose} careGiver={careGiver} updateData={updateData}/>
         </Modal.Body>
       </Modal>
 
     </Container>
-   
   )
 }
 

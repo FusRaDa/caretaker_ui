@@ -7,7 +7,6 @@ import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col";
 import ListGroup from 'react-bootstrap/ListGroup';
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 
@@ -64,7 +63,6 @@ const Clients = () => {
               <ListGroup.Item>Last Name: {selectedClient !== null ? selectedClient.last_name : null}</ListGroup.Item>
               <ListGroup.Item>Phone Number: {selectedClient !== null ? selectedClient.phone_number : null}</ListGroup.Item>
             </ListGroup>
-            {selectedClient !== null && <Button>{`View ${selectedClient.full_name}'s Timestamps`}</Button>}
           </Card>
         </Col>
 

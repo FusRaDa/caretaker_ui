@@ -5,7 +5,7 @@ import TimeStampTableStyles from '../timestamp/TimeStampTableStyles'
 //filters
 import SelectColumnFilter from '../timestamp/SelectColumnFilter'
 
-const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading, totalPages}) => {
+const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading, totalPages, pk}) => {
 
   const defaultColumn = useMemo(() => ({
     Filter: SelectColumnFilter,
@@ -33,8 +33,8 @@ const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading,
     {
       initialState: {
         hiddenColumns: ['pk','caregiver.full_name'],
-        pageIndex: localStorage.getItem('caregiverPageIndex') !== null ? +localStorage.getItem('currentPageIndex') : 0,
-        pageSize: localStorage.getItem('caregiverPageSize') !== null ? +localStorage.getItem('currentPageSize'): 10,
+        pageIndex: localStorage.getItem(`caregiverPageIndex/${pk}`) !== null ? +localStorage.getItem(`caregiverPageIndex/${pk}`) : 0,
+        pageSize: localStorage.getItem(`caregiverPageSize/${pk}`) !== null ? +localStorage.getItem(`caregiverPageSize/${pk}`): 10,
       },
     columns,
     data,
@@ -54,8 +54,8 @@ const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading,
 
   useEffect(() => {
     changePage(pageIndex, pageSize)
-    localStorage.setItem("caregiverPageIndex", pageIndex)
-    localStorage.setItem("caregiverPageSize", pageSize)
+    localStorage.setItem(`caregiverPageIndex/${pk}`, pageIndex)
+    localStorage.setItem(`caregiverPageSize/${pk}`, pageSize)
     // eslint-disable-next-line 
   }, [pageIndex, pageSize])
   

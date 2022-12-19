@@ -1,4 +1,7 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
+import { useNavigate } from "react-router-dom";
+
+//context
 import CareGiverContext from "../context/CareGiverContext"
 
 //styles
@@ -9,7 +12,6 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
-import { useNavigate } from "react-router-dom";
 
 
 const Caregivers = () => {

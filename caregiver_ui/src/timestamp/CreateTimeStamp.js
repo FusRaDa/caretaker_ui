@@ -24,10 +24,8 @@ const CreateTimeStamp = ({handleClose}) => {
   let {authTokens} = useContext(AuthContext)
   let {setUpdatingTimeStamps} = useContext(TimeStampContext)
 
- 
   let {clients} = useContext(ClientContext)
   let {careGivers} = useContext(CareGiverContext)
-
 
   let [searchCareGivers, setSearchCareGivers] = useState(null)
   let [searchClients, setSearchClients] = useState(null)
@@ -47,12 +45,12 @@ const CreateTimeStamp = ({handleClose}) => {
   }
 
   const chooseCareGiver = (pk) => {
-    let data = careGivers.results.find(cg => cg.pk === pk)
+    let data = careGivers.find(cg => cg.pk === pk)
     setSelectedCareGiver(data)
   }
 
   const chooseClient = (pk) => {
-    let data = clients.results.find(client => client.pk === pk)
+    let data = clients.find(client => client.pk === pk)
     setSelectedClient(data)
   }
 
@@ -100,7 +98,7 @@ const CreateTimeStamp = ({handleClose}) => {
           </Form>
 
           <ListGroup>
-            {careGivers.results
+            {careGivers
               .filter(cg => searchCareGivers !== null ? cg.full_name.toLowerCase().includes(searchCareGivers) : cg)
               .map(cg => (
                 <ListGroup.Item action key={cg.pk} onClick={() => chooseCareGiver(cg.pk)}>
@@ -121,7 +119,7 @@ const CreateTimeStamp = ({handleClose}) => {
           </Form>
 
           <ListGroup>
-            {clients.results
+            {clients
               .filter(client => searchClients !== null ? client.full_name.toLowerCase().includes(searchClients) : client)
               .map(client => (
                 <ListGroup.Item action key={client.pk} onClick={() => chooseClient(client.pk)}>

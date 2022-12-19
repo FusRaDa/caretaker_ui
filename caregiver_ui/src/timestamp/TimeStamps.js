@@ -18,15 +18,16 @@ const TimeStamps = () => {
 
   let {timeStamps, setUpdatingTimeStamps, setPageNum, setPageSize} = useContext(TimeStampContext)
   let [data, setData] = useState([])
+  let [allResults, setAllResults] = useState(0)
 
   //pagination
   let [totalPages, setTotalPages] = useState(0)
   let [loading, setLoading] = useState(0)
-
+  
   //modal
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  let [show, setShow] = useState(false);
+  let handleClose = () => setShow(false);
+  let handleShow = () => setShow(true);
 
   let changePage = (pageIndex, pageSize) => {
     setPageNum(pageIndex + 1) //pageIndex starts at 0 by default
@@ -40,9 +41,12 @@ const TimeStamps = () => {
 
     if (Object.keys(timeStamps).length !== 0) {
       setData(timeStamps.results)
+      setAllResults(timeStamps.count)
       setTotalPages(timeStamps.total_pages)
       setLoading(false)
     }
+
+    console.log('fetch data')
 
   }, [timeStamps])
 
@@ -123,6 +127,7 @@ const TimeStamps = () => {
           changePage={changePage}
           loading={loading}
           totalPages={totalPages}
+          allResults={allResults}
           />
         </Col>
       </Row>

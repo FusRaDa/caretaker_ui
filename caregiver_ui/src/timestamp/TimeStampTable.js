@@ -6,7 +6,7 @@ import TimeStampTableStyles from './TimeStampTableStyles'
 import SelectColumnFilter from './SelectColumnFilter'
 
 
-const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPages}) => {
+const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPages, allResults}) => {
 
   const defaultColumn = useMemo(() => ({
     Filter: SelectColumnFilter,
@@ -42,7 +42,7 @@ const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPag
     defaultColumn,
     pageCount: totalPages,
     manualPagination: true,
-    autoResetPage: false
+    autoResetPage: false,
     },
     useFilters,
     useSortBy,
@@ -108,8 +108,7 @@ const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPag
                 <td colSpan="10000">Loading...</td>
               ) : (
                 <td colSpan="10000">
-                  Showing {page.length} of ~{pageCount * pageSize}{' '}
-                  results
+                  Showing {page.length} of {allResults}{' '}results
                 </td>
               )}
             </tr>
