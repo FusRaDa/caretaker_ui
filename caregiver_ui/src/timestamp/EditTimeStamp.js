@@ -4,8 +4,10 @@ import { useContext, useState } from "react";
 import ServerAddress from "../utils/ServerAddress";
 
 //context
+import CareGiverContext from "../context/CareGiverContext";
 import ClientContext from "../context/ClientContext";
 import AuthContext from "../context/AuthContext";
+import TimeStampContext from "../context/TimeStampContext";
 
 //styles
 import Container from "react-bootstrap/Container"
@@ -16,21 +18,33 @@ import Col from "react-bootstrap/Col";
 import InputGroup from 'react-bootstrap/InputGroup'
 import ListGroup from 'react-bootstrap/ListGroup';
 
-
-
-const CreateCareGiverTimeStamp = ({handleClose, careGiver, updateData}) => {
+const EditTimeStamp = ({data}) => {
 
   let {authTokens} = useContext(AuthContext)
+  let {setUpdatingTimeStamps} = useContext(TimeStampContext)
 
   let {clients} = useContext(ClientContext)
-  
+  let {careGivers} = useContext(CareGiverContext)
+
+  let [searchCareGivers, setSearchCareGivers] = useState(null)
   let [searchClients, setSearchClients] = useState(null)
 
-  let [selectedClient, setSelectedClient] = useState(null)
+  let [selectedCareGiver, setSelectedCareGiver] = useState(data.caregiver)
+  let [selectedClient, setSelectedClient] = useState(data.client)
+
+  const searchCareGiver = () => {
+    let search = document.getElementById('caregiver_search').value
+    setSearchCareGivers(search)
+  }
 
   const searchClient = () => {
     let search = document.getElementById('client_search').value
     setSearchClients(search)
+  }
+
+  const chooseCareGiver = (pk) => {
+    let data = careGivers.find(cg => cg.pk === pk)
+    setSelectedCareGiver(data)
   }
 
   const chooseClient = (pk) => {
@@ -38,8 +52,10 @@ const CreateCareGiverTimeStamp = ({handleClose, careGiver, updateData}) => {
     setSelectedClient(data)
   }
 
-  const addTimeStamp = async (e) => {
+  const editTimeStamp = async (e) => {
     e.preventDefault()
+
+    return
 
     let response = await fetch(`${ServerAddress}/api/timestamp/create/`, {
       method: 'POST',
@@ -48,7 +64,7 @@ const CreateCareGiverTimeStamp = ({handleClose, careGiver, updateData}) => {
         'Authorization': 'Bearer ' + String(authTokens.access)
       },
       body: JSON.stringify({
-        'caregiver_id': careGiver.pk, //fix to care giver selected
+        'caregiver_id': selectedCareGiver.pk,
         'client_id': selectedClient.pk,
         'start_time': e.target.start_time.value,
         'end_time': e.target.end_time.value,
@@ -60,19 +76,60 @@ const CreateCareGiverTimeStamp = ({handleClose, careGiver, updateData}) => {
     })
 
     if (response.status === 201) {
-      console.log('timestamp added')
-      updateData()
-      handleClose()
+      setUpdatingTimeStamps(true)
+      // handleClose()
     } else {
       alert('something went wrong!')
     }
   }
 
+  let formatDateTime = (datetime) => {
+
+    let date = new Date(datetime).toDateString()
+    let stringDate = new Date(date)
+
+    let year = stringDate.getFullYear()
+    let month = stringDate.getMonth() + 1
+    if (month < 10) {
+      month = "0" + month
+    }
+    let day = stringDate.getDate()
+    if (day < 10) {
+      day = "0" + day
+    }
+
+    let time = new Date(datetime).toTimeString()
+    let dtlFormat = `${year}-${month}-${day}T${time}`
+    let finalFormat = dtlFormat.split(" ")
+    
+    return finalFormat[0]
+  }
 
   return (
     <Container>
       <Row>
 
+        <Col>
+          <Form className="d-flex" onChange={() => searchCareGiver()}>
+            <Form.Control
+              type="search"
+              placeholder="Search for a caregiver"
+              id="caregiver_search"
+            />
+          </Form>
+
+          <ListGroup>
+            {careGivers
+              .filter(cg => searchCareGivers !== null ? cg.full_name.toLowerCase().includes(searchCareGivers) : cg)
+              .map(cg => (
+                <ListGroup.Item action key={cg.pk} onClick={() => chooseCareGiver(cg.pk)}>
+                  {cg.full_name}
+                </ListGroup.Item>
+              ))          
+            }
+          </ListGroup>
+        </Col>
+      
         <Col>
           <Form className="d-flex" onChange={() => searchClient()}>
             <Form.Control
@@ -99,35 +156,35 @@ const CreateCareGiverTimeStamp = ({handleClose, careGiver, updateData}) => {
       <Row>
         <Col>
 
-          <Form onSubmit={addTimeStamp}>
+          <Form onSubmit={editTimeStamp}>
 
             <Form.Group>
               <Form.Label>Caregiver</Form.Label>
               <Form.Control type="text" placeholder="Select a caregiver" disabled required 
-                defaultValue={careGiver.full_name}/>
+                value={selectedCareGiver === null ? null : selectedCareGiver.full_name}/>
             </Form.Group>
 
             <Form.Group>
               <Form.Label>Client</Form.Label>
               <Form.Control type="text" placeholder="Select a client" disabled required 
-                defaultValue={selectedClient === null ? null : selectedClient.full_name}/>
+                value={selectedClient === null ? null : selectedClient.full_name}/>
             </Form.Group>
 
             <Form.Group>
               <Form.Label>Start Time</Form.Label>
-              <Form.Control name="start_time" type="datetime-local" placeholder="Start of shift" required/>
+              <Form.Control name="start_time" type="datetime-local" placeholder="Start of shift" defaultValue={formatDateTime(data.start_time)} required/>
             </Form.Group>
 
             <Form.Group>
               <Form.Label>End Time</Form.Label>
-              <Form.Control name="end_time" type="datetime-local" placeholder="End of shift" required/>
+              <Form.Control name="end_time" type="datetime-local" placeholder="End of shift" defaultValue={formatDateTime(data.end_time)} required/>
             </Form.Group>
 
             <Form.Group>
             <Form.Label>Hourly Rate</Form.Label>
               <InputGroup>
                 <InputGroup.Text>$</InputGroup.Text>
-                <Form.Control name="hourly_rate" type="number" placeholder="Rate per hour" step="0.01" defaultValue="0.50" required/>
+                <Form.Control name="hourly_rate" type="number" placeholder="Rate per hour" step="0.01" defaultValue={data.hourly_rate} required/>
               </InputGroup>
             </Form.Group>
 
@@ -141,4 +198,4 @@ const CreateCareGiverTimeStamp = ({handleClose, careGiver, updateData}) => {
   )
 }
 
-export default CreateCareGiverTimeStamp
+export default EditTimeStamp

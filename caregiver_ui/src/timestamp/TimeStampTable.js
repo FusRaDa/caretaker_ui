@@ -1,12 +1,22 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTable, useFilters, usePagination, useSortBy } from 'react-table'
 import TimeStampTableStyles from './TimeStampTableStyles'
 
 //filters
 import SelectColumnFilter from './SelectColumnFilter'
 
+//styles
+import Modal from 'react-bootstrap/Modal';
+import EditTimeStamp from './EditTimeStamp';
 
 const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPages, allResults}) => {
+
+  //modal
+  let [show, setShow] = useState(false);
+  let handleClose = () => setShow(false);
+  let handleShow = () => setShow(true);
+
+  let [selectedRow, setSelectedRow] = useState(null)
 
   const defaultColumn = useMemo(() => ({
     Filter: SelectColumnFilter,
@@ -59,7 +69,13 @@ const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPag
     localStorage.setItem("currentPageSize", pageSize)
     // eslint-disable-next-line 
   }, [pageIndex, pageSize])
-  
+
+  let editRow = (row) => {
+    setSelectedRow(row.original)
+    handleShow()
+  }
+
+
   return (
     <TimeStampTableStyles>
       <div className='table_wrap'>
@@ -90,15 +106,15 @@ const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPag
             {page.map(row => {
               prepareRow(row)
               return (
-                <tr {...row.getRowProps()}>
+                <tr {...row.getRowProps()} onDoubleClick={() => editRow(row)}>
                   {row.cells.map(cell => {
                     return (
                       <td {...cell.getCellProps()}>
-                        {cell.render('Cell')}
-                      </td>
+                        {cell.render('Cell')}             
+                      </td>         
                     )
-                  })}
-                </tr>
+                  })}                
+                </tr>               
               )
             })}
 
@@ -162,6 +178,20 @@ const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPag
           </select>
 
         </div>
+
+        <Modal
+          show={show}
+          onHide={handleClose}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Edit a Timestamp</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <EditTimeStamp data={selectedRow}/>
+          </Modal.Body>
+        </Modal>
 
       </div>
     </TimeStampTableStyles>
