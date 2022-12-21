@@ -16,6 +16,7 @@ import Col from "react-bootstrap/Col";
 import InputGroup from 'react-bootstrap/InputGroup'
 import ListGroup from 'react-bootstrap/ListGroup';
 import TimeStampContext from "../context/TimeStampContext";
+import ConfirmDeleteCGTS from "../utils/ConfirmDeleteCGTS";
 
 
 const EditCareGiverTimeStamp = ({data, handleClose, updateData}) => {
@@ -27,6 +28,11 @@ const EditCareGiverTimeStamp = ({data, handleClose, updateData}) => {
   let [searchClients, setSearchClients] = useState(null)
 
   let [selectedClient, setSelectedClient] = useState(data.client)
+
+  //modal
+  let [show, setShow] = useState(false);
+  let handleCloseDel = () => setShow(false);
+  let handleShowDel = () => setShow(true);
 
   const searchClient = () => {
     let search = document.getElementById('client_search').value
@@ -153,12 +159,28 @@ const EditCareGiverTimeStamp = ({data, handleClose, updateData}) => {
               </InputGroup>
             </Form.Group>
             
-            <Button variant="danger">Delete</Button>
+            <Button variant="danger" onClick={() => handleShowDel()}>Delete</Button>
             <Button style={{float: 'right'}} type="submit">Submit</Button>
 
           </Form>
 
         </Col>
+
+        <Modal
+          show={show}
+          onHide={handleClose}
+          backdrop="static"
+          keyboard={false}
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Confirm Delete</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <ConfirmDeleteCGTS pk={data.pk} handleCloseDel={handleCloseDel} handleClose={handleClose} updateData={updateData}/>
+          </Modal.Body>
+        </Modal>
+
       </Row>
     </Container>
   )

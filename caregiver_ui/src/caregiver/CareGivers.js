@@ -12,6 +12,8 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
+import EditCareGiver from "./EditCareGiver";
+import CreateCareGiver from "./CreateCareGiver";
 
 
 const Caregivers = () => {
@@ -23,6 +25,16 @@ const Caregivers = () => {
   let [searchCareGivers, setSearchCareGivers] = useState(null)
   let [selectedCareGiver, setSelectedCareGiver] = useState(null)
 
+  //modal - create caregiver
+  let [show, setShow] = useState(false);
+  let handleClose = () => setShow(false);
+  let handleShow = () => setShow(true);
+
+  //modal - edit caregiver
+  let [showE, setShowE] = useState(false);
+  let handleCloseE = () => setShowE(false);
+  let handleShowE = () => setShowE(true);
+
   let chooseCareGiver = (pk) => {
     let data = careGivers.find(cg => cg.pk === pk)
     setSelectedCareGiver(data)
@@ -33,8 +45,17 @@ const Caregivers = () => {
     setSearchCareGivers(search)
   }
 
+
   return (
     <Container>
+      <Row>
+        <Col>
+          <Button onClick={handleShow}>Add Caregiver</Button>
+        </Col>
+        <Col>
+          {selectedCareGiver !== null && <Button onClick={handleShowE}>{`Edit ${selectedCareGiver.full_name}'s Information`}</Button>}
+        </Col>
+      </Row>
       <Row>
         <Col>
           <Card>
@@ -76,6 +97,35 @@ const Caregivers = () => {
         </Col>
 
       </Row>
+
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Add Caregiver</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <CreateCareGiver handleClose={handleClose} />
+        </Modal.Body>
+      </Modal>
+
+      <Modal
+        show={showE}
+        onHide={handleCloseE}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Caregiver</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <EditCareGiver handleCloseE={handleCloseE} selectedCareGiver={selectedCareGiver}/>
+        </Modal.Body>
+      </Modal>
+
     </Container>
   )
 }
