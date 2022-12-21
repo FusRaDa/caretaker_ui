@@ -1,11 +1,23 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTable, useFilters, usePagination, useSortBy } from 'react-table'
 import TimeStampTableStyles from '../timestamp/TimeStampTableStyles'
 
 //filters
 import SelectColumnFilter from '../timestamp/SelectColumnFilter'
 
-const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading, totalPages, pk}) => {
+import EditCareGiverTimeStamp from './EditCareGiverTimeStamp'
+
+//styles
+import Modal from 'react-bootstrap/Modal';
+
+const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading, totalPages, pk, updateData}) => {
+
+  //modal
+  let [show, setShow] = useState(false);
+  let handleClose = () => setShow(false);
+  let handleShow = () => setShow(true);
+
+  let [selectedRow, setSelectedRow] = useState(null)
 
   const defaultColumn = useMemo(() => ({
     Filter: SelectColumnFilter,
@@ -58,6 +70,11 @@ const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading,
     localStorage.setItem(`caregiverPageSize/${pk}`, pageSize)
     // eslint-disable-next-line 
   }, [pageIndex, pageSize])
+
+  let editRow = (row) => {
+    setSelectedRow(row.original)
+    handleShow()
+  }
   
   return (
     <TimeStampTableStyles>
@@ -89,7 +106,7 @@ const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading,
             {page.map(row => {
               prepareRow(row)
               return (
-                <tr {...row.getRowProps()}>
+                <tr {...row.getRowProps()} onDoubleClick={() => editRow(row)}>
                   {row.cells.map(cell => {
                     return (
                       <td {...cell.getCellProps()}>
@@ -162,6 +179,20 @@ const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading,
           </select>
 
         </div>
+
+        <Modal
+          show={show}
+          onHide={handleClose}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Edit Timestamp</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <EditCareGiverTimeStamp data={selectedRow} handleClose={handleClose} updateData={updateData}/>
+          </Modal.Body>
+        </Modal>
 
       </div>
     </TimeStampTableStyles>

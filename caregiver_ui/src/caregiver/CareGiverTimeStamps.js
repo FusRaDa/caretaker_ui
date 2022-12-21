@@ -96,6 +96,7 @@ const CareGiverTimeStamps = () => {
     // eslint-disable-next-line
   }, [])
 
+  //function updates table when data is being modified
   let updateData = () => {
     getCareGiverTimeStamps(currentPageIndex, currentPageSize )
     fetchData()
@@ -193,6 +194,7 @@ const CareGiverTimeStamps = () => {
           loading={loading}
           totalPages={totalPages}
           pk={pk}
+          updateData={updateData}
           />
         </Col>
       </Row>

@@ -186,10 +186,10 @@ const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPag
           keyboard={false}
         >
           <Modal.Header closeButton>
-            <Modal.Title>Edit a Timestamp</Modal.Title>
+            <Modal.Title>Edit Timestamp</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <EditTimeStamp data={selectedRow}/>
+            <EditTimeStamp data={selectedRow} handleClose={handleClose}/>
           </Modal.Body>
         </Modal>
 
