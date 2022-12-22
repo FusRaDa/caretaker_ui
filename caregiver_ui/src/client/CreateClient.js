@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import ServerAddress from "../utils/ServerAddress";
 
-import CareGiverContext from "../context/CareGiverContext"
+import ClientContext from "../context/ClientContext";
 import AuthContext from "../context/AuthContext";
 
 //styles
@@ -12,15 +12,15 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
 
-const CreateCareGiver = ({handleClose}) => {
+const CreateClient = ({handleClose}) => {
 
-  let {setUpdatingCareGivers} = useContext(CareGiverContext)
+  let {setUpdatingClients} = useContext(ClientContext)
   let {authTokens} = useContext(AuthContext)
 
-  const addCareGiver = async (e) => {
+  const addClient = async (e) => {
     e.preventDefault()
 
-    let response = await fetch(`${ServerAddress}/api/caregiver/create/`, {
+    let response = await fetch(`${ServerAddress}/api/client/create/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -37,31 +37,32 @@ const CreateCareGiver = ({handleClose}) => {
     })
 
     if (response.status === 201) {
-      setUpdatingCareGivers(true)
+      setUpdatingClients(true)
       handleClose()
     } else {
       alert('something went wrong!')
     }
   }
 
+
   return (
     <Container>
       <Row>
         <Col>
-          <Form onSubmit={addCareGiver}>
+          <Form onSubmit={addClient}>
             <Form.Group>
               <Form.Label>First Name</Form.Label>
-              <Form.Control name="first_name" placeholder="Caregiver's first name" required/>
+              <Form.Control name="first_name" placeholder="Client's first name"/>
             </Form.Group>
 
             <Form.Group>
               <Form.Label>Last Name</Form.Label>
-              <Form.Control name="last_name" placeholder="Caregiver's last name" required/>
+              <Form.Control name="last_name" placeholder="Client's last name"/>
             </Form.Group>
 
             <Form.Group>
               <Form.Label>Phone Number</Form.Label>
-              <Form.Control name="phone_number" placeholder="Caregiver's phone number" required/>
+              <Form.Control name="phone_number" placeholder="Client's phone number"/>
             </Form.Group>
 
             <Button type="submit">Submit</Button>
@@ -73,4 +74,4 @@ const CreateCareGiver = ({handleClose}) => {
   )
 }
 
-export default CreateCareGiver
+export default CreateClient

@@ -10,22 +10,22 @@ import Button from "react-bootstrap/Button";
 
 //contexts
 import AuthContext from "../context/AuthContext";
-import CareGiverContext from "../context/CareGiverContext";
+import ClientContext from "../context/ClientContext";
 
 
-const DeleteCareGiver = ({pk, handleClose, handleCloseE}) => {
+const DeleteClient = ({pk, handleClose, handleCloseE}) => {
 
   let {authTokens} = useContext(AuthContext)
-  let {setUpdatingCaregivers} = useContext(CareGiverContext)
+  let {setUpdatingClients} = useContext(ClientContext)
 
-  let deleteCareGiver = async (e) => {
+  let deleteClient = async (e) => {
     e.preventDefault()
 
     let text = e.target.confirm_delete.value
 
     if (text === "delete") {
 
-      let response = await fetch(`${ServerAddress}/api/caregiver/${pk}/delete/`, {
+      let response = await fetch(`${ServerAddress}/api/client/${pk}/delete/`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ const DeleteCareGiver = ({pk, handleClose, handleCloseE}) => {
       })
   
       if (response.status === 204) {
-        setUpdatingCaregivers(true)
+        setUpdatingClients(true)
         handleClose()
         handleCloseE()
       } else {
@@ -52,7 +52,7 @@ const DeleteCareGiver = ({pk, handleClose, handleCloseE}) => {
     <Container>
       <Row>
         <Col>
-          <Form onSubmit={deleteCareGiver}>
+          <Form onSubmit={deleteClient}>
             <Form.Group>
               <Form.Label>Are you sure?</Form.Label>
               <Form.Control name="confirm_delete" type='text' placeholder="Confirm this deletion" autoComplete="off"/>
@@ -68,4 +68,4 @@ const DeleteCareGiver = ({pk, handleClose, handleCloseE}) => {
   )
 }
 
-export default DeleteCareGiver
+export default DeleteClient

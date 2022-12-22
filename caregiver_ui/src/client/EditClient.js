@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import AuthContext from "../context/AuthContext";
-import CareGiverContext from "../context/CareGiverContext";
+import ClientContext from "../context/ClientContext";
 import ServerAddress from "../utils/ServerAddress";
 
 //styles
@@ -10,22 +10,23 @@ import Row from "react-bootstrap/Row"
 import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/esm/Button";
 import DeleteCareGiver from "./DeleteCareGiver";
+import DeleteClient from "./DeleteClient";
 
 
-const EditCareGiver = ({handleCloseE, selectedCareGiver}) => {
+const EditClient = ({handleCloseE, selectedClient}) => {
 
   let {authTokens} = useContext(AuthContext)
-  let {setUpdatingCareGivers} = useContext(CareGiverContext)
+  let {setUpdatingClients} = useContext(ClientContext)
 
   //modal - create caregiver
   let [show, setShow] = useState(false);
   let handleClose = () => setShow(false);
   let handleShow = () => setShow(true);
 
-  const editCareGiver = async (e) => {
+  const editClient = async (e) => {
     e.preventDefault()
 
-    let response = await fetch(`${ServerAddress}/api/caregiver/${selectedCareGiver.pk}/update/`, {
+    let response = await fetch(`${ServerAddress}/api/client/${selectedClient.pk}/update/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +43,7 @@ const EditCareGiver = ({handleCloseE, selectedCareGiver}) => {
     })
 
     if (response.status === 200) {
-      setUpdatingCareGivers(true)
+      setUpdatingClients(true)
       handleCloseE()
     } else {
       alert('something went wrong!')
@@ -53,20 +54,20 @@ const EditCareGiver = ({handleCloseE, selectedCareGiver}) => {
     <Container>
       <Row>
         <Col>
-          <Form onSubmit={editCareGiver}>
+          <Form onSubmit={editClient}>
             <Form.Group>
               <Form.Label>First Name</Form.Label>
-              <Form.Control name="first_name" placeholder="Caregiver's first name" defaultValue={selectedCareGiver.first_name} required/>
+              <Form.Control name="first_name" placeholder="Client's first name" defaultValue={selectedClient.first_name} required/>
             </Form.Group>
 
             <Form.Group>
               <Form.Label>Last Name</Form.Label>
-              <Form.Control name="last_name" placeholder="Caregiver's last name" defaultValue={selectedCareGiver.last_name} required/>
+              <Form.Control name="last_name" placeholder="Client's last name" defaultValue={selectedClient.last_name} required/>
             </Form.Group>
 
             <Form.Group>
               <Form.Label>Phone Number</Form.Label>
-              <Form.Control name="phone_number" placeholder="Caregiver's phone number" defaultValue={selectedCareGiver.phone_number} required/>
+              <Form.Control name="phone_number" placeholder="Client's phone number" defaultValue={selectedClient.phone_number} required/>
             </Form.Group>
 
             <Button onClick={handleShow}>Delete</Button>
@@ -83,10 +84,10 @@ const EditCareGiver = ({handleCloseE, selectedCareGiver}) => {
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Delete Caregiver</Modal.Title>
+          <Modal.Title>Delete Client</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <DeleteCareGiver pk={selectedCareGiver.pk} handleClose={handleClose} handleCloseE={handleCloseE}/>
+          <DeleteClient pk={selectedClient.pk} handleClose={handleClose} handleCloseE={handleCloseE} />
         </Modal.Body>
       </Modal>
 
@@ -95,4 +96,4 @@ const EditCareGiver = ({handleCloseE, selectedCareGiver}) => {
 
 }
 
-export default EditCareGiver
+export default EditClient
