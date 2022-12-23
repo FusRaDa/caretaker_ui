@@ -3,6 +3,10 @@ import { useContext, useState } from "react"
 //context
 import ClientContext from "../context/ClientContext";
 
+//components
+import CreateClient from "./CreateClient";
+import EditClient from "./EditClient";
+
 //styles
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
@@ -11,8 +15,6 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
-import CreateClient from "./CreateClient";
-import EditClient from "./EditClient";
 
 
 const Caregivers = () => {

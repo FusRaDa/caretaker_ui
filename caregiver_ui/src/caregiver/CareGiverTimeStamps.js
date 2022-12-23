@@ -24,6 +24,7 @@ const CareGiverTimeStamps = () => {
   let [data, setData] = useState([])
   let [careGiver, setCareGiver] = useState([])
   let [careGiverTimeStamps, setCareGiverTimeStamps] = useState([])
+  let [status, setStatus] = useState("ALL")
 
   let [currentPageIndex, setCurrentPageIndex] = useState(0)
   let [currentPageSize, setCurrentPageSize] = useState(10)
@@ -39,7 +40,7 @@ const CareGiverTimeStamps = () => {
 
   let getCareGiverTimeStamps = async (index, size) => {
     
-    let response = await fetch(`${ServerAddress}/api/timestamp/${pk}/?p=${index + 1}&page_size=${size}/`, {
+    let response = await fetch(`${ServerAddress}/api/timestamp/${pk}/${status}/?p=${index + 1}&page_size=${size}/`, {
       method: 'GET',
       headers: {
         'Content-Type':'application/json',
@@ -165,8 +166,9 @@ const CareGiverTimeStamps = () => {
     {
       Header: 'Status',
       accessor: 'status',
-      Filter: SelectColumnFilter,
-      filter: 'includes',
+      // Filter: SelectColumnFilter,
+      // filter: 'includes',
+      disableFilters: true,
       disableSortBy: true,
     },
     {

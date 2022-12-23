@@ -93,8 +93,9 @@ const TimeStamps = () => {
     {
       Header: 'Status',
       accessor: 'status',
-      Filter: SelectColumnFilter,
-      filter: 'includes',
+      // Filter: SelectColumnFilter,
+      // filter: 'includes',
+      disableFilters: true,
       disableSortBy: true,
     },
     {

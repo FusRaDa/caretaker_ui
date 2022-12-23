@@ -16,8 +16,10 @@ export const TimeStampProvider = ({children}) => {
   let [pageNum, setPageNum] = useState(1)
   let [pageSize, setPageSize] = useState(10)
 
+  let [status, setStatus] = useState("ALL")
+
   let getTimeStamps = async () => {
-    let response = await fetch(`${ServerAddress}/api/timestamp/?p=${pageNum}&page_size=${pageSize}/`, {
+    let response = await fetch(`${ServerAddress}/api/timestamp/${status}/?p=${pageNum}&page_size=${pageSize}/`, {
       method: 'GET',
       headers: {
         'Content-Type':'application/json',
