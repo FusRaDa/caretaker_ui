@@ -1,7 +1,8 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import AuthContext from "../context/AuthContext";
 import ClientContext from "../context/ClientContext";
 import ServerAddress from "../utils/ServerAddress";
+import DeleteClient from "./DeleteClient";
 
 //styles
 import Container from "react-bootstrap/Container"
@@ -9,7 +10,7 @@ import Col from "react-bootstrap/Col"
 import Row from "react-bootstrap/Row"
 import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/esm/Button";
-import DeleteClient from "./DeleteClient";
+import Modal from 'react-bootstrap/Modal';
 
 
 const EditClient = ({handleCloseE, selectedClient}) => {

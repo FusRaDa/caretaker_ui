@@ -16,7 +16,7 @@ export const TimeStampProvider = ({children}) => {
   let [pageNum, setPageNum] = useState(1)
   let [pageSize, setPageSize] = useState(10)
 
-  let [status, setStatus] = useState("ALL")
+  let [status, setStatus] = useState("IN_PROCESS")
 
   let getTimeStamps = async () => {
     let response = await fetch(`${ServerAddress}/api/timestamp/${status}/?p=${pageNum}&page_size=${pageSize}/`, {
@@ -33,7 +33,6 @@ export const TimeStampProvider = ({children}) => {
     let data = await response.json()
     if (response.status === 200) {
       setTimeStamps(data)
-      console.log(data)
     } else {
       alert('page not found')
     }
@@ -47,11 +46,16 @@ export const TimeStampProvider = ({children}) => {
     // eslint-disable-next-line 
   }, [updatingTimeStamps])
 
+  useEffect(() => {
+    getTimeStamps()
+  }, [status])
+
   let contextData = {
     timeStamps: timeStamps,
     setUpdatingTimeStamps: setUpdatingTimeStamps,
     setPageNum: setPageNum,
     setPageSize: setPageSize,
+    setStatus: setStatus,
   }
 
   return (

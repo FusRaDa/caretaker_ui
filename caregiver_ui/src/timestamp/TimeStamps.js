@@ -6,6 +6,7 @@ import TimeStampTable from "./TimeStampTable"
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Container from "react-bootstrap/Container"
+import Form from 'react-bootstrap/Form';
 
 //table components
 import SelectColumnFilter from "./SelectColumnFilter"
@@ -16,7 +17,7 @@ import CreateTimeStamp from "./CreateTimeStamp"
 
 const TimeStamps = () => {
 
-  let {timeStamps, setUpdatingTimeStamps, setPageNum, setPageSize} = useContext(TimeStampContext)
+  let {timeStamps, setUpdatingTimeStamps, setPageNum, setPageSize, setStatus} = useContext(TimeStampContext)
   let [data, setData] = useState([])
   let [allResults, setAllResults] = useState(0)
 
@@ -45,8 +46,6 @@ const TimeStamps = () => {
       setTotalPages(timeStamps.total_pages)
       setLoading(false)
     }
-
-    console.log('fetch data')
 
   }, [timeStamps])
 
@@ -103,7 +102,7 @@ const TimeStamps = () => {
       accessor: 'pk',
     },
   ]
- 
+
   return (
     <Container>
 
@@ -116,6 +115,14 @@ const TimeStamps = () => {
       <Row>
         <Col>
           <Button onClick={handleShow}>Add Timestamp</Button>
+        </Col>
+
+        <Col>
+          <Form.Select onChange={(e) => setStatus(e.target.value)}>
+            <option value='IN_PROCESS'>Awaiting Timestamps</option>
+            <option value='ALL'>All Timestamps</option>
+            <option value='PROCESSED'>Processed Timestamps</option>
+          </Form.Select>
         </Col>
       </Row>
 

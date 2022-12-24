@@ -106,7 +106,9 @@ const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPag
             {page.map(row => {
               prepareRow(row)
               return (
-                <tr {...row.getRowProps()} onDoubleClick={() => editRow(row)}>
+                <tr {...row.getRowProps()} onDoubleClick={() => editRow(row)} 
+                  style={{backgroundColor: row.original.status === "IN_PROCESS" ? 'lightyellow' : 'lightgreen'}}
+                >
                   {row.cells.map(cell => {
                     return (
                       <td {...cell.getCellProps()}>

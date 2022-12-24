@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col'
 import Container from "react-bootstrap/Container"
 import Button from "react-bootstrap/Button"
 import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
 
 //table components
 import SelectColumnFilter from "../timestamp/SelectColumnFilter"
@@ -24,7 +25,7 @@ const CareGiverTimeStamps = () => {
   let [data, setData] = useState([])
   let [careGiver, setCareGiver] = useState([])
   let [careGiverTimeStamps, setCareGiverTimeStamps] = useState([])
-  let [status, setStatus] = useState("ALL")
+  let [status, setStatus] = useState("IN_PROCESS")
 
   let [currentPageIndex, setCurrentPageIndex] = useState(0)
   let [currentPageSize, setCurrentPageSize] = useState(10)
@@ -39,7 +40,7 @@ const CareGiverTimeStamps = () => {
   let handleShow = () => setShow(true)
 
   let getCareGiverTimeStamps = async (index, size) => {
-    
+
     let response = await fetch(`${ServerAddress}/api/timestamp/${pk}/${status}/?p=${index + 1}&page_size=${size}/`, {
       method: 'GET',
       headers: {
@@ -97,9 +98,9 @@ const CareGiverTimeStamps = () => {
     // eslint-disable-next-line
   }, [])
 
-  //function updates table when data is being modified
+  // function updates table when data is being modified
   let updateData = () => {
-    getCareGiverTimeStamps(currentPageIndex, currentPageSize )
+    getCareGiverTimeStamps(currentPageIndex, currentPageSize)
     fetchData()
   }
 
@@ -176,13 +177,26 @@ const CareGiverTimeStamps = () => {
       accessor: 'pk',
     },
   ]
- 
+
+  useEffect(() => {
+    updateData()
+  }, [status])
+
+
   return (
     <Container>
 
       <Row>
         <Col>
           <Button onClick={handleShow}>Add Timestamp</Button>
+        </Col>
+
+        <Col>
+          <Form.Select onChange={(e) => setStatus(e.target.value)}>
+            <option value='IN_PROCESS'>Viewing Awaiting Timestamps</option>
+            <option value='ALL'>Viewing All Timestamps</option>
+            <option value='PROCESSED'>Viewing Processed Timestamps</option>
+          </Form.Select>
         </Col>
       </Row>
 
@@ -197,6 +211,7 @@ const CareGiverTimeStamps = () => {
           totalPages={totalPages}
           pk={pk}
           updateData={updateData}
+          careGiver={careGiver}
           />
         </Col>
       </Row>

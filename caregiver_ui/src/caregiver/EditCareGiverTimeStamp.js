@@ -17,6 +17,7 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import ListGroup from 'react-bootstrap/ListGroup';
 import TimeStampContext from "../context/TimeStampContext";
 import ConfirmDeleteCGTS from "../utils/ConfirmDeleteCGTS";
+import Modal from 'react-bootstrap/Modal';
 
 
 const EditCareGiverTimeStamp = ({data, handleClose, updateData}) => {

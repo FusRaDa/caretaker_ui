@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import AuthContext from "../context/AuthContext";
 import CareGiverContext from "../context/CareGiverContext";
 import ServerAddress from "../utils/ServerAddress";
@@ -10,6 +10,7 @@ import Row from "react-bootstrap/Row"
 import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/esm/Button";
 import DeleteCareGiver from "./DeleteCareGiver";
+import Modal from 'react-bootstrap/Modal';
 
 
 const EditCareGiver = ({handleCloseE, selectedCareGiver}) => {

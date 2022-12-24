@@ -14,6 +14,7 @@ import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import EditCareGiver from "./EditCareGiver";
 import CreateCareGiver from "./CreateCareGiver";
+import Modal from 'react-bootstrap/Modal';
 
 
 const Caregivers = () => {

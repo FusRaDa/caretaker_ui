@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useTable, useFilters, usePagination, useSortBy } from 'react-table'
+import { useTable, useFilters, usePagination, useSortBy, useRowSelect } from 'react-table'
 import TimeStampTableStyles from '../timestamp/TimeStampTableStyles'
 
 //filters
@@ -9,15 +9,20 @@ import EditCareGiverTimeStamp from './EditCareGiverTimeStamp'
 
 //styles
 import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/esm/Button'
 
-const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading, totalPages, pk, updateData}) => {
+const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading, totalPages, pk, updateData, careGiver}) => {
 
   //modal
   let [show, setShow] = useState(false);
   let handleClose = () => setShow(false);
   let handleShow = () => setShow(true);
 
-  let [selectedRow, setSelectedRow] = useState(null)
+  let [selectedRow, setSelectedRow] = useState(null) //edit timestamp
+
+  let [selectedTimeStamps, setSelectedTimeStamps] = useState([]) //select timestamps to process 
+
+  let [record, setRecord] = useState[{}]
 
   const defaultColumn = useMemo(() => ({
     Filter: SelectColumnFilter,
@@ -58,16 +63,19 @@ const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading,
     useFilters,
     useSortBy,
     usePagination,
+    useRowSelect,
   )
 
   useEffect(() => {
     fetchData()
+    setSelectedTimeStamps([])
   }, [fetchData])
 
   useEffect(() => {
     changePage(pageIndex, pageSize)
     localStorage.setItem(`caregiverPageIndex/${pk}`, pageIndex)
     localStorage.setItem(`caregiverPageSize/${pk}`, pageSize)
+    setSelectedTimeStamps([])
     // eslint-disable-next-line 
   }, [pageIndex, pageSize])
 
@@ -75,7 +83,36 @@ const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading,
     setSelectedRow(row.original)
     handleShow()
   }
-  
+
+  let selectTimeStamps = (row) => {
+    row.toggleRowSelected()
+    if (!row.isSelected) {
+      //add
+      setSelectedTimeStamps(selectedTimeStamps => [...selectedTimeStamps, row.original])
+    }
+    if (row.isSelected) {
+      //remove
+      setSelectedTimeStamps(selectedTimeStamps => selectedTimeStamps.filter(s => s !== row.original))
+    }
+  }
+
+  let processTimeStamps = () => {
+    console.log(selectedTimeStamps)
+
+    if (selectedTimeStamps.length < 4) {
+      alert('Please select at least 4 timestamps to process')
+      return
+    }
+
+    let record = {
+      time_created: new Date().getDate(),
+      timestamps: selectedTimeStamps,
+    }
+
+    
+  }
+
+ 
   return (
     <TimeStampTableStyles>
       <div className='table_wrap'>
@@ -106,7 +143,12 @@ const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading,
             {page.map(row => {
               prepareRow(row)
               return (
-                <tr {...row.getRowProps()} onDoubleClick={() => editRow(row)}>
+                <tr {...row.getRowProps()} 
+                  onDoubleClick={() => editRow(row)} 
+                  onClick={() => selectTimeStamps(row)} 
+                  style={{backgroundColor: row.isSelected === true ? 'lightblue' : 
+                    row.original.status === "IN_PROCESS" ? 'lightyellow' : 'lightgreen'}}
+                >
                   {row.cells.map(cell => {
                     return (
                       <td {...cell.getCellProps()}>
@@ -195,6 +237,9 @@ const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading,
         </Modal>
 
       </div>
+
+      <Button onClick={() => processTimeStamps()}>Process</Button>
+
     </TimeStampTableStyles>
   )
 }
