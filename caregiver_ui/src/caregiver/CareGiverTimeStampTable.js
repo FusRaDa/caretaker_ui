@@ -5,11 +5,15 @@ import TimeStampTableStyles from '../timestamp/TimeStampTableStyles'
 //filters
 import SelectColumnFilter from '../timestamp/SelectColumnFilter'
 
+//components
 import EditCareGiverTimeStamp from './EditCareGiverTimeStamp'
+import PreviewTimeStamps from './PreviewTimeStamps'
 
 //styles
 import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/esm/Button'
+import Button from 'react-bootstrap/Button'
+import Container from "react-bootstrap/Container"
+
 
 const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading, totalPages, pk, updateData, careGiver}) => {
 
@@ -18,11 +22,15 @@ const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading,
   let handleClose = () => setShow(false);
   let handleShow = () => setShow(true);
 
+  let [showP, setShowP] = useState(false);
+  let handleCloseP = () => setShowP(false);
+  let handleShowP = () => setShowP(true);
+
   let [selectedRow, setSelectedRow] = useState(null) //edit timestamp
 
   let [selectedTimeStamps, setSelectedTimeStamps] = useState([]) //select timestamps to process 
 
-  let [record, setRecord] = useState[{}]
+  let [record, setRecord] = useState({})
 
   const defaultColumn = useMemo(() => ({
     Filter: SelectColumnFilter,
@@ -99,17 +107,26 @@ const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading,
   let processTimeStamps = () => {
     console.log(selectedTimeStamps)
 
-    if (selectedTimeStamps.length < 4) {
-      alert('Please select at least 4 timestamps to process')
+    if (selectedTimeStamps.length < 1) {
+      alert('Please select at least 1 timestamp to record')
       return
     }
 
-    let record = {
-      time_created: new Date().getDate(),
-      timestamps: selectedTimeStamps,
-    }
+    let date = new Date()
+    let month = date.getMonth() + 1
+    let day = date.getDate()
+    let year = date.getFullYear()
 
-    
+    let today = `${month}/${day}/${year}`
+
+    let data = [
+      {date_created: today},
+      {caregiver: careGiver},
+      {timestamps: selectedTimeStamps},
+    ]
+
+    setRecord(data)
+    handleShowP()
   }
 
  
@@ -235,6 +252,23 @@ const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading,
             <EditCareGiverTimeStamp data={selectedRow} handleClose={handleClose} updateData={updateData}/>
           </Modal.Body>
         </Modal>
+
+        <Modal
+          show={showP}
+          onHide={handleCloseP}
+          backdrop="static"
+          keyboard={false}
+          fullscreen={true}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Confirm Timestamps</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <PreviewTimeStamps record={record} handleCloseP={handleCloseP} />
+          </Modal.Body>
+        </Modal>
+
+        
 
       </div>
 

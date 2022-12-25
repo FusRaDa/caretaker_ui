@@ -180,6 +180,7 @@ const CareGiverTimeStamps = () => {
 
   useEffect(() => {
     updateData()
+    // eslint-disable-next-line
   }, [status])
 
 
