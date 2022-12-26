@@ -129,7 +129,6 @@ const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading,
     handleShowP()
   }
 
- 
   return (
     <TimeStampTableStyles>
       <div className='table_wrap'>
@@ -267,8 +266,6 @@ const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading,
             <PreviewTimeStamps record={record} handleCloseP={handleCloseP} />
           </Modal.Body>
         </Modal>
-
-        
 
       </div>
 

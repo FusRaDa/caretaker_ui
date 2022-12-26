@@ -10,23 +10,29 @@ import Col from "react-bootstrap/Col"
 import Row from "react-bootstrap/Row"
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
-import { useAsyncValue } from "react-router-dom";
+import PreviewTableStyle from "./PreviewTableStyle";
 
 
 const PreviewTimeStamps = ({record, handleCloseP}) => {
 
   let {authTokens} = useContext(AuthContext)
 
-
-  useEffect(() => {
-    console.log(record)
-    // eslint-disable-next-line
-  }, [])
-
   let addRecord = async (e) => {
     e.preventDefault()
 
-    console.log(e.target.services.value)
+    let bools = {
+      bathing: e.target.bathing.checked,
+      transferring: e.target.transferring.checked,
+      ambulation: e.target.ambulation.checked,
+      dressing: e.target.dressing.checked,
+      protective_supervision: e.target.protective_supervision.checked,
+      eating: e.target.eating.checked,
+      incontinence: e.target.incontinence.checked,
+      medication_reminders: e.target.medication_reminders.checked,
+      toileting: e.target.toileting.checked,
+    }
+
+    console.log(bools)
 
     return
 
@@ -37,9 +43,10 @@ const PreviewTimeStamps = ({record, handleCloseP}) => {
         'Authorization': 'Bearer ' + String(authTokens.access)
       },
       body: JSON.stringify({
+        //do not send date_created, will be created in backend-auto
         caregiver_id: record.caregiver.pk,
-        date_created: record.date_created,
         service: e.target.services.value,
+        timestamps: record[2].timestamps,
 
       })
     })
@@ -51,14 +58,15 @@ const PreviewTimeStamps = ({record, handleCloseP}) => {
       console.log('recorded')
     
       handleCloseP()
+      //or navigate to record page
     } else {
       alert('something went wrong!')
     }
   }
 
 
-
   return (
+    <PreviewTableStyle>
     <Container>
 
       <Row>
@@ -93,7 +101,7 @@ const PreviewTimeStamps = ({record, handleCloseP}) => {
             </tr>
 
             {record[2].timestamps.map(t => (
-              <tr>
+              <tr key={t.pk}>
                 <td>{t.start_time}</td>   
                 <td>{t.end_time}</td>
                 <td>{t.total_hours}</td>   
@@ -106,11 +114,11 @@ const PreviewTimeStamps = ({record, handleCloseP}) => {
       </Row>
 
       <Row>
-        <Col>
-          <div>{`Total Hours: `}</div>
+        <Col className="total_hours">
+          <div>{`Total Hours: ${Number(record[2].timestamps.reduce((total, hours) => total + Number(hours.total_hours), 0)).toFixed(2)}`}</div>
         </Col>
-        <Col>
-          <div>{`Total Amount Due:`}</div>
+        <Col className="compensation">
+          <div>{`Total Amount Due: $${Number(record[2].timestamps.reduce((total, comp) => total + Number(comp.compensation), 0)).toFixed(2)}`}</div>
         </Col>
       </Row>
 
@@ -134,17 +142,17 @@ const PreviewTimeStamps = ({record, handleCloseP}) => {
           <Col>
             <Form.Check 
               type="switch"
-              name="bathing"
+              id="bathing"
               label="Bathing"
             />
             <Form.Check 
               type="switch"
-              name="transferring"
+              id="transferring"
               label="Transferring"
             />
             <Form.Check 
               type="switch"
-              name="ambulation"
+              id="ambulation"
               label="Ambulation"
             />
           </Col>
@@ -152,17 +160,17 @@ const PreviewTimeStamps = ({record, handleCloseP}) => {
           <Col>
             <Form.Check 
               type="switch"
-              name="dressing"
+              id="dressing"
               label="Dressing"
             />
             <Form.Check 
               type="switch"
-              name="protective_supervision"
+              id="protective_supervision"
               label="Protective Supervision"
             />
             <Form.Check 
               type="switch"
-              name="eating"
+              id="eating"
               label="Eating"
             />
           </Col>
@@ -170,17 +178,17 @@ const PreviewTimeStamps = ({record, handleCloseP}) => {
           <Col>
             <Form.Check 
               type="switch"
-              name="incontinence"
+              id="incontinence"
               label="Incontinence"
             />
             <Form.Check 
               type="switch"
-              name="medication_reminders"
+              id="medication_reminders"
               label="Medication Reminders"
             />
             <Form.Check 
               type="switch"
-              name="toileting"
+              id="toileting"
               label="Toileting"
             />
           </Col>
@@ -189,9 +197,8 @@ const PreviewTimeStamps = ({record, handleCloseP}) => {
         <Button type="submit">Confirm Review</Button>
       </Form>
 
-      
-  
     </Container>
+    </PreviewTableStyle>
   )
 }
 
