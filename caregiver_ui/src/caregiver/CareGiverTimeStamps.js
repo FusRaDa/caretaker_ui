@@ -143,11 +143,13 @@ const CareGiverTimeStamps = () => {
       Header: 'Start Time',
       accessor: 'start_time',
       disableFilters: true,
+      Cell: props => <div>{`${new Date(props.value).toLocaleDateString('en-US', {weekday: 'long'})} ${props.value}`}</div>
     },
     {
       Header: 'End Time',
       accessor: 'end_time',
       disableFilters: true,
+      Cell: props => <div>{`${new Date(props.value).toLocaleDateString('en-US', {weekday: 'long'})} ${props.value}`}</div>
     },
     {
       Header: 'Total Hours',
@@ -158,11 +160,13 @@ const CareGiverTimeStamps = () => {
       Header: 'Hourly Rate',
       accessor: 'hourly_rate',
       disableFilters: true,
+      Cell: props => <div>{`$${props.value}`}</div>
     },
     {
       Header: 'Compensation',
       accessor: 'compensation',
       disableFilters: true,
+      Cell: props => <div>{`$${props.value}`}</div>
     },
     {
       Header: 'Status',
