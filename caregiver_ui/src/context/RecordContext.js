@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import ServerAddress from "../utils/ServerAddress";
 import AuthContext from "./AuthContext";
 
 const RecordContext = createContext()
@@ -7,7 +8,7 @@ export default RecordContext
 
 export const RecordProvider = ({children}) => {
 
-  let {authTokens} = useContext(AuthContext)
+  let {authTokens, user} = useContext(AuthContext)
   let [records, setRecords] = useState([])
   let [updatingRecords, setUpdatingRecords] = useState(false)
 

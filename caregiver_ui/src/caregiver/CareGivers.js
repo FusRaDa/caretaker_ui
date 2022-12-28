@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 
 //context
@@ -21,7 +21,7 @@ const Caregivers = () => {
 
   const navigate = useNavigate()
 
-  let {careGivers} = useContext(CareGiverContext)
+  let {careGivers, setUpdatingCareGivers} = useContext(CareGiverContext)
 
   let [searchCareGivers, setSearchCareGivers] = useState(null)
   let [selectedCareGiver, setSelectedCareGiver] = useState(null)
@@ -35,6 +35,12 @@ const Caregivers = () => {
   let [showE, setShowE] = useState(false);
   let handleCloseE = () => setShowE(false);
   let handleShowE = () => setShowE(true);
+
+  //initialize
+  useEffect(() => {
+    setUpdatingCareGivers(true)
+    // eslint-disable-next-line
+  }, [])
 
   let chooseCareGiver = (pk) => {
     let data = careGivers.find(cg => cg.pk === pk)

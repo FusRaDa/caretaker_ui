@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 
 //context
 import ClientContext from "../context/ClientContext";
@@ -20,7 +20,7 @@ import Modal from 'react-bootstrap/Modal';
 
 const Caregivers = () => {
 
-  let {clients} = useContext(ClientContext)
+  let {clients, setUpdatingClients} = useContext(ClientContext)
 
   let [searchClients, setSearchClients] = useState(null)
   let [selectedClient, setSelectedClient] = useState(null)
@@ -34,6 +34,12 @@ const Caregivers = () => {
   let [showE, setShowE] = useState(false);
   let handleCloseE = () => setShowE(false);
   let handleShowE = () => setShowE(true);
+
+  //initialize
+  useEffect(() => {
+    setUpdatingClients(true)
+    // eslint-disable-next-line
+  }, [])
 
   let chooseClient = (pk) => {
     let data = clients.find(client => client.pk === pk)

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 
 import ServerAddress from "../utils/ServerAddress";
 import AuthContext from "../context/AuthContext";
@@ -31,7 +31,7 @@ const PreviewTimeStamps = ({record, handleCloseP}) => {
       },
       body: JSON.stringify({
         //do not send date_created, will be created in backend-auto
-        caregiver_id: record.caregiver.pk,
+        caregiver_id: record[1].caregiver.pk,
         service: e.target.services.value,
         timestamps: record[2].timestamps,
 

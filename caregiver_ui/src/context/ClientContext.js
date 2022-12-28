@@ -38,6 +38,7 @@ export const ClientProvider = ({children}) => {
     if (user) {
       getClients()
     }
+    // eslint-disable-next-line
   }, [updatingClients])
 
   let contextData = {

@@ -38,6 +38,7 @@ export const CareGiverProvider = ({children}) => {
     if (user) {
       getCareGivers()
     }
+    // eslint-disable-next-line
   }, [updatingCareGivers])
 
   let contextData = {

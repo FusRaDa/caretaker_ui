@@ -41,7 +41,7 @@ const CareGiverTimeStamps = () => {
 
   let getCareGiverTimeStamps = async (index, size) => {
 
-    let response = await fetch(`${ServerAddress}/api/timestamp/${pk}/${status}/?p=${index + 1}&page_size=${size}/`, {
+    let response = await fetch(`${ServerAddress}/api/timestamp/caregiver/${pk}/${status}/?p=${index + 1}&page_size=${size}/`, {
       method: 'GET',
       headers: {
         'Content-Type':'application/json',
@@ -119,8 +119,6 @@ const CareGiverTimeStamps = () => {
       setTotalPages(careGiverTimeStamps.total_pages)
       setLoading(false)
     }
-
-    console.log('fetch caregiver timestamps')
 
   }, [careGiverTimeStamps])
 

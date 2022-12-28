@@ -47,7 +47,10 @@ export const TimeStampProvider = ({children}) => {
   }, [updatingTimeStamps])
 
   useEffect(() => {
-    getTimeStamps()
+    if (user) {
+      getTimeStamps()
+    }
+    // eslint-disable-next-line
   }, [status])
 
   let contextData = {

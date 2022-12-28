@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState } from "react"
+import { useCallback, useContext, useEffect, useState } from "react"
 
 import TimeStampContext from "../context/TimeStampContext"
 import TimeStampTable from "./TimeStampTable"
@@ -13,13 +13,23 @@ import SelectColumnFilter from "./SelectColumnFilter"
 import Button from "react-bootstrap/Button"
 import Modal from 'react-bootstrap/Modal';
 import CreateTimeStamp from "./CreateTimeStamp"
+import ClientContext from "../context/ClientContext"
+import CareGiverContext from "../context/CareGiverContext"
 
 
 const TimeStamps = () => {
 
   let {timeStamps, setUpdatingTimeStamps, setPageNum, setPageSize, setStatus} = useContext(TimeStampContext)
+  let {setUpdatingClients} = useContext(ClientContext)
+  let {setUpdatingCareGivers} = useContext(CareGiverContext)
   let [data, setData] = useState([])
   let [allResults, setAllResults] = useState(0)
+
+  //initialize
+  useEffect(() => {
+    setUpdatingCareGivers(true)
+    setUpdatingClients(true)
+  }, [])
 
   //pagination
   let [totalPages, setTotalPages] = useState(0)
