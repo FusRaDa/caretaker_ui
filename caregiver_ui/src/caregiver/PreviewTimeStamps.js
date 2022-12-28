@@ -23,22 +23,6 @@ const PreviewTimeStamps = ({record, handleCloseP}) => {
   let addRecord = async (e) => {
     e.preventDefault()
 
-    let bools = {
-      bathing: e.target.bathing.checked,
-      transferring: e.target.transferring.checked,
-      ambulation: e.target.ambulation.checked,
-      dressing: e.target.dressing.checked,
-      protective_supervision: e.target.protective_supervision.checked,
-      eating: e.target.eating.checked,
-      incontinence: e.target.incontinence.checked,
-      medication_reminders: e.target.medication_reminders.checked,
-      toileting: e.target.toileting.checked,
-    }
-
-    console.log(bools)
-
-    return
-
     let response = await fetch(`${ServerAddress}/api/record/create/`, {
       method: 'POST',
       headers: {
@@ -51,6 +35,15 @@ const PreviewTimeStamps = ({record, handleCloseP}) => {
         service: e.target.services.value,
         timestamps: record[2].timestamps,
 
+        bathing: e.target.bathing.checked,
+        transferring: e.target.transferring.checked,
+        ambulation: e.target.ambulation.checked,
+        dressing: e.target.dressing.checked,
+        protective_supervision: e.target.protective_supervision.checked,
+        eating: e.target.eating.checked,
+        incontinence: e.target.incontinence.checked,
+        medication_reminders: e.target.medication_reminders.checked,
+        toileting: e.target.toileting.checked,
       })
     })
     .catch(() => {
@@ -84,7 +77,6 @@ const PreviewTimeStamps = ({record, handleCloseP}) => {
     })
 
     if (response.status === 200) {
-      setUpdatingTimeStamps(true)
       console.log('update successful')
     } else {
       alert('something went wrong!')
@@ -96,6 +88,8 @@ const PreviewTimeStamps = ({record, handleCloseP}) => {
     for (let i = 0; i < record[2].timestamps.length; i++) {
       updateTimeStamps(record[2].timestamps[i].pk)
     }
+    setUpdatingTimeStamps(true)
+    handleCloseP()
   }
 
 

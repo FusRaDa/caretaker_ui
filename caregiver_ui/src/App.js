@@ -13,6 +13,7 @@ import Caregivers from "./caregiver/CareGivers";
 import Clients from "./client/Clients";
 import Home from "./Home";
 import CareGiverTimeStamps from "./caregiver/CareGiverTimeStamps";
+import { RecordProvider } from "./context/RecordContext";
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           provider(CareGiverProvider),
           provider(ClientProvider),
           provider(TimeStampProvider),
+          provider(RecordProvider),
         ]}>
           <Header/>
           <Routes>

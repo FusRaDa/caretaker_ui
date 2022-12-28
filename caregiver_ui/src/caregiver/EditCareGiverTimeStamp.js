@@ -49,7 +49,7 @@ const EditCareGiverTimeStamp = ({data, handleClose, updateData}) => {
     e.preventDefault()
 
     let response = await fetch(`${ServerAddress}/api/timestamp/${data.pk}/update/`, {
-      method: 'PUT',
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + String(authTokens.access)

@@ -27,7 +27,7 @@ const EditClient = ({handleCloseE, selectedClient}) => {
     e.preventDefault()
 
     let response = await fetch(`${ServerAddress}/api/client/${selectedClient.pk}/update/`, {
-      method: 'PUT',
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + String(authTokens.access)
