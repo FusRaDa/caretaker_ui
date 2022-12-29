@@ -34,7 +34,6 @@ const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading,
 
   const defaultColumn = useMemo(() => ({
     Filter: SelectColumnFilter,
-    // EditCell : EditableCell,
   }), []) 
 
   const {

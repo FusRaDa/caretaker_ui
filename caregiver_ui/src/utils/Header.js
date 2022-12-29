@@ -30,7 +30,8 @@ const Header = () => {
                   <Nav.Link onClick={() => navigate('/')}>Home</Nav.Link>
                   <Nav.Link onClick={() => navigate('/caregivers')}>Caregivers</Nav.Link>
                   <Nav.Link onClick={() => navigate('/clients')}>Clients</Nav.Link>
-                  <Nav.Link onClick={() => navigate('/timestamps')}>All Timestamps</Nav.Link>
+                  <Nav.Link onClick={() => navigate('/timestamps')}>Timestamps</Nav.Link>
+                  <Nav.Link onClick={() => navigate('/records')}>Records</Nav.Link>
                   <Nav.Link onClick={logoutUser}>Logout</Nav.Link>
                 </Nav>
          

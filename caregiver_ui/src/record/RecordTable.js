@@ -1,26 +1,11 @@
-import { useEffect, useMemo, useState } from 'react'
-import { useTable, useFilters, usePagination, useSortBy } from 'react-table'
-import TimeStampTableStyles from './TimeStampTableStyles'
+import { usePagination, useTable } from "react-table"
 
-//filters
-import SelectColumnFilter from './SelectColumnFilter'
+const RecordTable = ({columns, data, fetchData, }) => {
 
-//styles
-import Modal from 'react-bootstrap/Modal';
-import EditTimeStamp from './EditTimeStamp';
-
-const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPages, allResults}) => {
-
-  //modal
-  let [show, setShow] = useState(false);
-  let handleClose = () => setShow(false);
-  let handleShow = () => setShow(true);
-
-  let [selectedRow, setSelectedRow] = useState(null)
-
-  const defaultColumn = useMemo(() => ({
-    Filter: SelectColumnFilter,
-  }), []) 
+  // //modal
+  // let [show, setShow] = useState(false);
+  // let handleClose = () => setShow(false);
+  // let handleShow = () => setShow(true);
 
   const {
     getTableProps,
@@ -43,18 +28,15 @@ const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPag
     {
       initialState: {
         hiddenColumns: ['pk'],
-        pageIndex: localStorage.getItem('currentPageIndex') !== null ? +localStorage.getItem('currentPageIndex') : 0,
-        pageSize: localStorage.getItem('currentPageSize') !== null ? +localStorage.getItem('currentPageSize'): 10,
+        pageIndex: localStorage.getItem('recordPageIndex') !== null ? +localStorage.getItem('recordPageIndex') : 0,
+        pageSize: localStorage.getItem('recordPageSize') !== null ? +localStorage.getItem('recordPageSize'): 10,
       },
     columns,
     data,
-    defaultColumn,
     pageCount: totalPages,
     manualPagination: true,
     autoResetPage: false,
     },
-    useFilters,
-    useSortBy,
     usePagination,
   )
 
@@ -64,20 +46,14 @@ const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPag
 
   useEffect(() => {
     changePage(pageIndex, pageSize)
-    localStorage.setItem("currentPageIndex", pageIndex)
-    localStorage.setItem("currentPageSize", pageSize)
+    localStorage.setItem("recordPageIndex", pageIndex)
+    localStorage.setItem("recordPageSize", pageSize)
     // eslint-disable-next-line 
   }, [pageIndex, pageSize])
 
-  let editRow = (row) => {
-    setSelectedRow(row.original)
-    handleShow()
-  }
-
 
   return (
-    <TimeStampTableStyles>
-      <div className='table_wrap'>
+    <div className='table_wrap'>
         <table {...getTableProps()}>
           <thead>
             {headerGroups.map(headerGroup => (
@@ -105,9 +81,7 @@ const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPag
             {page.map(row => {
               prepareRow(row)
               return (
-                <tr {...row.getRowProps()} onDoubleClick={() => editRow(row)} 
-                  style={{backgroundColor: row.original.status === "IN_PROCESS" ? 'lightyellow' : 'lightgreen'}}
-                >
+                <tr {...row.getRowProps()} onClick={() => console.log('view record')}>
                   {row.cells.map(cell => {
                     return (
                       <td {...cell.getCellProps()}>
@@ -177,27 +151,12 @@ const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPag
               </option>
             ))}
           </select>
-
         </div>
 
-        <Modal
-          show={show}
-          onHide={handleClose}
-          backdrop="static"
-          keyboard={false}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Edit Timestamp</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <EditTimeStamp data={selectedRow} handleClose={handleClose}/>
-          </Modal.Body>
-        </Modal>
-
       </div>
-    </TimeStampTableStyles>
   )
+
+
 }
 
-export default TimeStampTable
- 
+export default RecordTable

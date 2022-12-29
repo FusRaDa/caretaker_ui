@@ -14,6 +14,7 @@ import Clients from "./client/Clients";
 import Home from "./Home";
 import CareGiverTimeStamps from "./caregiver/CareGiverTimeStamps";
 import { RecordProvider } from "./context/RecordContext";
+import RecordList from "./record/RecordList";
 
 
 function App() {
@@ -34,8 +35,9 @@ function App() {
               <Route element={<Home/>} exact path='/' />
               <Route element={<Caregivers/>} exact path='/caregivers' />
               <Route element={<CareGiverTimeStamps/>} exact path='/caregivers/:pk' />
-              <Route element={<Clients/>} exact path='/clients'/>
-              <Route element={<TimeStamps/>} exact path='/timestamps'/>
+              <Route element={<Clients/>} exact path='/clients' />
+              <Route element={<TimeStamps/>} exact path='/timestamps' />
+              <Route element={<RecordList/>} exact path='/records' />
             </Route>
 
             <Route element={<Welcome/>} path='/login' exact />
