@@ -1,16 +1,16 @@
-import { useContext, useState } from "react"
+import { useContext, useState, useCallback } from "react"
 import RecordContext from "../context/RecordContext"
 
 //styles
 import Container from "react-bootstrap/Container"
 import Col from "react-bootstrap/Col"
 import Row from "react-bootstrap/Row"
+import RecordTable from "./RecordTable"
 
 
 const RecordList = () => {
 
   let {records, setUpdatingRecords, setPageSize, setPageNum} = useContext(RecordContext)
-
   let [data, setData] = useState([])
   let [allResults, setAllResults] = useState(0)
 
@@ -21,7 +21,7 @@ const RecordList = () => {
   let changePage = (pageIndex, pageSize) => {
     setPageNum(pageIndex + 1) //pageIndex starts at 0 by default
     setPageSize(pageSize)
-    setUpdatingTimeStamps(true)
+    setUpdatingRecords(true)
   }
 
   let fetchData = useCallback(() => {
@@ -57,9 +57,15 @@ const RecordList = () => {
     <Container>
       <Row>
         <Col>
-
-          React Table 
-
+          <RecordTable 
+            columns={columns}
+            data={data}
+            fetchData={fetchData}
+            changePage={changePage}
+            loading={loading}
+            totalPages={totalPages}
+            allResults={allResults}
+          />
         </Col>
       </Row>
     </Container>

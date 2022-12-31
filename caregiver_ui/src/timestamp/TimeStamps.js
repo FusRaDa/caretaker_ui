@@ -29,6 +29,7 @@ const TimeStamps = () => {
   useEffect(() => {
     setUpdatingCareGivers(true)
     setUpdatingClients(true)
+    // eslint-disable-next-line
   }, [])
 
   //pagination
@@ -143,13 +144,13 @@ const TimeStamps = () => {
       <Row>
         <Col>
           <TimeStampTable 
-          columns={columns}
-          data={data}
-          fetchData={fetchData}
-          changePage={changePage}
-          loading={loading}
-          totalPages={totalPages}
-          allResults={allResults}
+            columns={columns}
+            data={data}
+            fetchData={fetchData}
+            changePage={changePage}
+            loading={loading}
+            totalPages={totalPages}
+            allResults={allResults}
           />
         </Col>
       </Row>

@@ -12,7 +12,6 @@ import PreviewTimeStamps from './PreviewTimeStamps'
 //styles
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button'
-import Container from "react-bootstrap/Container"
 
 
 const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading, totalPages, pk, updateData, careGiver}) => {

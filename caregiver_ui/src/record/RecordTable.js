@@ -1,6 +1,9 @@
+import { useEffect } from 'react'
 import { usePagination, useTable } from "react-table"
+import RecordTableStyles from './RecordTableStyles'
 
-const RecordTable = ({columns, data, fetchData, }) => {
+
+const RecordTable = ({columns, data, fetchData, changePage, loading, totalPages, allResults}) => {
 
   // //modal
   // let [show, setShow] = useState(false);
@@ -53,13 +56,14 @@ const RecordTable = ({columns, data, fetchData, }) => {
 
 
   return (
-    <div className='table_wrap'>
+    <RecordTableStyles>
+      <div className='table_wrap'>
         <table {...getTableProps()}>
           <thead>
             {headerGroups.map(headerGroup => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map(column => (
-                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                  <th {...column.getHeaderProps()}>
                     {column.render('Header')}
                 
                     <div>{column.canFilter ? column.render('Filter') : null}</div>
@@ -154,6 +158,7 @@ const RecordTable = ({columns, data, fetchData, }) => {
         </div>
 
       </div>
+    </RecordTableStyles>
   )
 
 

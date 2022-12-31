@@ -13,10 +13,10 @@ import AuthContext from "../context/AuthContext";
 import CareGiverContext from "../context/CareGiverContext";
 
 
-const DeleteCareGiver = ({pk, handleClose, handleCloseE}) => {
+const DeleteCareGiver = ({pk, handleClose, handleCloseE, setOnDelete}) => {
 
   let {authTokens} = useContext(AuthContext)
-  let {setUpdatingCaregivers} = useContext(CareGiverContext)
+  let {setUpdatingCareGivers} = useContext(CareGiverContext)
 
   let deleteCareGiver = async (e) => {
     e.preventDefault()
@@ -37,9 +37,10 @@ const DeleteCareGiver = ({pk, handleClose, handleCloseE}) => {
       })
   
       if (response.status === 204) {
-        setUpdatingCaregivers(true)
+        setUpdatingCareGivers(true)
         handleClose()
         handleCloseE()
+        setOnDelete(true)
       } else {
         alert('something went wrong!')
       }

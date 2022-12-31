@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useCallback, useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 
 //context
@@ -25,6 +25,8 @@ const Caregivers = () => {
 
   let [searchCareGivers, setSearchCareGivers] = useState(null)
   let [selectedCareGiver, setSelectedCareGiver] = useState(null)
+  let [pk, setPk] = useState(null)
+  let [onDelete, setOnDelete] = useState(false)
 
   //modal - create caregiver
   let [show, setShow] = useState(false);
@@ -43,6 +45,11 @@ const Caregivers = () => {
   }, [])
 
   let chooseCareGiver = (pk) => {
+    if (pk === null) {
+      return
+    }
+
+    setPk(pk)
     let data = careGivers.find(cg => cg.pk === pk)
     setSelectedCareGiver(data)
   }
@@ -51,6 +58,22 @@ const Caregivers = () => {
     let search = document.getElementById('caregiver_search').value
     setSearchCareGivers(search)
   }
+
+  //reacts on edit and delete
+  useEffect(() => {
+    if (!onDelete) {
+      chooseCareGiver(pk)
+    }
+
+    if (onDelete) {
+      setOnDelete(false)
+      setSelectedCareGiver(null)
+    }
+    
+  }, [handleCloseE])
+
+  
+
 
 
   return (
@@ -129,7 +152,11 @@ const Caregivers = () => {
           <Modal.Title>Edit Caregiver</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <EditCareGiver handleCloseE={handleCloseE} selectedCareGiver={selectedCareGiver}/>
+          <EditCareGiver 
+            handleCloseE={handleCloseE} 
+            selectedCareGiver={selectedCareGiver}
+            setOnDelete={setOnDelete} 
+          />
         </Modal.Body>
       </Modal>
 

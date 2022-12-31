@@ -13,7 +13,7 @@ import DeleteCareGiver from "./DeleteCareGiver";
 import Modal from 'react-bootstrap/Modal';
 
 
-const EditCareGiver = ({handleCloseE, selectedCareGiver}) => {
+const EditCareGiver = ({handleCloseE, selectedCareGiver, setOnDelete}) => {
 
   let {authTokens} = useContext(AuthContext)
   let {setUpdatingCareGivers} = useContext(CareGiverContext)
@@ -87,7 +87,7 @@ const EditCareGiver = ({handleCloseE, selectedCareGiver}) => {
           <Modal.Title>Delete Caregiver</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <DeleteCareGiver pk={selectedCareGiver.pk} handleClose={handleClose} handleCloseE={handleCloseE}/>
+          <DeleteCareGiver pk={selectedCareGiver.pk} handleClose={handleClose} handleCloseE={handleCloseE} setOnDelete={setOnDelete}/>
         </Modal.Body>
       </Modal>
 
