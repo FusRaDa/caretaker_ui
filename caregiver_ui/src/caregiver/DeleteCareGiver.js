@@ -13,7 +13,7 @@ import AuthContext from "../context/AuthContext";
 import CareGiverContext from "../context/CareGiverContext";
 
 
-const DeleteCareGiver = ({pk, handleClose, handleCloseE, setOnDelete}) => {
+const DeleteCareGiver = ({pk, handleClose, handleCloseE, setSelectedCareGiver}) => {
 
   let {authTokens} = useContext(AuthContext)
   let {setUpdatingCareGivers} = useContext(CareGiverContext)
@@ -23,7 +23,7 @@ const DeleteCareGiver = ({pk, handleClose, handleCloseE, setOnDelete}) => {
 
     let text = e.target.confirm_delete.value
 
-    if (text === "delete") {
+    if (text === "permanently delete") {
 
       let response = await fetch(`${ServerAddress}/api/caregiver/${pk}/delete/`, {
         method: 'DELETE',
@@ -40,7 +40,7 @@ const DeleteCareGiver = ({pk, handleClose, handleCloseE, setOnDelete}) => {
         setUpdatingCareGivers(true)
         handleClose()
         handleCloseE()
-        setOnDelete(true)
+        setSelectedCareGiver(null)
       } else {
         alert('something went wrong!')
       }
@@ -57,7 +57,7 @@ const DeleteCareGiver = ({pk, handleClose, handleCloseE, setOnDelete}) => {
             <Form.Group>
               <Form.Label>Are you sure?</Form.Label>
               <Form.Control name="confirm_delete" type='text' placeholder="Confirm this deletion" autoComplete="off"/>
-              <Form.Text>Type "delete" and confirm</Form.Text>
+              <Form.Text>Type "permanently delete" and confirm</Form.Text>
             </Form.Group>
            
             <Button variant="danger" type="submit">Confirm</Button>

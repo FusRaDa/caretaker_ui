@@ -13,7 +13,7 @@ import AuthContext from "../context/AuthContext";
 import ClientContext from "../context/ClientContext";
 
 
-const DeleteClient = ({pk, handleClose, handleCloseE}) => {
+const DeleteClient = ({pk, handleClose, handleCloseE, setSelectedClient}) => {
 
   let {authTokens} = useContext(AuthContext)
   let {setUpdatingClients} = useContext(ClientContext)
@@ -23,7 +23,7 @@ const DeleteClient = ({pk, handleClose, handleCloseE}) => {
 
     let text = e.target.confirm_delete.value
 
-    if (text === "delete") {
+    if (text === "permanently delete") {
 
       let response = await fetch(`${ServerAddress}/api/client/${pk}/delete/`, {
         method: 'DELETE',
@@ -40,6 +40,7 @@ const DeleteClient = ({pk, handleClose, handleCloseE}) => {
         setUpdatingClients(true)
         handleClose()
         handleCloseE()
+        setSelectedClient(null)
       } else {
         alert('something went wrong!')
       }
@@ -56,7 +57,7 @@ const DeleteClient = ({pk, handleClose, handleCloseE}) => {
             <Form.Group>
               <Form.Label>Are you sure?</Form.Label>
               <Form.Control name="confirm_delete" type='text' placeholder="Confirm this deletion" autoComplete="off"/>
-              <Form.Text>Type "delete" and confirm</Form.Text>
+              <Form.Text>Type "permanently delete" and confirm</Form.Text>
             </Form.Group>
            
             <Button variant="danger" type="submit">Confirm</Button>

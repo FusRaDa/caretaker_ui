@@ -13,12 +13,12 @@ import DeleteCareGiver from "./DeleteCareGiver";
 import Modal from 'react-bootstrap/Modal';
 
 
-const EditCareGiver = ({handleCloseE, selectedCareGiver, setOnDelete}) => {
+const EditCareGiver = ({selectedCareGiver, handleCloseE, setSelectedCareGiver}) => {
 
   let {authTokens} = useContext(AuthContext)
   let {setUpdatingCareGivers} = useContext(CareGiverContext)
 
-  //modal - create caregiver
+  //modal - delete caregiver
   let [show, setShow] = useState(false);
   let handleClose = () => setShow(false);
   let handleShow = () => setShow(true);
@@ -57,17 +57,17 @@ const EditCareGiver = ({handleCloseE, selectedCareGiver, setOnDelete}) => {
           <Form onSubmit={editCareGiver}>
             <Form.Group>
               <Form.Label>First Name</Form.Label>
-              <Form.Control name="first_name" placeholder="Caregiver's first name" defaultValue={selectedCareGiver.first_name} required/>
+              <Form.Control name="first_name" placeholder="Caregiver's first name" defaultValue={selectedCareGiver !== null ? selectedCareGiver.first_name : ""} required/>
             </Form.Group>
 
             <Form.Group>
               <Form.Label>Last Name</Form.Label>
-              <Form.Control name="last_name" placeholder="Caregiver's last name" defaultValue={selectedCareGiver.last_name} required/>
+              <Form.Control name="last_name" placeholder="Caregiver's last name" defaultValue={selectedCareGiver !== null ? selectedCareGiver.last_name : ""} required/>
             </Form.Group>
 
             <Form.Group>
               <Form.Label>Phone Number</Form.Label>
-              <Form.Control name="phone_number" placeholder="Caregiver's phone number" defaultValue={selectedCareGiver.phone_number} required/>
+              <Form.Control name="phone_number" placeholder="Caregiver's phone number" defaultValue={selectedCareGiver !== null ? selectedCareGiver.phone_number : ""} required/>
             </Form.Group>
 
             <Button onClick={handleShow}>Delete</Button>
@@ -87,7 +87,7 @@ const EditCareGiver = ({handleCloseE, selectedCareGiver, setOnDelete}) => {
           <Modal.Title>Delete Caregiver</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <DeleteCareGiver pk={selectedCareGiver.pk} handleClose={handleClose} handleCloseE={handleCloseE} setOnDelete={setOnDelete}/>
+          <DeleteCareGiver pk={selectedCareGiver !== null ? selectedCareGiver.pk : null} setSelectedCareGiver={setSelectedCareGiver} handleClose={handleClose} handleCloseE={handleCloseE}/>
         </Modal.Body>
       </Modal>
 

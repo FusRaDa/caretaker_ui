@@ -13,7 +13,7 @@ import Button from "react-bootstrap/esm/Button";
 import Modal from 'react-bootstrap/Modal';
 
 
-const EditClient = ({handleCloseE, selectedClient}) => {
+const EditClient = ({handleCloseE, selectedClient, setSelectedClient}) => {
 
   let {authTokens} = useContext(AuthContext)
   let {setUpdatingClients} = useContext(ClientContext)
@@ -57,17 +57,17 @@ const EditClient = ({handleCloseE, selectedClient}) => {
           <Form onSubmit={editClient}>
             <Form.Group>
               <Form.Label>First Name</Form.Label>
-              <Form.Control name="first_name" placeholder="Client's first name" defaultValue={selectedClient.first_name} required/>
+              <Form.Control name="first_name" placeholder="Client's first name" defaultValue={selectedClient !== null ? selectedClient.first_name : ""} required/>
             </Form.Group>
 
             <Form.Group>
               <Form.Label>Last Name</Form.Label>
-              <Form.Control name="last_name" placeholder="Client's last name" defaultValue={selectedClient.last_name} required/>
+              <Form.Control name="last_name" placeholder="Client's last name" defaultValue={selectedClient !== null ? selectedClient.last_name : ""} required/>
             </Form.Group>
 
             <Form.Group>
               <Form.Label>Phone Number</Form.Label>
-              <Form.Control name="phone_number" placeholder="Client's phone number" defaultValue={selectedClient.phone_number} required/>
+              <Form.Control name="phone_number" placeholder="Client's phone number" defaultValue={selectedClient !== null ? selectedClient.phone_number : ""} required/>
             </Form.Group>
 
             <Button onClick={handleShow}>Delete</Button>
@@ -87,7 +87,7 @@ const EditClient = ({handleCloseE, selectedClient}) => {
           <Modal.Title>Delete Client</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <DeleteClient pk={selectedClient.pk} handleClose={handleClose} handleCloseE={handleCloseE} />
+          <DeleteClient pk={selectedClient !== null ? selectedClient.pk : null} handleClose={handleClose} handleCloseE={handleCloseE} setSelectedClient={setSelectedClient}/>
         </Modal.Body>
       </Modal>
 

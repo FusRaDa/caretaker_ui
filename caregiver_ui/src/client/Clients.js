@@ -51,6 +51,14 @@ const Caregivers = () => {
     setSearchClients(search)
   }
 
+  //update display on edit
+  useEffect(() => {
+    if (selectedClient !== null) {
+      chooseClient(selectedClient.pk)
+    }
+    // eslint-disable-next-line
+  }, [clients])
+
 
   return (
     <Container>
@@ -127,7 +135,7 @@ const Caregivers = () => {
           <Modal.Title>Edit Client</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <EditClient handleCloseE={handleCloseE} selectedClient={selectedClient} />
+          <EditClient handleCloseE={handleCloseE} selectedClient={selectedClient} setSelectedClient={setSelectedClient}/>
         </Modal.Body>
       </Modal>
 
