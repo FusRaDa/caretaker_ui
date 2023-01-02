@@ -1,14 +1,12 @@
 import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { usePagination, useTable } from "react-table"
 import RecordTableStyles from './RecordTableStyles'
 
 
 const RecordTable = ({columns, data, fetchData, changePage, loading, totalPages, allResults}) => {
 
-  // //modal
-  // let [show, setShow] = useState(false);
-  // let handleClose = () => setShow(false);
-  // let handleShow = () => setShow(true);
+  const navigate = useNavigate()
 
   const {
     getTableProps,
@@ -55,6 +53,10 @@ const RecordTable = ({columns, data, fetchData, changePage, loading, totalPages,
   }, [pageIndex, pageSize])
 
 
+  let handleSelect = (row) => {
+    navigate(`/records/${row.original.pk}`, {state: {data: row.original}})
+  }
+
   return (
     <RecordTableStyles>
       <div className='table_wrap'>
@@ -85,7 +87,7 @@ const RecordTable = ({columns, data, fetchData, changePage, loading, totalPages,
             {page.map(row => {
               prepareRow(row)
               return (
-                <tr {...row.getRowProps()} onClick={() => console.log('view record')}>
+                <tr {...row.getRowProps()} onClick={() => handleSelect(row)}>
                   {row.cells.map(cell => {
                     return (
                       <td {...cell.getCellProps()}>

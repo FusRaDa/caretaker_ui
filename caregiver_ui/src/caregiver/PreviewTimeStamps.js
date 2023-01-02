@@ -134,7 +134,7 @@ const PreviewTimeStamps = ({record, handleCloseP}) => {
                 {record[2].timestamps.map(t => (
                   <tr key={t.pk}>
                     <td>{`${new Date(t.start_time).toLocaleDateString('en-US', {weekday: 'long'})} ${t.start_time}`}</td>   
-                    <td>{`${new Date(t.end_time).toLocaleDateString('en-US', {weekday: 'long'})}  ${t.end_time}`}</td>
+                    <td>{`${new Date(t.end_time).toLocaleDateString('en-US', {weekday: 'long'})} ${t.end_time}`}</td>
                     <td>{t.total_hours}</td>   
                     <td>{`$${t.hourly_rate}`}</td>   
                     <td>{`$${t.compensation}`}</td>              

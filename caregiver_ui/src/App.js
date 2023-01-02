@@ -15,6 +15,7 @@ import Home from "./Home";
 import CareGiverTimeStamps from "./caregiver/CareGiverTimeStamps";
 import { RecordProvider } from "./context/RecordContext";
 import RecordList from "./record/RecordList";
+import RecordPage from "./record/RecordPage";
 
 
 function App() {
@@ -42,6 +43,8 @@ function App() {
               <Route element={<TimeStamps/>} exact path='/timestamps' />
               
               <Route element={<RecordList/>} exact path='/records' />
+              <Route element={<RecordPage/>} exact path='/records/:pk' />
+              
             </Route>
 
             <Route element={<Welcome/>} path='/login' exact />
