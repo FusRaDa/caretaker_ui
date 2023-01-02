@@ -4,6 +4,8 @@ import { useLocation } from "react-router-dom"
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import Form from 'react-bootstrap/Form';
 import RecordPageStyles from "./RecordPageStyles"
 
 
@@ -23,23 +25,26 @@ const RecordPage = () => {
 
   return (
     <RecordPageStyles>
-      <Container fluid="sm">
+      <Container className="container" fluid="sm">
 
         <Row>
           <Col>
-            <h3>Billing Statement</h3> 
+            <h3 className="title">Billing Statement</h3> 
           </Col>
         </Row>
 
-        <Row>
+        <Row className="info">
           <Col>
             <div>{`Date: ${record.date_created}`}</div>
             <div>{caregiver !== null ? `PDA: ${caregiver.full_name}` : ""}</div>
             <div>{caregiver !== null ? `Contact Info: ${caregiver.phone_number}` : ""}</div>
           </Col>
 
-          <Col>
-            {`Client(s)`}
+          <Col className="client_header">
+            {`Client(s):`}
+          </Col>
+
+          <Col className="clients">
             {[...new Set(timestamps.map(a => a.client.full_name))].map((full_name) => (
               <div>{full_name + " "}</div>
             ))}
@@ -77,28 +82,51 @@ const RecordPage = () => {
           </Col>
         </Row>
 
-        <Row>
-          <Col className="total_hours">
-            <div>{`Total Hours: ${Number(timestamps.reduce((total, hours) => total + Number(hours.total_hours), 0)).toFixed(2)}`}</div>
+        <Row className="totals">
+          <Col className="total_hours_header">
+            Total Hours:
           </Col>
+          <Col className="total_hours">
+            <div>{`${Number(timestamps.reduce((total, hours) => total + Number(hours.total_hours), 0)).toFixed(2)}`}</div>
+          </Col>
+
+          <Col className="compensation_header">
+            Total Amount Due:
+          </Col>
+
           <Col className="compensation">
-            <div>{`Total Amount Due: $${Number(timestamps.reduce((total, comp) => total + Number(comp.compensation), 0)).toFixed(2)}`}</div>
+            <div>{`$${Number(timestamps.reduce((total, comp) => total + Number(comp.compensation), 0)).toFixed(2)}`}</div>
           </Col>
         </Row>
 
         <Row>
+          <Col className="service_textbox">
+            <FloatingLabel label="Types of Services Provided">
+              <Form.Control
+                className="textbox"
+                as="textarea"
+                name="services"
+                style={{ height: '100px' }}
+                defaultValue={record.service}
+                disabled
+              />
+            </FloatingLabel>
+          </Col>
+        </Row>
+
+        <Row className="first_row_check">
           <Col>{record.bathing ? `\u2713 Bathing` : '__ Bathing'}</Col>
           <Col>{record.dressing ? `\u2713 Dressing` : '__ Dressing'}</Col>
           <Col>{record.incontinence ? `\u2713 Incontinence` : '__ Incontinence'}</Col>
         </Row>
 
-        <Row>
+        <Row className="second_row_check">
           <Col>{record.transferring ? `\u2713 Transferring` : '__ Transferring'}</Col>
           <Col>{record.protective_supervision ? `\u2713 Protective Supervision` : '__ Protective Supervision'}</Col>
           <Col>{record.medication_reminders ? `\u2713 Medication Reminders` : '__ Medication Reminders'}</Col>
         </Row>
 
-        <Row> 
+        <Row className="third_row_check"> 
           <Col>{record.ambulation ? `\u2713 Ambulation` : '__ Ambulation'}</Col>
           <Col>{record.eating ? `\u2713 Eating` : '__ Eating'}</Col>
           <Col>{record.toileting ? `\u2713 Toileting` : '__ Toileting'}</Col>

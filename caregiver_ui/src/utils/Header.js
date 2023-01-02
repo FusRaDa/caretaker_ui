@@ -15,7 +15,6 @@ import Col from 'react-bootstrap/esm/Col'
 import logo from '../images/caregiver_logo.png'
 
 
-
 const Header = () => {
 
   let {user, logoutUser} = useContext(AuthContext)
@@ -37,7 +36,6 @@ const Header = () => {
           <Navbar.Brand href='#home'>{`Logged in as: ${user.username}`}</Navbar.Brand>
           </Col>
         </Row>
-        
         }
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
