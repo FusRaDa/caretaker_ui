@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 //styles
 import Row from 'react-bootstrap/Row'
@@ -18,6 +18,8 @@ import CreateCareGiverTimeStamp from "./CreateCareGiverTimeStamp"
 
 
 const CareGiverTimeStamps = () => {
+
+  const navigate = useNavigate()
 
   let {pk} = useParams()
   let {authTokens} = useContext(AuthContext)
@@ -185,13 +187,17 @@ const CareGiverTimeStamps = () => {
     // eslint-disable-next-line
   }, [status])
 
+  let addTimestamp = () => {
+    handleShow()
+  }
+
 
   return (
     <Container>
 
       <Row>
         <Col>
-          <Button onClick={handleShow}>Add Timestamp</Button>
+          <Button variant="warning" onClick={() => navigate('/caregivers')}>View Caregivers</Button>
         </Col>
 
         <Col>
@@ -215,6 +221,7 @@ const CareGiverTimeStamps = () => {
           pk={pk}
           updateData={updateData}
           careGiver={careGiver}
+          addTimestamp={addTimestamp}
           />
         </Col>
       </Row>

@@ -104,8 +104,6 @@ const Caregivers = () => {
               <ListGroup.Item>Last Name: {selectedClient !== null ? selectedClient.last_name : null}</ListGroup.Item>
               <ListGroup.Item>Phone Number: {selectedClient !== null ? selectedClient.phone_number : null}</ListGroup.Item>
             </ListGroup>
-              {selectedClient !== null && 
-              <Button>{`Edit ${selectedClient.full_name}'s Information`}</Button>}
           </Card>
         </Col>
 

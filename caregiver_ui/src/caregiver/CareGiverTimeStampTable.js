@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTable, useFilters, usePagination, useSortBy, useRowSelect } from 'react-table'
-import TimeStampTableStyles from '../timestamp/TimeStampTableStyles'
 
 //filters
 import SelectColumnFilter from '../timestamp/SelectColumnFilter'
@@ -12,9 +11,10 @@ import PreviewTimeStamps from './PreviewTimeStamps'
 //styles
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button'
+import CareGiverTimeStampTableStyles from './CareGiverTimeStampTableStyles'
 
 
-const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading, totalPages, pk, updateData, careGiver}) => {
+const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading, totalPages, pk, updateData, careGiver, addTimestamp}) => {
 
   //modal
   let [show, setShow] = useState(false);
@@ -128,7 +128,7 @@ const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading,
   }
 
   return (
-    <TimeStampTableStyles>
+    <CareGiverTimeStampTableStyles>
       <div className='table_wrap'>
         <table {...getTableProps()}>
           <thead>
@@ -267,9 +267,10 @@ const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading,
 
       </div>
 
-      <Button onClick={() => processTimeStamps()}>Process</Button>
+      <Button className='add_timestamp_button' onClick={() => addTimestamp()}>Add Timestamp</Button>
+      <Button className='process_button' onClick={() => processTimeStamps()}>Process</Button>
 
-    </TimeStampTableStyles>
+    </CareGiverTimeStampTableStyles>
   )
 }
 

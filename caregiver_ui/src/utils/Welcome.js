@@ -1,10 +1,10 @@
 import Col from "react-bootstrap/Col"
 import Container from "react-bootstrap/Container"
-
+import './welcome.css'
 
 const Welcome = () => {
   return (
-    <Container>
+    <Container className="container">
       <Col>
       </Col>
       <Col style={{textAlign: 'center'}}>
