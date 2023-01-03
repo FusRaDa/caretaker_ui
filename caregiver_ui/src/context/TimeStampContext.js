@@ -19,7 +19,7 @@ export const TimeStampProvider = ({children}) => {
   let [status, setStatus] = useState("IN_PROCESS")
 
   let getTimeStamps = async () => {
-    let response = await fetch(`${ServerAddress}/api/timestamp/${status}/?p=${pageNum}&page_size=${pageSize}/`, {
+    let response = await fetch(`${ServerAddress}/api/timestamp/status/${status}/?p=${pageNum}&page_size=${pageSize}/`, {
       method: 'GET',
       headers: {
         'Content-Type':'application/json',

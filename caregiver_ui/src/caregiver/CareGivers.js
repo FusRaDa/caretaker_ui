@@ -62,6 +62,7 @@ const Caregivers = () => {
 
   return (
     <Container>
+
       <Row>
         <Col>
           <Button onClick={handleShow}>Add Caregiver</Button>
@@ -70,6 +71,7 @@ const Caregivers = () => {
           {selectedCareGiver !== null && <Button onClick={handleShowE}>{`Edit ${selectedCareGiver.full_name}'s Information`}</Button>}
         </Col>
       </Row>
+
       <Row>
         <Col>
           <Card>

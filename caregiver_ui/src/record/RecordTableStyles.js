@@ -19,6 +19,7 @@ const RecordTableStyles = styled.div
   table {
     width: 100%;
     border-spacing: 0;
+    margin-top: 0px;
 
     tr {
       :last-child {

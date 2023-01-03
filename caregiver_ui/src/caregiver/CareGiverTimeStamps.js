@@ -197,6 +197,12 @@ const CareGiverTimeStamps = () => {
 
       <Row>
         <Col>
+          <h3>{`${careGiver.full_name}'s Timestamps`}</h3>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col>
           <Button variant="warning" onClick={() => navigate('/caregivers')}>View Caregivers</Button>
         </Col>
 

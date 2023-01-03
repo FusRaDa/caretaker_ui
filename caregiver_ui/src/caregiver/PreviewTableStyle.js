@@ -10,7 +10,7 @@ const PreviewTableStyle = styled.div
   }
 
   td, th {
-    border: 1px solid #dddddd;
+    border: 1px solid black;
     text-align: left;
     padding: 8px;
   }

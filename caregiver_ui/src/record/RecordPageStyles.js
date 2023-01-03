@@ -2,9 +2,22 @@ import styled from "styled-components";
 
 
 const RecordPageStyles = styled.div
-`
-  .container {
+` 
+  .container_button {
     margin-top: 20px;
+    width: 1000px;
+  }
+
+  .return_button {
+    padding: 0px;
+  }
+
+  .print_button {
+    text-align: right;
+    padding: 0px;
+  }
+
+  .container_page {
     width: 1000px;
     border-style: solid;
     border-width: 1px;
@@ -30,7 +43,7 @@ const RecordPageStyles = styled.div
   }
 
   td, th {
-    border: 1px solid #dddddd;
+    border: 1px solid black;
     text-align: left;
     padding: 8px;
   }

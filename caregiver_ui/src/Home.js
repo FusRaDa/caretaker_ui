@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 
 import caregiverImage from "./images/caregiver_image.jpg"
 import clientImage from "./images/client.png"
-import timestampImage from "./images/timestamp.png"
+import timestampImage from "./images/timestamp.jpg"
 
 import Container from "react-bootstrap/Container"
 import Col from "react-bootstrap/Col"

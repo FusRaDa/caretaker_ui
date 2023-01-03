@@ -12,9 +12,12 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import PreviewTableStyle from "./PreviewTableStyle";
 import TimeStampContext from "../context/TimeStampContext";
+import { useNavigate } from "react-router-dom";
 
 
 const PreviewTimeStamps = ({record, handleCloseP}) => {
+
+  const navigate = useNavigate()
 
   let {authTokens} = useContext(AuthContext)
 
@@ -90,6 +93,7 @@ const PreviewTimeStamps = ({record, handleCloseP}) => {
     }
     setUpdatingTimeStamps(true)
     handleCloseP()
+    navigate('/caregivers')
   }
 
 

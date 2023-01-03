@@ -261,7 +261,7 @@ const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading,
             <Modal.Title>Confirm Timestamps</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <PreviewTimeStamps record={record} handleCloseP={handleCloseP} />
+            <PreviewTimeStamps record={record} handleCloseP={handleCloseP}/>
           </Modal.Body>
         </Modal>
 
