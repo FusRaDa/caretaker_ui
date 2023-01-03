@@ -23,6 +23,7 @@ const RecordPage = () => {
     console.log(state.data)
   }, [])
 
+  
   return (
     <RecordPageStyles>
       <Container className="container" fluid="sm">
