@@ -9,7 +9,7 @@ import SelectColumnFilter from './SelectColumnFilter'
 import Modal from 'react-bootstrap/Modal';
 import EditTimeStamp from './EditTimeStamp';
 
-const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPages, allResults}) => {
+const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPages, allResults, resetPage, setResetPage, status}) => {
 
   //modal
   let [show, setShow] = useState(false);
@@ -68,6 +68,21 @@ const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPag
     localStorage.setItem("currentPageSize", pageSize)
     // eslint-disable-next-line 
   }, [pageIndex, pageSize])
+
+  useEffect(() => {
+    if (resetPage) {
+      gotoPage(1)
+
+      //go back to first page
+      for (let i=0; i<pageIndex; i++) {
+        previousPage()
+      }
+
+    }
+    setResetPage(false)
+    // eslint-disable-next-line
+  }, [status])
+
 
   let editRow = (row) => {
     setSelectedRow(row.original)

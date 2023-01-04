@@ -31,7 +31,7 @@ export const RecordProvider = ({children}) => {
     if (response.status === 200) {
       setRecords(data)
     } else {
-      alert('page not found')
+      console.log('initialize')
     }
   }
 

@@ -9,7 +9,7 @@ export default TimeStampContext
 export const TimeStampProvider = ({children}) => {
 
   //all timestamps
-  let {authTokens, user, logoutUser} = useContext(AuthContext)
+  let {authTokens, user} = useContext(AuthContext)
   let [timeStamps, setTimeStamps] = useState([])
   let [updatingTimeStamps, setUpdatingTimeStamps] = useState(false)
 
@@ -34,7 +34,7 @@ export const TimeStampProvider = ({children}) => {
     if (response.status === 200) {
       setTimeStamps(data)
     } else {
-      alert('page not found')
+      console.log('initialize')
     }
   }
 
@@ -58,6 +58,7 @@ export const TimeStampProvider = ({children}) => {
     setUpdatingTimeStamps: setUpdatingTimeStamps,
     setPageNum: setPageNum,
     setPageSize: setPageSize,
+    status: status,
     setStatus: setStatus,
   }
 

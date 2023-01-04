@@ -8,7 +8,7 @@ export default ClientContext
 
 export const ClientProvider = ({children}) => {
 
-  let {authTokens, user, logoutUser} = useContext(AuthContext)
+  let {authTokens, user} = useContext(AuthContext)
   let [clients, setClients] = useState([])
   let [updatingClients, setUpdatingClients] = useState(false)
 
@@ -29,7 +29,7 @@ export const ClientProvider = ({children}) => {
       setClients(data)
       console.log(data)
     } else {
-      alert('error')
+      console.log('initialize')
     }
   }
 

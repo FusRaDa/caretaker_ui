@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from "react"
+import { useCallback, useContext, useState } from "react"
 
 import TimeStampContext from "../context/TimeStampContext"
 import TimeStampTable from "./TimeStampTable"
@@ -13,24 +13,15 @@ import SelectColumnFilter from "./SelectColumnFilter"
 import Button from "react-bootstrap/Button"
 import Modal from 'react-bootstrap/Modal';
 import CreateTimeStamp from "./CreateTimeStamp"
-import ClientContext from "../context/ClientContext"
-import CareGiverContext from "../context/CareGiverContext"
 
 
 const TimeStamps = () => {
 
-  let {timeStamps, setUpdatingTimeStamps, setPageNum, setPageSize, setStatus} = useContext(TimeStampContext)
-  let {setUpdatingClients} = useContext(ClientContext)
-  let {setUpdatingCareGivers} = useContext(CareGiverContext)
+  let {timeStamps, setUpdatingTimeStamps, setPageNum, setPageSize, status, setStatus} = useContext(TimeStampContext)
   let [data, setData] = useState([])
   let [allResults, setAllResults] = useState(0)
 
-  //initialize
-  useEffect(() => {
-    setUpdatingCareGivers(true)
-    setUpdatingClients(true)
-    // eslint-disable-next-line
-  }, [])
+  let [resetPage, setResetPage] = useState(false)
 
   //pagination
   let [totalPages, setTotalPages] = useState(0)
@@ -47,6 +38,13 @@ const TimeStamps = () => {
     setUpdatingTimeStamps(true)
   }
 
+  let changeStatus = (e) => {
+    setStatus(e.target.value)
+    setPageNum(1)
+    setUpdatingTimeStamps(true)
+    setResetPage(true)
+  }
+
   let fetchData = useCallback(() => {
 
     setLoading(true)
@@ -59,6 +57,7 @@ const TimeStamps = () => {
     }
 
   }, [timeStamps])
+
 
   const columns = [
     {
@@ -133,10 +132,26 @@ const TimeStamps = () => {
         </Col>
 
         <Col>
-          <Form.Select onChange={(e) => setStatus(e.target.value)}>
-            <option value='IN_PROCESS'>Awaiting Timestamps</option>
-            <option value='ALL'>All Timestamps</option>
-            <option value='PROCESSED'>Processed Timestamps</option>
+          <Form.Select onChange={(e) => changeStatus(e)}>
+      
+            {status === 'IN_PROCESS' && <>
+              <option value='IN_PROCESS'>Awaiting Timestamps</option>
+              <option value='ALL'>All Timestamps</option>
+              <option value='PROCESSED'>Processed Timestamps</option>
+            </>}
+
+            {status === 'PROCESSED' && <>
+              <option value='PROCESSED'>Processed Timestamps</option>
+              <option value='IN_PROCESS'>Awaiting Timestamps</option>
+              <option value='ALL'>All Timestamps</option>
+            </>}
+
+            {status === 'ALL' && <>
+              <option value='ALL'>All Timestamps</option>
+              <option value='IN_PROCESS'>Awaiting Timestamps</option>
+              <option value='PROCESSED'>Processed Timestamps</option>
+            </>}
+
           </Form.Select>
         </Col>
       </Row>
@@ -151,6 +166,9 @@ const TimeStamps = () => {
             loading={loading}
             totalPages={totalPages}
             allResults={allResults}
+            resetPage={resetPage}
+            setResetPage={setResetPage}
+            status={status}
           />
         </Col>
       </Row>

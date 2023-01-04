@@ -8,7 +8,7 @@ export default CareGiverContext
 
 export const CareGiverProvider = ({children}) => {
 
-  let {authTokens, user, logoutUser} = useContext(AuthContext)
+  let {authTokens, user} = useContext(AuthContext)
   let [careGivers, setCareGivers] = useState([])
   let [updatingCareGivers, setUpdatingCareGivers] = useState(false)
 
@@ -29,7 +29,7 @@ export const CareGiverProvider = ({children}) => {
       setCareGivers(data)
       console.log(data)
     } else {
-      alert('error')
+      console.log('initialize')
     }
   }
 
