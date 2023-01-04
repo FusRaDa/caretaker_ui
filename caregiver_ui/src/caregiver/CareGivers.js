@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 //context
 import CareGiverContext from "../context/CareGiverContext"
 
+import EditCareGiver from "./EditCareGiver";
+import CreateCareGiver from "./CreateCareGiver";
+
 //styles
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
@@ -12,8 +15,6 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
-import EditCareGiver from "./EditCareGiver";
-import CreateCareGiver from "./CreateCareGiver";
 import Modal from 'react-bootstrap/Modal';
 
 
