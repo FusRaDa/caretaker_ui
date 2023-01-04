@@ -106,6 +106,12 @@ const CareGiverTimeStamps = () => {
     fetchData()
   }
 
+  // let changeStatus = () => {
+  //   setStatus(e.target.value)
+  //   getCareGiverTimeStamps(0, currentPageSize)
+  //   fetchData()
+  // }
+
   let changePage = (pageIndex, pageSize) => {
     getCareGiverTimeStamps(pageIndex, pageSize)
     setCurrentPageIndex(pageIndex)
@@ -182,11 +188,6 @@ const CareGiverTimeStamps = () => {
     },
   ]
 
-  useEffect(() => {
-    updateData()
-    // eslint-disable-next-line
-  }, [status])
-
   let addTimestamp = () => {
     handleShow()
   }
@@ -207,7 +208,7 @@ const CareGiverTimeStamps = () => {
         </Col>
 
         <Col>
-          <Form.Select onChange={(e) => setStatus(e.target.value)}>
+          <Form.Select onChange={(e) => console.log(e.target.value)}>
             <option value='IN_PROCESS'>Viewing Awaiting Timestamps</option>
             <option value='ALL'>Viewing All Timestamps</option>
             <option value='PROCESSED'>Viewing Processed Timestamps</option>

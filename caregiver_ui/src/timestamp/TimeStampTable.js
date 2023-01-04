@@ -1,15 +1,20 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import { useTable, useFilters, usePagination, useSortBy } from 'react-table'
-import TimeStampTableStyles from './TimeStampTableStyles'
+
+import TimeStampContext from '../context/TimeStampContext';
+import EditTimeStamp from './EditTimeStamp';
 
 //filters
 import SelectColumnFilter from './SelectColumnFilter'
 
 //styles
 import Modal from 'react-bootstrap/Modal';
-import EditTimeStamp from './EditTimeStamp';
+import TimeStampTableStyles from './TimeStampTableStyles'
+
 
 const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPages, allResults, resetPage, setResetPage, status}) => {
+
+  let {pageNotFound, setPageNotFound} = useContext(TimeStampContext)
 
   //modal
   let [show, setShow] = useState(false);
@@ -60,7 +65,20 @@ const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPag
 
   useEffect(() => {
     fetchData()
+    // eslint-disable-next-line
   }, [fetchData])
+
+  //if table is empty due to wrong pageIndex fetch, go back to first page if awaiting timestamps
+  useEffect(() => {
+    if (pageNotFound) {
+      //go back to first page
+      for (let i=0; i<1+localStorage.getItem('currentPageIndex'); i++) {
+        previousPage()
+      }
+      setPageNotFound(false)
+    }
+    // eslint-disable-next-line
+  }, [pageNotFound])
 
   useEffect(() => {
     changePage(pageIndex, pageSize)
@@ -69,17 +87,17 @@ const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPag
     // eslint-disable-next-line 
   }, [pageIndex, pageSize])
 
+  //when changing status always revert to first page of results
   useEffect(() => {
     if (resetPage) {
       gotoPage(1)
 
       //go back to first page
-      for (let i=0; i<pageIndex; i++) {
+      for (let i=0; i<1+localStorage.getItem('currentPageIndex'); i++) {
         previousPage()
       }
-
+      setResetPage(false)
     }
-    setResetPage(false)
     // eslint-disable-next-line
   }, [status])
 

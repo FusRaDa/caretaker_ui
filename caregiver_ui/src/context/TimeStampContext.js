@@ -13,10 +13,12 @@ export const TimeStampProvider = ({children}) => {
   let [timeStamps, setTimeStamps] = useState([])
   let [updatingTimeStamps, setUpdatingTimeStamps] = useState(false)
 
-  let [pageNum, setPageNum] = useState(1)
-  let [pageSize, setPageSize] = useState(10)
+  //pageNume defaults to 1, index starts at 0 but page query starts at 1
+  let [pageNum, setPageNum] = useState(localStorage.getItem('currentPageIndex') !== null ? 1 + +localStorage.getItem('currentPageIndex') : 1)
+  let [pageSize, setPageSize] = useState(localStorage.getItem('currentPageSize') !== null ? +localStorage.getItem('currentPageSize'): 10)
 
   let [status, setStatus] = useState("IN_PROCESS")
+  let [pageNotFound, setPageNotFound] = useState(false)
 
   let getTimeStamps = async () => {
     let response = await fetch(`${ServerAddress}/api/timestamp/status/${status}/?p=${pageNum}&page_size=${pageSize}/`, {
@@ -33,9 +35,12 @@ export const TimeStampProvider = ({children}) => {
     let data = await response.json()
     if (response.status === 200) {
       setTimeStamps(data)
-    } else {
-      console.log('initialize')
+    } 
+
+    if (response.status === 404) {
+      setPageNotFound(true)
     }
+    
   }
 
   useEffect(() => {
@@ -60,6 +65,8 @@ export const TimeStampProvider = ({children}) => {
     setPageSize: setPageSize,
     status: status,
     setStatus: setStatus,
+    pageNotFound: pageNotFound,
+    setPageNotFound: setPageNotFound,
   }
 
   return (

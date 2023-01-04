@@ -25,7 +25,7 @@ const TimeStamps = () => {
 
   //pagination
   let [totalPages, setTotalPages] = useState(0)
-  let [loading, setLoading] = useState(0)
+  let [loading, setLoading] = useState(false)
   
   //modal
   let [show, setShow] = useState(false);
