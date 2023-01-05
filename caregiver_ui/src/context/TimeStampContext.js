@@ -21,7 +21,7 @@ export const TimeStampProvider = ({children}) => {
   let [pageNotFound, setPageNotFound] = useState(false)
 
   let getTimeStamps = async () => {
-    let response = await fetch(`${ServerAddress}/api/timestamp/status/${status}/?p=${pageNum}&page_size=${pageSize}/`, {
+    let response = await fetch(`${ServerAddress}/api/timestamp/status/${status}/?p=${pageNum}&page_size=${pageSize}`, {
       method: 'GET',
       headers: {
         'Content-Type':'application/json',
@@ -51,12 +51,6 @@ export const TimeStampProvider = ({children}) => {
     // eslint-disable-next-line 
   }, [updatingTimeStamps])
 
-  useEffect(() => {
-    if (user) {
-      getTimeStamps()
-    }
-    // eslint-disable-next-line
-  }, [status])
 
   let contextData = {
     timeStamps: timeStamps,

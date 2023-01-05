@@ -1,18 +1,20 @@
-import { useCallback, useContext, useState } from "react"
+import { useCallback, useContext, useState, useEffect } from "react"
 
 import TimeStampContext from "../context/TimeStampContext"
 import TimeStampTable from "./TimeStampTable"
 
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Container from "react-bootstrap/Container"
-import Form from 'react-bootstrap/Form';
+import CreateTimeStamp from "./CreateTimeStamp"
+import ClientContext from "../context/ClientContext"
+import CareGiverContext from "../context/CareGiverContext"
 
 //table components
 import SelectColumnFilter from "./SelectColumnFilter"
 import Button from "react-bootstrap/Button"
 import Modal from 'react-bootstrap/Modal';
-import CreateTimeStamp from "./CreateTimeStamp"
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Container from "react-bootstrap/Container"
+import Form from 'react-bootstrap/Form';
 
 
 const TimeStamps = () => {
@@ -23,6 +25,9 @@ const TimeStamps = () => {
 
   let [resetPage, setResetPage] = useState(false)
 
+  let {setUpdatingClients} = useContext(ClientContext)
+  let {setUpdatingCareGivers} = useContext(CareGiverContext)
+
   //pagination
   let [totalPages, setTotalPages] = useState(0)
   let [loading, setLoading] = useState(false)
@@ -31,6 +36,13 @@ const TimeStamps = () => {
   let [show, setShow] = useState(false);
   let handleClose = () => setShow(false);
   let handleShow = () => setShow(true);
+
+  //initialize
+  useEffect(() => {
+    setUpdatingCareGivers(true)
+    setUpdatingClients(true)
+    // eslint-disable-next-line
+  }, [])
 
   let changePage = (pageIndex, pageSize) => {
     setPageNum(pageIndex + 1) //pageIndex starts at 0 by default

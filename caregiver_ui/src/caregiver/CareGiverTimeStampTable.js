@@ -14,7 +14,25 @@ import Button from 'react-bootstrap/Button'
 import CareGiverTimeStampTableStyles from './CareGiverTimeStampTableStyles'
 
 
-const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading, totalPages, pk, updateData, careGiver, addTimestamp}) => {
+const CareGiverTimeStampTable = (
+  {
+    columns, 
+    data, 
+    fetchData, 
+    changePage, 
+    loading, 
+    totalPages, 
+    pk, 
+    updateData, 
+    careGiver, 
+    addTimestamp, 
+    count, 
+    status, 
+    pageNotFound,
+    setPageNotFound, 
+    resetPage, 
+    setResetPage
+  }) => {
 
   //modal
   let [show, setShow] = useState(false);
@@ -74,8 +92,30 @@ const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading,
 
   useEffect(() => {
     fetchData()
-    setSelectedTimeStamps([])
+    setSelectedTimeStamps([]) //reset all selected timestamps to none
   }, [fetchData])
+
+  //if table is empty due to wrong pageIndex fetch, go back to first page if awaiting timestamps
+  useEffect(() => {
+    if (pageNotFound) {
+      //go back to first page
+      gotoPage(0)
+  
+      setPageNotFound(false)
+    }
+    // eslint-disable-next-line
+  }, [pageNotFound])
+
+   //when changing status always revert to first page of results
+   useEffect(() => {
+    if (resetPage) {
+      //go back to first page and set pageIndex to 0
+      gotoPage(0)
+
+      setResetPage(false)
+    }
+    // eslint-disable-next-line
+  }, [status])
 
   useEffect(() => {
     changePage(pageIndex, pageSize)
@@ -180,7 +220,7 @@ const CareGiverTimeStampTable = ({columns, data, fetchData, changePage, loading,
                 <td colSpan="10000">Loading...</td>
               ) : (
                 <td colSpan="10000">
-                  Showing {page.length} of ~{pageCount * pageSize}{' '}
+                  Showing {page.length} of ~{count}{' '}
                   results
                 </td>
               )}

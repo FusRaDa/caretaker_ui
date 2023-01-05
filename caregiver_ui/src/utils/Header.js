@@ -46,7 +46,7 @@ const Header = () => {
                 <Nav.Link eventKey='1' onClick={() => navigate('/')}>Home</Nav.Link>
                 <Nav.Link eventKey='2' onClick={() => navigate('/caregivers')}>Caregivers</Nav.Link>
                 <Nav.Link eventKey='3' onClick={() => navigate('/clients')}>Clients</Nav.Link>
-                <Nav.Link eventKey='4' onClick={() => navigate('/timestamps')}>Timestamps</Nav.Link>
+                <Nav.Link eventKey='4' onClick={() => navigate('/timestamps')}>All Timestamps</Nav.Link>
                 <Nav.Link eventKey='5' onClick={() => navigate('/records')}>Records</Nav.Link>
                 <Nav.Link onClick={logoutUser}>Logout</Nav.Link>
               </Nav>

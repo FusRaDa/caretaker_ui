@@ -28,13 +28,16 @@ const CareGiverTimeStamps = () => {
   let [careGiver, setCareGiver] = useState([])
   let [careGiverTimeStamps, setCareGiverTimeStamps] = useState([])
   let [status, setStatus] = useState("IN_PROCESS")
+  let [pageNotFound, setPageNotFound] = useState(false)
+  let [resetPage, setResetPage] = useState(false)
 
-  let [currentPageIndex, setCurrentPageIndex] = useState(0)
-  let [currentPageSize, setCurrentPageSize] = useState(10)
+  let [currentPageIndex, setCurrentPageIndex] = useState(localStorage.getItem(`caregiverPageIndex/${pk}`) !== null ? +localStorage.getItem(`caregiverPageIndex/${pk}`) : 0)
+  let [currentPageSize, setCurrentPageSize] = useState(localStorage.getItem(`caregiverPageSize/${pk}`) !== null ? +localStorage.getItem(`caregiverPageSize/${pk}`): 10)
 
   //pagination
   let [totalPages, setTotalPages] = useState(0)
   let [loading, setLoading] = useState(0)
+  let [count, setCount] = useState(0)
 
   //modal
   let [show, setShow] = useState(false)
@@ -43,7 +46,7 @@ const CareGiverTimeStamps = () => {
 
   let getCareGiverTimeStamps = async (index, size) => {
 
-    let response = await fetch(`${ServerAddress}/api/timestamp/caregiver/${pk}/${status}/?p=${index + 1}&page_size=${size}/`, {
+    let response = await fetch(`${ServerAddress}/api/timestamp/caregiver/${pk}/${status}/?p=${index + 1}&page_size=${size}`, {
       method: 'GET',
       headers: {
         'Content-Type':'application/json',
@@ -56,24 +59,13 @@ const CareGiverTimeStamps = () => {
 
     let data = await response.json()
     if (response.status === 200) {
+      console.log(data)
       setCareGiverTimeStamps(data)
     }
     
     // if page is not found just go to first page
     if (response.status === 404) {
-      response = await fetch(`${ServerAddress}/api/timestamp/${pk}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type':'application/json',
-          'Authorization':'Bearer ' + String(authTokens.access)
-        }
-      })
-      .catch(() => {
-        console.log('server failed')
-      })
-
-      let data = await response.json()
-      setCareGiverTimeStamps(data)
+      setPageNotFound(true)
     }
   }
 
@@ -100,18 +92,24 @@ const CareGiverTimeStamps = () => {
     // eslint-disable-next-line
   }, [])
 
-  // function updates table when data is being modified
-  let updateData = () => {
-    getCareGiverTimeStamps(currentPageIndex, currentPageSize)
-    fetchData()
+  //get data when status changes
+  useEffect(() => {
+    getCareGiverTimeStamps(0, currentPageSize)
+    setCurrentPageIndex(0)
+    // eslint-disable-next-line
+  }, [status])
+
+  let changeStatus = (e) => {
+    setResetPage(true)
+    setStatus(e.target.value)
   }
 
-  // let changeStatus = () => {
-  //   setStatus(e.target.value)
-  //   getCareGiverTimeStamps(0, currentPageSize)
-  //   fetchData()
-  // }
+  // function updates table when data/row is edited
+  let updateData = () => {
+    getCareGiverTimeStamps(currentPageIndex, currentPageSize)
+  }
 
+  //get data when page/page size changes
   let changePage = (pageIndex, pageSize) => {
     getCareGiverTimeStamps(pageIndex, pageSize)
     setCurrentPageIndex(pageIndex)
@@ -125,6 +123,7 @@ const CareGiverTimeStamps = () => {
     if (Object.keys(careGiverTimeStamps).length !== 0) {
       setData(careGiverTimeStamps.results)
       setTotalPages(careGiverTimeStamps.total_pages)
+      setCount(careGiverTimeStamps.count)
       setLoading(false)
     }
 
@@ -177,8 +176,6 @@ const CareGiverTimeStamps = () => {
     {
       Header: 'Status',
       accessor: 'status',
-      // Filter: SelectColumnFilter,
-      // filter: 'includes',
       disableFilters: true,
       disableSortBy: true,
     },
@@ -208,7 +205,7 @@ const CareGiverTimeStamps = () => {
         </Col>
 
         <Col>
-          <Form.Select onChange={(e) => console.log(e.target.value)}>
+          <Form.Select onChange={(e) => changeStatus(e)}>
             <option value='IN_PROCESS'>Viewing Awaiting Timestamps</option>
             <option value='ALL'>Viewing All Timestamps</option>
             <option value='PROCESSED'>Viewing Processed Timestamps</option>
@@ -229,6 +226,12 @@ const CareGiverTimeStamps = () => {
           updateData={updateData}
           careGiver={careGiver}
           addTimestamp={addTimestamp}
+          count={count}
+          status={status}
+          pageNotFound={pageNotFound}
+          setPageNotFound={setPageNotFound}
+          resetPage={resetPage}
+          setResetPage={setResetPage}
           />
         </Col>
       </Row>

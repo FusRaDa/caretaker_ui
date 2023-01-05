@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 //context
 import CareGiverContext from "../context/CareGiverContext"
+import ClientContext from "../context/ClientContext";
 
 import EditCareGiver from "./EditCareGiver";
 import CreateCareGiver from "./CreateCareGiver";
@@ -23,6 +24,7 @@ const Caregivers = () => {
   const navigate = useNavigate()
 
   let {careGivers, setUpdatingCareGivers} = useContext(CareGiverContext)
+  let {setUpdatingClients} = useContext(ClientContext)
 
   let [searchCareGivers, setSearchCareGivers] = useState(null)
   let [selectedCareGiver, setSelectedCareGiver] = useState(null)
@@ -40,6 +42,7 @@ const Caregivers = () => {
   //initialize
   useEffect(() => {
     setUpdatingCareGivers(true)
+    setUpdatingClients(true)
     // eslint-disable-next-line
   }, [])
 

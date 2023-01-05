@@ -72,9 +72,8 @@ const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPag
   useEffect(() => {
     if (pageNotFound) {
       //go back to first page
-      for (let i=0; i<1+localStorage.getItem('currentPageIndex'); i++) {
-        previousPage()
-      }
+      gotoPage(0)
+
       setPageNotFound(false)
     }
     // eslint-disable-next-line
@@ -90,12 +89,9 @@ const TimeStampTable = ({columns, data, fetchData, changePage, loading, totalPag
   //when changing status always revert to first page of results
   useEffect(() => {
     if (resetPage) {
-      gotoPage(1)
+      //go back to first page and set pageIndex to 0
+      gotoPage(0)
 
-      //go back to first page
-      for (let i=0; i<1+localStorage.getItem('currentPageIndex'); i++) {
-        previousPage()
-      }
       setResetPage(false)
     }
     // eslint-disable-next-line

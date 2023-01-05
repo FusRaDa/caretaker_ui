@@ -1,8 +1,4 @@
-import { useContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-
-import ClientContext from "./context/ClientContext"
-import CareGiverContext from "./context/CareGiverContext"
 
 import caregiverImage from "./images/caregiver_image.jpg"
 import clientImage from "./images/client.png"
@@ -16,17 +12,7 @@ import HomeStyles from "./HomeStyles"
 
 const Home = () => {
 
-  let {setUpdatingClients} = useContext(ClientContext)
-  let {setUpdatingCareGivers} = useContext(CareGiverContext)
-
   const navigate = useNavigate()
-
-  //initialize
-  useEffect(() => {
-    setUpdatingCareGivers(true)
-    setUpdatingClients(true)
-    // eslint-disable-next-line
-  }, [])
 
   return (
     <HomeStyles>
