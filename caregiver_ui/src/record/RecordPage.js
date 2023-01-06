@@ -1,5 +1,8 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
+
+import ServerAddress from "../utils/ServerAddress"
+import AuthContext from "../context/AuthContext"
 
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
@@ -15,10 +18,14 @@ const RecordPage = () => {
 
   const navigate = useNavigate()
 
+  let {authTokens} = useContext(AuthContext)
+
   let [record, setRecord] = useState([])
   let [timestamps, setTimeStamps] = useState([])
   let [caregiver, setCareGiver] = useState(null)
+  let [paid, setPaid] = useState(state.data.paid)
 
+  //initialize data
   useEffect(() => {
     setRecord(state.data)
     setCareGiver(state.data.caregiver)
@@ -28,6 +35,33 @@ const RecordPage = () => {
 
   let printRecord = () => {
     window.print()
+  }
+
+  let updateRecord = async () => {
+
+    let checkbox = document.getElementById('paid_checkbox').checked
+
+    setPaid(checkbox)
+
+    let response = await fetch(`${ServerAddress}/api/record/${state.data.pk}/update/`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + String(authTokens.access)
+      },
+      body: JSON.stringify({
+        'paid': checkbox
+      })
+    })
+    .catch(() => {
+      alert('server response failed!')
+    })
+
+    if (response.status === 200) {
+      console.log('update successful')
+    } else {
+      alert('something went wrong!')
+    }
   }
 
 
@@ -40,6 +74,16 @@ const RecordPage = () => {
           <Row>
             <Col className="return_button">
               <Button variant="warning" onClick={() => navigate('/records')}>View Records</Button>
+            </Col>
+            <Col>
+              <Form className="paid_form" onChange={() => updateRecord()}>
+                <Form.Check
+                  defaultChecked={!paid ? false : true}
+                  type={'checkbox'}
+                  id={'paid_checkbox'}
+                  label={!paid ? `Compensation Not Recieved` : 'Compensation Recieved'}
+                />
+              </Form>
             </Col>
             <Col className="print_button">
               <Button onClick={() => printRecord()}>Print Record</Button>
@@ -99,7 +143,6 @@ const RecordPage = () => {
                       <td>{`$${t.compensation}`}</td>  
                     </tr>
                   ))}
-
 
                 </tbody>
               </table>

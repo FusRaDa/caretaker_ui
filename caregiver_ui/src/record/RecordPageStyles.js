@@ -8,6 +8,11 @@ const RecordPageStyles = styled.div
     width: 1000px;
   }
 
+  .paid_form {
+    display: flex;
+    justify-content: center;
+  }
+
   .return_button {
     padding: 0px;
   }

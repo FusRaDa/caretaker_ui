@@ -87,7 +87,7 @@ const RecordTable = ({columns, data, fetchData, changePage, loading, totalPages,
             {page.map(row => {
               prepareRow(row)
               return (
-                <tr {...row.getRowProps()} onClick={() => handleSelect(row)}>
+                <tr {...row.getRowProps()} onClick={() => handleSelect(row)} style={{backgroundColor: row.original.paid ? 'lightgreen' : 'pink'}}>
                   {row.cells.map(cell => {
                     return (
                       <td {...cell.getCellProps()}>
