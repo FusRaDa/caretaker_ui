@@ -31,7 +31,7 @@ const TimeStampTableStyles = styled.div
     th,
     td {
       margin: 0;
-      padding: 0.5rem;
+      padding: 1px;
       border-bottom: 1px solid black;
       border-right: 1px solid black;
 
