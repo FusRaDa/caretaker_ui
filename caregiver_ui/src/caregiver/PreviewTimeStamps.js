@@ -159,7 +159,7 @@ const PreviewTimeStamps = ({record, handleCloseP}) => {
         </Row>
 
         <Form onSubmit={addRecord}>
-          <Row>
+          <Row className="services">
             <Col>
               <FloatingLabel label="Types of Services Provided">
                 <Form.Control
@@ -171,8 +171,7 @@ const PreviewTimeStamps = ({record, handleCloseP}) => {
             </Col>
           </Row>
 
-          
-          <Row>
+          <Row className="activities">
             <Form.Label>Assistance with Daily Living Activities:</Form.Label>
 
             <Col>

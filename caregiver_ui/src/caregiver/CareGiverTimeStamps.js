@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams, Link } from "react-router-dom"
 
 //styles
 import Row from 'react-bootstrap/Row'
@@ -8,6 +8,7 @@ import Container from "react-bootstrap/Container"
 import Button from "react-bootstrap/Button"
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import CareGiverTimeStampsStyles from "./CareGiverTimeStampsStyles"
 
 //table components
 import SelectColumnFilter from "../timestamp/SelectColumnFilter"
@@ -30,6 +31,7 @@ const CareGiverTimeStamps = () => {
   let [status, setStatus] = useState("IN_PROCESS")
   let [pageNotFound, setPageNotFound] = useState(false)
   let [resetPage, setResetPage] = useState(false)
+  let [process, setProcess] = useState(false)
 
   let [currentPageIndex, setCurrentPageIndex] = useState(localStorage.getItem(`caregiverPageIndex/${pk}`) !== null ? +localStorage.getItem(`caregiverPageIndex/${pk}`) : 0)
   let [currentPageSize, setCurrentPageSize] = useState(localStorage.getItem(`caregiverPageSize/${pk}`) !== null ? +localStorage.getItem(`caregiverPageSize/${pk}`): 10)
@@ -185,72 +187,130 @@ const CareGiverTimeStamps = () => {
     },
   ]
 
-  let addTimestamp = () => {
-    handleShow()
-  }
-
 
   return (
-    <Container>
+    <CareGiverTimeStampsStyles>
+      <Container fluid>
 
-      <Row>
-        <Col>
-          <h3>{`${careGiver.full_name}'s Timestamps`}</h3>
-        </Col>
-      </Row>
+        <Row className="return">
+          <Col>
+            <Button variant="warning" onClick={() => navigate('/caregivers')}>View Caregivers</Button>
+          </Col>
+        </Row>
 
-      <Row>
-        <Col>
-          <Button variant="warning" onClick={() => navigate('/caregivers')}>View Caregivers</Button>
-        </Col>
+        <Row>
+          <Col>
+            <h3>{`Viewing ${status === 'IN_PROCESS' ? "Awaiting" : status === 'PROCESSED' ? "PROCESSED" : "All"} Timestamps - ${careGiver.full_name}`}</h3>
+          </Col>
+        </Row>
 
-        <Col>
-          <Form.Select onChange={(e) => changeStatus(e)}>
-            <option value='IN_PROCESS'>Viewing Awaiting Timestamps</option>
-            <option value='ALL'>Viewing All Timestamps</option>
-            <option value='PROCESSED'>Viewing Processed Timestamps</option>
-          </Form.Select>
-        </Col>
-      </Row>
+        <Row>
+          <Col sm="10">
+            <CareGiverTimeStampTable 
+            columns={columns}
+            data={data}
+            fetchData={fetchData}
+            changePage={changePage}
+            loading={loading}
+            totalPages={totalPages}
+            pk={pk}
+            updateData={updateData}
+            careGiver={careGiver}
+            count={count}
+            status={status}
+            pageNotFound={pageNotFound}
+            setPageNotFound={setPageNotFound}
+            resetPage={resetPage}
+            setResetPage={setResetPage}
+            process={process}
+            setProcess={setProcess}
+            />
+          </Col>
 
-      <Row>
-        <Col>
-          <CareGiverTimeStampTable 
-          columns={columns}
-          data={data}
-          fetchData={fetchData}
-          changePage={changePage}
-          loading={loading}
-          totalPages={totalPages}
-          pk={pk}
-          updateData={updateData}
-          careGiver={careGiver}
-          addTimestamp={addTimestamp}
-          count={count}
-          status={status}
-          pageNotFound={pageNotFound}
-          setPageNotFound={setPageNotFound}
-          resetPage={resetPage}
-          setResetPage={setResetPage}
-          />
-        </Col>
-      </Row>
+          <Col sm="2">
+            <div className="menu">
 
-      <Modal
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Add a Timestamp</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <CreateCareGiverTimeStamp handleClose={handleClose} careGiver={careGiver} updateData={updateData}/>
-        </Modal.Body>
-      </Modal>
+              <h5 className="menu_title">Action Menu</h5>
 
-    </Container>
+              <div className="status">
+                <Form.Select onChange={(e) => changeStatus(e)}>
+                  <option value='IN_PROCESS'>Viewing Awaiting Timestamps</option>
+                  <option value='ALL'>Viewing All Timestamps</option>
+                  <option value='PROCESSED'>Viewing Processed Timestamps</option>
+                </Form.Select>
+              </div>
+
+              <div className="legend">
+                <h6>Legend</h6>
+
+                <div className="legend_status">
+                  <div>
+                    <div className="box_lightyellow"></div>          
+                  </div>
+                  <div>
+                    <h6>Timestamp awaiting to be processed in records.</h6>
+                  </div>
+                </div>
+
+                <div className="legend_status">
+                  <div>
+                    <div className="box_lightgreen"></div>
+                  </div>
+                  <div>              
+                    <h6>Timestamp has been processed in <Link to={'/records'}>records</Link>.</h6>
+                  </div>
+                </div>
+
+                <div className="legend_status">
+                  <div>
+                    <div className="box_lightblue"></div>
+                  </div>
+                  <div>              
+                    <h6>Timestamp selected to be processed.</h6>
+                  </div>
+                </div>
+
+              </div>
+
+              <div className="add_button">
+                <Button onClick={handleShow}>Add Timestamp</Button>
+              </div>
+
+              <div className="guide">
+                {'\uFF0A'}Double click on a row to edit a timestamp.
+              </div>
+
+              <div className="process_button">
+                <Button onClick={() => setProcess(true)}>Process</Button>
+              </div>
+
+              <div className="process_guide">
+                {'\uFF0A'}Select rows to process timestamps.
+              </div>
+
+              <div className="process_guide1">
+                {'\uFF0A'}Changing status or page will reset selection.
+              </div>
+            </div>
+          </Col>
+        </Row>
+
+        <Modal
+          show={show}
+          onHide={handleClose}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Add a Timestamp</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <CreateCareGiverTimeStamp handleClose={handleClose} careGiver={careGiver} updateData={updateData}/>
+          </Modal.Body>
+        </Modal>
+
+      </Container>
+    </CareGiverTimeStampsStyles>
   )
 }
 

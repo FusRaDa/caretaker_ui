@@ -10,7 +10,6 @@ import PreviewTimeStamps from './PreviewTimeStamps'
 
 //styles
 import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button'
 import CareGiverTimeStampTableStyles from './CareGiverTimeStampTableStyles'
 
 
@@ -24,14 +23,15 @@ const CareGiverTimeStampTable = (
     totalPages, 
     pk, 
     updateData, 
-    careGiver, 
-    addTimestamp, 
+    careGiver,
     count, 
     status, 
     pageNotFound,
     setPageNotFound, 
     resetPage, 
-    setResetPage
+    setResetPage,
+    process,
+    setProcess,
   }) => {
 
   //modal
@@ -143,8 +143,6 @@ const CareGiverTimeStampTable = (
   }
 
   let processTimeStamps = () => {
-    console.log(selectedTimeStamps)
-
     if (selectedTimeStamps.length < 1) {
       alert('Please select at least 1 timestamp to record')
       return
@@ -166,6 +164,15 @@ const CareGiverTimeStampTable = (
     setRecord(data)
     handleShowP()
   }
+
+  useEffect(() => {
+    setProcess(false)
+
+    if (process) {
+      processTimeStamps()
+    }
+    // eslint-disable-next-line
+  }, [process])
 
   return (
     <CareGiverTimeStampTableStyles>
@@ -306,9 +313,6 @@ const CareGiverTimeStampTable = (
         </Modal>
 
       </div>
-
-      <Button className='add_timestamp_button' onClick={() => addTimestamp()}>Add Timestamp</Button>
-      <Button className='process_button' onClick={() => processTimeStamps()}>Process</Button>
 
     </CareGiverTimeStampTableStyles>
   )
