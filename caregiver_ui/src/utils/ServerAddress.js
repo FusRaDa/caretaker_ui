@@ -1,3 +1,3 @@
-const ServerAddress = '//caregiver-ebs.eba-gggxkcin.us-east-1.elasticbeanstalk.com'
+const ServerAddress = '//api.cmrprojects.net'
 
 export default ServerAddress
