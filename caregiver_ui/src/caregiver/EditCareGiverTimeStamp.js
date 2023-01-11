@@ -111,7 +111,7 @@ const EditCareGiverTimeStamp = ({data, handleClose, updateData}) => {
             />
           </Form>
 
-          <ListGroup>
+          <ListGroup style={{height: '150px', overflow: 'scroll'}}>
             {clients
               .filter(client => searchClients !== null ? client.full_name.toLowerCase().includes(searchClients) : client)
               .map(client => (

@@ -1,3 +1,3 @@
-const ServerAddress = '//api.cmrprojects.net'
+const ServerAddress = 'https://api.cmrprojects.net'
 
 export default ServerAddress

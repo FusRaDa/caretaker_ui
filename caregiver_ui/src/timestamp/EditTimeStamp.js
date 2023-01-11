@@ -126,7 +126,7 @@ const EditTimeStamp = ({data, handleClose}) => {
             />
           </Form>
 
-          <ListGroup>
+          <ListGroup style={{height: '150px', overflow: 'scroll'}}>
             {careGivers
               .filter(cg => searchCareGivers !== null ? cg.full_name.toLowerCase().includes(searchCareGivers) : cg)
               .map(cg => (
@@ -147,7 +147,7 @@ const EditTimeStamp = ({data, handleClose}) => {
             />
           </Form>
 
-          <ListGroup>
+          <ListGroup style={{height: '150px', overflow: 'scroll'}}>
             {clients
               .filter(client => searchClients !== null ? client.full_name.toLowerCase().includes(searchClients) : client)
               .map(client => (

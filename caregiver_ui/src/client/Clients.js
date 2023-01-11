@@ -83,7 +83,7 @@ const Caregivers = () => {
               />
             </Form>
 
-            <ListGroup>
+            <ListGroup style={{overflow: 'auto'}}>
               {clients
                 .filter(client => searchClients !== null ? client.full_name.toLowerCase().includes(searchClients) : client)
                 .map(client => (
