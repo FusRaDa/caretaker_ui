@@ -6,6 +6,7 @@ import Container from "react-bootstrap/Container"
 import Col from "react-bootstrap/Col"
 import Row from "react-bootstrap/Row"
 import RecordTable from "./RecordTable"
+import RecordStyles from "./RecordStyles"
 
 
 const RecordList = () => {
@@ -54,21 +55,37 @@ const RecordList = () => {
   ]
 
   return (
-    <Container>
-      <Row>
-        <Col>
-          <RecordTable 
-            columns={columns}
-            data={data}
-            fetchData={fetchData}
-            changePage={changePage}
-            loading={loading}
-            totalPages={totalPages}
-            allResults={allResults}
-          />
-        </Col>
-      </Row>
-    </Container>
+    <RecordStyles>
+      <Container>
+
+        <Row>
+          <Col>        
+            <div className="box_lightred"></div>
+            <h6>Compensation has not been recieved</h6>
+          </Col>
+
+          <Col>
+            <div className="box_lightgreen"></div>
+            <h6>Compensation Recieved</h6>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col>
+            <RecordTable 
+              columns={columns}
+              data={data}
+              fetchData={fetchData}
+              changePage={changePage}
+              loading={loading}
+              totalPages={totalPages}
+              allResults={allResults}
+            />
+          </Col>
+        </Row>
+        
+      </Container>
+    </RecordStyles>
   )
 }
 

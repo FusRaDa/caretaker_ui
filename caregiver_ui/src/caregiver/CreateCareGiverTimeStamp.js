@@ -41,6 +41,13 @@ const CreateCareGiverTimeStamp = ({handleClose, careGiver, updateData}) => {
   const addTimeStamp = async (e) => {
     e.preventDefault()
 
+    console.log(e.target.client.value)
+
+    if (e.target.client.value === "") {
+      alert('Please select a client.')
+      return
+    }
+
     let response = await fetch(`${ServerAddress}/api/timestamp/create/`, {
       method: 'POST',
       headers: {
@@ -109,7 +116,7 @@ const CreateCareGiverTimeStamp = ({handleClose, careGiver, updateData}) => {
 
             <Form.Group>
               <Form.Label>Client</Form.Label>
-              <Form.Control type="text" placeholder="Select a client" disabled required 
+              <Form.Control name="client" type="text" placeholder="Select a client" disabled required 
                 defaultValue={selectedClient === null ? null : selectedClient.full_name}/>
             </Form.Group>
 
