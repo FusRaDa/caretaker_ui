@@ -108,6 +108,7 @@ const Caregivers = () => {
               <ListGroup.Item>First Name: {selectedCareGiver !== null ? selectedCareGiver.first_name : null}</ListGroup.Item>
               <ListGroup.Item>Last Name: {selectedCareGiver !== null ? selectedCareGiver.last_name : null}</ListGroup.Item>
               <ListGroup.Item>Phone Number: {selectedCareGiver !== null ? selectedCareGiver.phone_number : null}</ListGroup.Item>
+              <ListGroup.Item>Address: {selectedCareGiver !== null ? selectedCareGiver.address : null}</ListGroup.Item>
             </ListGroup>
               {selectedCareGiver !== null && 
               <Button onClick={() => navigate(`/caregivers/${selectedCareGiver.pk}`)}>

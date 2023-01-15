@@ -36,6 +36,7 @@ const EditCareGiver = ({selectedCareGiver, handleCloseE, setSelectedCareGiver}) 
         'first_name': e.target.first_name.value,
         'last_name': e.target.last_name.value,
         'phone_number': e.target.phone_number.value,
+        'address': e.target.address.value,
       })
     })
     .catch(() => {
@@ -68,6 +69,11 @@ const EditCareGiver = ({selectedCareGiver, handleCloseE, setSelectedCareGiver}) 
             <Form.Group>
               <Form.Label>Phone Number</Form.Label>
               <Form.Control name="phone_number" placeholder="Caregiver's phone number" defaultValue={selectedCareGiver !== null ? selectedCareGiver.phone_number : ""} required/>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Address</Form.Label>
+              <Form.Control name="address" placeholder="Caregiver's address" defaultValue={selectedCareGiver !== null ? selectedCareGiver.address : ""} required/>
             </Form.Group>
 
             <Button onClick={handleShow}>Delete</Button>

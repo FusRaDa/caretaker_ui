@@ -103,6 +103,7 @@ const Caregivers = () => {
               <ListGroup.Item>First Name: {selectedClient !== null ? selectedClient.first_name : null}</ListGroup.Item>
               <ListGroup.Item>Last Name: {selectedClient !== null ? selectedClient.last_name : null}</ListGroup.Item>
               <ListGroup.Item>Phone Number: {selectedClient !== null ? selectedClient.phone_number : null}</ListGroup.Item>
+              <ListGroup.Item>Address: {selectedClient !== null ? selectedClient.address : null}</ListGroup.Item>
             </ListGroup>
           </Card>
         </Col>

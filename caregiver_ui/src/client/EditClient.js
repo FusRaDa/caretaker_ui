@@ -36,6 +36,7 @@ const EditClient = ({handleCloseE, selectedClient, setSelectedClient}) => {
         'first_name': e.target.first_name.value,
         'last_name': e.target.last_name.value,
         'phone_number': e.target.phone_number.value,
+        'address': e.target.address.value,
       })
     })
     .catch(() => {
@@ -68,6 +69,11 @@ const EditClient = ({handleCloseE, selectedClient, setSelectedClient}) => {
             <Form.Group>
               <Form.Label>Phone Number</Form.Label>
               <Form.Control name="phone_number" placeholder="Client's phone number" defaultValue={selectedClient !== null ? selectedClient.phone_number : ""} required/>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Address</Form.Label>
+              <Form.Control name="address" placeholder="Client's address" defaultValue={selectedClient !== null ? selectedClient.address : ""} required/>
             </Form.Group>
 
             <Button onClick={handleShow}>Delete</Button>

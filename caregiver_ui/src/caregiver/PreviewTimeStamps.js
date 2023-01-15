@@ -3,6 +3,9 @@ import { useContext } from "react";
 import ServerAddress from "../utils/ServerAddress";
 import AuthContext from "../context/AuthContext";
 
+import TimeStampContext from "../context/TimeStampContext";
+import { useNavigate } from "react-router-dom";
+
 //styles
 import Container from "react-bootstrap/Container"
 import Button from "react-bootstrap/Button";
@@ -11,8 +14,6 @@ import Row from "react-bootstrap/Row"
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import PreviewTableStyle from "./PreviewTableStyle";
-import TimeStampContext from "../context/TimeStampContext";
-import { useNavigate } from "react-router-dom";
 
 
 const PreviewTimeStamps = ({record, handleCloseP}) => {

@@ -30,6 +30,7 @@ const CreateClient = ({handleClose}) => {
         'first_name': e.target.first_name.value,
         'last_name': e.target.last_name.value,
         'phone_number': e.target.phone_number.value,
+        'address': e.target.address.value,
       })
     })
     .catch(() => {
@@ -63,6 +64,11 @@ const CreateClient = ({handleClose}) => {
             <Form.Group>
               <Form.Label>Phone Number</Form.Label>
               <Form.Control name="phone_number" placeholder="Client's phone number"/>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Address</Form.Label>
+              <Form.Control name="address" placeholder="Client's address"/>
             </Form.Group>
 
             <Button type="submit">Submit</Button>
