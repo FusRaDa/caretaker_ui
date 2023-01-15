@@ -3,6 +3,10 @@ import styled from "styled-components";
 
 const PreviewTableStyle = styled.div
 `
+  .date_input {
+    margin-left 5px;
+  }
+
   table {
     margin-top: 10px;
     font-family: arial, sans-serif;

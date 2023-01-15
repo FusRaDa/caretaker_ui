@@ -33,7 +33,7 @@ const PreviewTimeStamps = ({record, handleCloseP}) => {
         'Authorization': 'Bearer ' + String(authTokens.access)
       },
       body: JSON.stringify({
-        //do not send date_created, will be created in backend-auto
+        date_created: e.target.date_created.value,
         caregiver_id: record[1].caregiver.pk,
         service: e.target.services.value,
         timestamps: record[2].timestamps,
@@ -100,65 +100,66 @@ const PreviewTimeStamps = ({record, handleCloseP}) => {
   return (
     <PreviewTableStyle>
       <Container>
-
-        <Row>
-          <Col>
-            <div>{`Date: ${record[0].date_created}`}</div>
-          </Col>
-          <Col>
-            {`Client(s):`}
-          </Col>
-        </Row>
-
-        <Row>
-          <Col>
-            <div>{`PDA: ${record[1].caregiver.full_name}`}</div>
-          </Col>
-          <Col>
-            {[...new Set(record[2].timestamps.map(a => a.client.full_name))].map((full_name) => (
-              <div>{full_name}</div>
-            ))}
-          </Col>
-        </Row>
-
-        <Row>
-          <Col>
-            <table>
-              <thead>
-                <tr key="thead">
-                  <th>Date/Time In</th>
-                  <th>Date/Time Out</th>
-                  <th>Total Hours</th>
-                  <th>Hourly Rate</th>
-                  <th>Compensation</th>
-                </tr>
-              </thead>
-
-              <tbody key="tbody">
-                {record[2].timestamps.map(t => (
-                  <tr key={t.pk}>
-                    <td>{`${new Date(t.start_time).toLocaleDateString('en-US', {weekday: 'long'})} ${t.start_time}`}</td>   
-                    <td>{`${new Date(t.end_time).toLocaleDateString('en-US', {weekday: 'long'})} ${t.end_time}`}</td>
-                    <td>{t.total_hours}</td>   
-                    <td>{`$${t.hourly_rate}`}</td>   
-                    <td>{`$${t.compensation}`}</td>              
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col className="total_hours">
-            <div>{`Total Hours: ${Number(record[2].timestamps.reduce((total, hours) => total + Number(hours.total_hours), 0)).toFixed(2)}`}</div>
-          </Col>
-          <Col className="compensation">
-            <div>{`Total Amount Due: $${Number(record[2].timestamps.reduce((total, comp) => total + Number(comp.compensation), 0)).toFixed(2)}`}</div>
-          </Col>
-        </Row>
-
         <Form onSubmit={addRecord}>
+          <Row>
+            <Col>
+              Date: 
+              <input name="date_created" className="date_input" type="date" required></input>
+            </Col>
+            <Col>
+              {`Client(s):`}
+            </Col>
+          </Row>
+
+          <Row>
+            <Col>
+              <div>{`PDA: ${record[1].caregiver.full_name}`}</div>
+            </Col>
+            <Col>
+              {[...new Set(record[2].timestamps.map(a => a.client.full_name))].map((full_name) => (
+                <div>{full_name}</div>
+              ))}
+            </Col>
+          </Row>
+
+          <Row>
+            <Col>
+              <table>
+                <thead>
+                  <tr key="thead">
+                    <th>Date/Time In</th>
+                    <th>Date/Time Out</th>
+                    <th>Total Hours</th>
+                    <th>Hourly Rate</th>
+                    <th>Compensation</th>
+                  </tr>
+                </thead>
+
+                <tbody key="tbody">
+                  {record[2].timestamps.map(t => (
+                    <tr key={t.pk}>
+                      <td>{`${new Date(t.start_time).toLocaleDateString('en-US', {weekday: 'long'})} ${t.start_time}`}</td>   
+                      <td>{`${new Date(t.end_time).toLocaleDateString('en-US', {weekday: 'long'})} ${t.end_time}`}</td>
+                      <td>{t.total_hours}</td>   
+                      <td>{`$${t.hourly_rate}`}</td>   
+                      <td>{`$${t.compensation}`}</td>              
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col className="total_hours">
+              <div>{`Total Hours: ${Number(record[2].timestamps.reduce((total, hours) => total + Number(hours.total_hours), 0)).toFixed(2)}`}</div>
+            </Col>
+            <Col className="compensation">
+              <div>{`Total Amount Due: $${Number(record[2].timestamps.reduce((total, comp) => total + Number(comp.compensation), 0)).toFixed(2)}`}</div>
+            </Col>
+          </Row>
+
+        
           <Row className="services">
             <Col>
               <FloatingLabel label="Types of Services Provided">
