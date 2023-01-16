@@ -26,7 +26,7 @@ const Header = () => {
       <Container fluid>
        
         {!user ? 
-        <Navbar.Brand href='#home'>Caregiver Timestamps Project by Matthew Rada</Navbar.Brand> 
+        <Navbar.Brand href='#home'>Caregiver Project by Matthew Rada</Navbar.Brand> 
         : 
         <Row>
           <Col>
