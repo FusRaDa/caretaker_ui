@@ -16,6 +16,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Modal from 'react-bootstrap/Modal';
+import { useNavigate } from "react-router-dom";
 
 
 const Caregivers = () => {
@@ -24,6 +25,8 @@ const Caregivers = () => {
 
   let [searchClients, setSearchClients] = useState(null)
   let [selectedClient, setSelectedClient] = useState(null)
+
+  const navigate = useNavigate()
 
   //modal - create caregiver
   let [show, setShow] = useState(false);
@@ -105,6 +108,10 @@ const Caregivers = () => {
               <ListGroup.Item>Phone Number: {selectedClient !== null ? selectedClient.phone_number : null}</ListGroup.Item>
               <ListGroup.Item>Address: {selectedClient !== null ? selectedClient.address : null}</ListGroup.Item>
             </ListGroup>
+              {selectedClient !== null && 
+              <Button onClick={() => navigate(`/clients/${selectedClient.pk}`)}>
+              {`View ${selectedClient.full_name}'s Medication Records`}
+              </Button>}
           </Card>
         </Col>
 
