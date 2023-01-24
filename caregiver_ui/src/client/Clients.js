@@ -109,7 +109,7 @@ const Caregivers = () => {
               <ListGroup.Item>Address: {selectedClient !== null ? selectedClient.address : null}</ListGroup.Item>
             </ListGroup>
               {selectedClient !== null && 
-              <Button onClick={() => navigate(`/clients/${selectedClient.pk}`)}>
+              <Button onClick={() => navigate(`/clients/${selectedClient.pk}`, {state: {data: selectedClient.full_name}})}>
               {`View ${selectedClient.full_name}'s Medication Records`}
               </Button>}
           </Card>

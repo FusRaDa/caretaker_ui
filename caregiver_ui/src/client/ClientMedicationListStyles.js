@@ -1,28 +1,28 @@
 import styled from "styled-components";
 
 
-const ClientMedicationStyles = styled.div
+const ClientMedicationListStyles = styled.div
 `
-  .container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .add_button {
+    float: right;
   }
-
+  
   table, th, td {
+    width: 100%;
     border: 1px solid black;
     border-collapse: collapse;
   }
 
   th, td {
-    padding: 5px;
+    width: 10%;
+    padding: 10px;
     text-align: center;
   }
 
   .medication {
-    width: 400px;
+    width: 30%;
     text-align: left;
   }
 `
 
-export default ClientMedicationStyles
+export default ClientMedicationListStyles

@@ -1,22 +1,22 @@
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import AuthContext from "../context/AuthContext"
 import ServerAddress from "../utils/ServerAddress"
 
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
-import ClientMedicationStyles from "./ClientMedicationStyles"
-import { useParams } from "react-router-dom"
+import ClientMedicationRecordStyles from "./ClientMedicationRecordStyles"
+import Button from "react-bootstrap/Button"
 
 
-const ClientMedication = () => {
+const ClientMedicationRecord = () => {
 
   let {authTokens} = useContext(AuthContext)
 
-  let {pk} = useParams()
+  let [list, setList] = useState([])
 
   let getClientMeds = async () => {
-    let response = await fetch(`${ServerAddress}/api/client/`, {
+    let response = await fetch(`${ServerAddress}/api/client_medication/${pk}/`, {
       method: 'GET',
       headers: {
         'Content-Type':'application/json',
@@ -30,18 +30,26 @@ const ClientMedication = () => {
     let data = await response.json()
     if (response.status === 200) {
       console.log(data)
+      setList(data)
     } else {
       console.log('initialize')
     }
   }
 
+  useEffect(() => {
+    getClientMeds()
+    console.log('hi')
+  }, [])
 
   return (
-    <ClientMedicationStyles>
+    <ClientMedicationRecordStyles>
       <Container className="container">
         <Row>
           <Col>
-            <h2></h2>
+            <h2>{`${state.data}'s Medication Records`}</h2>
+          </Col>
+          <Col>
+            <Button className="add_button">adsf</Button>
           </Col>
         </Row>
         <Row>
@@ -62,26 +70,30 @@ const ClientMedication = () => {
 
               <tbody>
 
-                <tr>
-                  <th className="medication">Med 1</th>
-                  <td><input type="checkbox"/></td>
-                  <td><input type="checkbox"/></td>
-                  <td><input type="checkbox"/></td>
-                  <td><input type="checkbox"/></td>
-                  <td><input type="checkbox"/></td>
-                  <td><input type="checkbox"/></td>
-                  <td><input type="checkbox"/></td>
-                </tr>
+                {list.map(t => (
+                  <tr key={t.pk}>
+                    <th className="medication"></th>
+                    <td><input type="checkbox"/></td>
+                    <td><input type="checkbox"/></td>
+                    <td><input type="checkbox"/></td>
+                    <td><input type="checkbox"/></td>
+                    <td><input type="checkbox"/></td>
+                    <td><input type="checkbox"/></td>
+                    <td><input type="checkbox"/></td>
+                  </tr>
+                ))}
 
               </tbody>
+
+              
             
             </table>
           </Col>
         </Row>
 
       </Container>
-    </ClientMedicationStyles>
+    </ClientMedicationRecordStyles>
   )
 }
 
-export default ClientMedication
+export default ClientMedicationRecord
