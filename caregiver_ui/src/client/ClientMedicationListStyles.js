@@ -6,6 +6,15 @@ const ClientMedicationListStyles = styled.div
   .add_button {
     float: right;
   }
+
+  .page_button {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .select_pagesize {
+    margin-left: 20px;
+  }
   
   table, th, td {
     width: 100%;
@@ -19,10 +28,6 @@ const ClientMedicationListStyles = styled.div
     text-align: center;
   }
 
-  .medication {
-    width: 30%;
-    text-align: left;
-  }
 `
 
 export default ClientMedicationListStyles

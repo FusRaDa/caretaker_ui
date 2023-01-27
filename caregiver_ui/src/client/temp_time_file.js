@@ -19,7 +19,7 @@ let getWeekOfMonth = (date) => {
     let weekMonth = Math.ceil((date.getDate() + offset) / 7)
     console.log("weekMonth: " + weekMonth)
     
-    //calculate week of year subtract by days in month    
+    //calculate week of year subtract by offset, +1 to add the missing day from subraction   
     let days = Math.floor((date - yearStart) / oneDay) + 1 - offset - date.getDate()
     if (days < 0) {
         days = 0
