@@ -131,10 +131,11 @@ const ClientMedicationList = () => {
                   <tr key={t.pk} onClick={() => console.log(t.pk)}>
                     <td>
                     {
-                      t.week_number === 1 ? `1st Week of ${getMonthName(t.month_number)}-${t.year_number}` : 
-                      t.week_number === 2 ? `2nd Week of ${getMonthName(t.month_number)}-${t.year_number}` :
-                      t.week_number === 3 ? `3rd Week of ${getMonthName(t.month_number)}-${t.year_number}` :
-                      `4th week of ${getMonthName(t.month_number)}}-${t.year_name}` 
+                      t.week_of_month_number === 1 ? `1st Week of ${getMonthName(t.month_number)}-${t.year_number}` : 
+                      t.week_of_month_number === 2 ? `2nd Week of ${getMonthName(t.month_number)}-${t.year_number}` :
+                      t.week_of_month_number === 3 ? `3rd Week of ${getMonthName(t.month_number)}-${t.year_number}` :
+                      t.week_of_month_number === 4 ? `4th week of ${getMonthName(t.month_number)}}-${t.year_name}` :
+                      `5th week of ${getMonthName(t.month_number)}}-${t.year_name}`
                     }
                     </td>
                   </tr>
@@ -155,7 +156,7 @@ const ClientMedicationList = () => {
             <Modal.Title>Add Weekly Medication Record</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <AddClientMedicationRecord/>
+            <AddClientMedicationRecord pk={pk}/>
           </Modal.Body>
         </Modal>
 
