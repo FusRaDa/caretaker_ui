@@ -2,7 +2,16 @@ let date = new Date("December 20, 2022") //now
 
 console.log(date)
 
-let getWeekOfMonth = (date) => {
+//get week number in the month - for aesthetic purposes only
+let getWeekMonth = (date) => {
+    let monthStart = new Date(date)
+    monthStart.setDate(0)
+    let offset = (monthStart.getDay() + 1) % 7 //set to Sunday as start of week
+    return Math.ceil((date.getDate() + offset) / 7);
+}
+
+//get week number from beginning of year
+let getWeekNumber = (date) => {
     
     const oneDay = 24 * 60 * 60 * 1000
     

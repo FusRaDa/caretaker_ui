@@ -33,6 +33,7 @@ const ClientMedicationList = () => {
   let handleClose = () => setShow(false);
   let handleShow = () => setShow(true);
 
+
   let getClientMeds = async () => {
     let response = await fetch(`${ServerAddress}/api/client_medication/${pk}/?p=${pageNum}&page_size=${pageSize}`, {
       method: 'GET',
@@ -127,7 +128,7 @@ const ClientMedicationList = () => {
 
               <tbody>
                 {list.map(t => (
-                  <tr key={t.pk}>
+                  <tr key={t.pk} onClick={() => console.log(t.pk)}>
                     <td>
                     {
                       t.week_number === 1 ? `1st Week of ${getMonthName(t.month_number)}-${t.year_number}` : 
@@ -139,8 +140,6 @@ const ClientMedicationList = () => {
                   </tr>
                 ))}
               </tbody>
-
-        
 
             </table>
           </Col>
