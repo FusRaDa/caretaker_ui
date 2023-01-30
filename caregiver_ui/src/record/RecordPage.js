@@ -13,6 +13,7 @@ import Button from 'react-bootstrap/Button';
 import RecordPageStyles from "./RecordPageStyles"
 
 
+
 const RecordPage = () => {
   const {state} = useLocation()
 

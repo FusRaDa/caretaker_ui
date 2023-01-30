@@ -1,10 +1,19 @@
 import styled from "styled-components";
 
 
-const ClientMedicationRecordStyles = styled.div
+const ClientMedicationListStyles = styled.div
 `
   .add_button {
     float: right;
+  }
+
+  .page_button {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .select_pagesize {
+    margin-left: 20px;
   }
   
   table, th, td {
@@ -19,10 +28,6 @@ const ClientMedicationRecordStyles = styled.div
     text-align: center;
   }
 
-  .medication {
-    width: 30%;
-    text-align: left;
-  }
 `
 
-export default ClientMedicationRecordStyles
+export default ClientMedicationListStyles

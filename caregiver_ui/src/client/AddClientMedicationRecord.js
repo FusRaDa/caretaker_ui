@@ -7,10 +7,12 @@ import Col from "react-bootstrap/Col"
 import Row from "react-bootstrap/Row"
 import Form from 'react-bootstrap/Form'
 import Button from "react-bootstrap/Button"
+import ClientMedicationTableStyles from "./ClientMedicationTableStyles"
+import Table from 'react-bootstrap/Table';
 
 
 
-const AddClientMedicationRecord = ({pk}) => {
+const AddClientMedicationRecord = ({client}) => {
 
   let {authTokens} = useContext(AuthContext)
 
@@ -19,6 +21,8 @@ const AddClientMedicationRecord = ({pk}) => {
   let [weekNumber, setWeekNumber] = useState(null)
   let [year, setYear] = useState(null)
   let [daysOfWeek, setDaysOfWeek] = useState([])
+
+  let [medications, setMedications] = useState([])
 
   //get week number in the month - for aesthetic purposes only
   let getWeekMonth = (date) => {
@@ -54,7 +58,7 @@ const AddClientMedicationRecord = ({pk}) => {
     console.log("days:" + days)
     console.log("remainingWeeks: " + remainingWeeks)
     
-    totalWeeks = weekMonth + remainingWeeks
+    let totalWeeks = weekMonth + remainingWeeks
     
     return totalWeeks
     
@@ -84,6 +88,8 @@ const AddClientMedicationRecord = ({pk}) => {
     days.push({'thursday': thursday})
     days.push({'friday': friday})
     days.push({'saturday': saturday})
+
+    console.log(days)
 
     setDaysOfWeek(days)
    
@@ -133,7 +139,7 @@ const AddClientMedicationRecord = ({pk}) => {
         'Authorization': 'Bearer ' + String(authTokens.access)
       },
       body: JSON.stringify({
-        'client_id': pk,
+        'client_id': 1,
         'week_of_month_number': weekOfMonth,
         'week_number': weekNumber,
         'year_number': year,
@@ -153,71 +159,76 @@ const AddClientMedicationRecord = ({pk}) => {
   }
 
 
-
-
   return (
-    <Container>
-      
-      <Row>
-        <Col>
-          Date: <input onChange={onChangeDate} id="date" name="date" type="date"/>
-        </Col>
-        <Col>
-          {
-          date !== null && 
-          
-          <div>
-            {
-            weekOfMonth === 1 ? <h3>1st Week of {date.toLocaleString('en-US', { month: 'long' })}</h3> : 
-            weekOfMonth === 2 ? <h3>2nd Week of {date.toLocaleString('en-US', { month: 'long' })}</h3> :
-            weekOfMonth === 3 ? <h3>3rd Week of {date.toLocaleString('en-US', { month: 'long' })}</h3> :
-            weekOfMonth === 4 ? <h3>4th Week of {date.toLocaleString('en-US', { month: 'long' })}</h3> :
-            <h3>5th Week of {date.toLocaleString('en-US', { month: 'long' })}</h3>
-            }
-          </div>
-
-          
-          }
-        </Col>
-      </Row>
-
-
-      <Form onSubmit={addMedicationRecord}>
+    <ClientMedicationTableStyles>
+      <Container>
+        
         <Row>
           <Col>
-            <table>
-
-              <thead>
-                <tr>
-                  <th>Medication</th>
-                  <th>{daysOfWeek.length !== 0 ? `Sunday-${daysOfWeek.sunday}` : "-----"}</th>
-                  <th>{daysOfWeek.length !== 0 ? `Monday-${daysOfWeek.monday}` : "-----"}</th>
-                  <th>{daysOfWeek.length !== 0 ? `Tuesday-${daysOfWeek.tuesday}` : "-----"}</th>
-                  <th>{daysOfWeek.length !== 0 ? `Wednesday-${daysOfWeek.wednesday}` : "-----"}</th>
-                  <th>{daysOfWeek.length !== 0 ?  `Thursday-${daysOfWeek.thursday}` : "-----"}</th>
-                  <th>{daysOfWeek.length !== 0 ? `Friday-${daysOfWeek.friday}` : "-----"}</th>
-                  <th>{daysOfWeek.length !== 0 ? `Saturday-${daysOfWeek.saturday}` : "-----"}</th>
-                </tr>
-              </thead>
-
-              <tbody>
-
-                <tr>
-                  <td>
-
-                  </td>
-                </tr>
-
-              </tbody>
-
-            </table>
+            Date: <input onChange={onChangeDate} id="date" name="date" type="date"/>
+          </Col>
+          <Col className="week_month">
+            {date !== null && 
+            <div>
+              {
+              weekOfMonth === 1 ? <h3>1st Week of {date.toLocaleString('en-US', { month: 'long' })}-{date.getFullYear()}</h3> : 
+              weekOfMonth === 2 ? <h3>2nd Week of {date.toLocaleString('en-US', { month: 'long' })}-{date.getFullYear()}</h3> :
+              weekOfMonth === 3 ? <h3>3rd Week of {date.toLocaleString('en-US', { month: 'long' })}-{date.getFullYear()}</h3> :
+              weekOfMonth === 4 ? <h3>4th Week of {date.toLocaleString('en-US', { month: 'long' })}-{date.getFullYear()}</h3> :
+              <h3>5th Week of {date.toLocaleString('en-US', { month: 'long' })}-{date.getFullYear()}</h3>
+              }
+            </div>
+            }
+          </Col>
+          <Col>
+            <Button className="medication_list">{`View ${client.data.full_name}'s Medication List`}</Button>
           </Col>
         </Row>
 
-        <Button type="submit">Submit</Button>
-      </Form>
 
-    </Container>
+        <Form onSubmit={addMedicationRecord}>
+          <Row>
+            <Col>
+              <Table responsive>
+
+                <thead>
+                  <tr>
+                    <th className="medication_header">Medication</th>
+                    <th>{daysOfWeek.length !== 0 ? `Sun-${daysOfWeek[0].sunday}` : "Sun"}</th>
+                    <th>{daysOfWeek.length !== 0 ? `Mon-${daysOfWeek[1].monday}` : "Mon"}</th>
+                    <th>{daysOfWeek.length !== 0 ? `Tue-${daysOfWeek[2].tuesday}` : "Tue"}</th>
+                    <th>{daysOfWeek.length !== 0 ? `Wed-${daysOfWeek[3].wednesday}` : "Wed"}</th>
+                    <th>{daysOfWeek.length !== 0 ?  `Thu-${daysOfWeek[4].thursday}` : "Thu"}</th>
+                    <th>{daysOfWeek.length !== 0 ? `Fri-${daysOfWeek[5].friday}` : "Fri"}</th>
+                    <th>{daysOfWeek.length !== 0 ? `Sat-${daysOfWeek[6].saturday}` : "Sat"}</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+
+                  <tr>
+                    <td>medafadfadsfiadsfasdf</td>
+                    <td id="sunday"><input type="checkbox"/></td>
+                    <td id="monday"><input type="checkbox"/></td>
+                    <td id="tuesday"><input type="checkbox"/></td>
+                    <td id="wednesday"><input type="checkbox"/></td>
+                    <td id="thursday"><input type="checkbox"/></td>
+                    <td id="friday"><input type="checkbox"/></td>
+                    <td id="saturday"><input type="checkbox"/></td>
+                  </tr>
+
+                </tbody>
+
+              </Table>
+            </Col>
+          </Row>
+
+          <Button type="submit">Submit</Button>
+          <Button className="add_button">Add Medication</Button>
+        </Form>
+
+      </Container>
+    </ClientMedicationTableStyles>
   )
 
 }
