@@ -77,7 +77,7 @@ const ClientMedicationRecordList = () => {
       <Container>
         <Row>
           <Col>
-            <h2>{`${state.data.full_name}'s Medication Records`}</h2>
+            <h3>{`${state.data.full_name}'s Medication Records`}</h3>
           </Col>
           <Col>
             <Button className="add_button" onClick={handleShow}>Add Medication Record</Button>
@@ -157,7 +157,7 @@ const ClientMedicationRecordList = () => {
             <Modal.Title>Add Weekly Medication Record</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <AddClientMedicationRecord client={state}/>
+            <AddClientMedicationRecord client={state.data}/>
           </Modal.Body>
         </Modal>
 

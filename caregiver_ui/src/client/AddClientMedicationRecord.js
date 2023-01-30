@@ -9,7 +9,8 @@ import Form from 'react-bootstrap/Form'
 import Button from "react-bootstrap/Button"
 import ClientMedicationTableStyles from "./ClientMedicationTableStyles"
 import Table from 'react-bootstrap/Table';
-
+import Modal from 'react-bootstrap/Modal'
+import ClientMedicationList from "./ClientMedicationList"
 
 
 const AddClientMedicationRecord = ({client}) => {
@@ -23,6 +24,11 @@ const AddClientMedicationRecord = ({client}) => {
   let [daysOfWeek, setDaysOfWeek] = useState([])
 
   let [medications, setMedications] = useState([])
+
+  //modal
+  let [show, setShow] = useState(false);
+  let handleClose = () => setShow(false);
+  let handleShow = () => setShow(true);
 
   //get week number in the month - for aesthetic purposes only
   let getWeekMonth = (date) => {
@@ -171,17 +177,17 @@ const AddClientMedicationRecord = ({client}) => {
             {date !== null && 
             <div>
               {
-              weekOfMonth === 1 ? <h3>1st Week of {date.toLocaleString('en-US', { month: 'long' })}-{date.getFullYear()}</h3> : 
-              weekOfMonth === 2 ? <h3>2nd Week of {date.toLocaleString('en-US', { month: 'long' })}-{date.getFullYear()}</h3> :
-              weekOfMonth === 3 ? <h3>3rd Week of {date.toLocaleString('en-US', { month: 'long' })}-{date.getFullYear()}</h3> :
-              weekOfMonth === 4 ? <h3>4th Week of {date.toLocaleString('en-US', { month: 'long' })}-{date.getFullYear()}</h3> :
-              <h3>5th Week of {date.toLocaleString('en-US', { month: 'long' })}-{date.getFullYear()}</h3>
+              weekOfMonth === 1 ? <h5>1st Week of {date.toLocaleString('en-US', { month: 'long' })}-{date.getFullYear()}</h5> : 
+              weekOfMonth === 2 ? <h5>2nd Week of {date.toLocaleString('en-US', { month: 'long' })}-{date.getFullYear()}</h5> :
+              weekOfMonth === 3 ? <h5>3rd Week of {date.toLocaleString('en-US', { month: 'long' })}-{date.getFullYear()}</h5> :
+              weekOfMonth === 4 ? <h5>4th Week of {date.toLocaleString('en-US', { month: 'long' })}-{date.getFullYear()}</h5> :
+              <h5>5th Week of {date.toLocaleString('en-US', { month: 'long' })}-{date.getFullYear()}</h5>
               }
             </div>
             }
           </Col>
           <Col>
-            <Button className="medication_list">{`View ${client.data.full_name}'s Medication List`}</Button>
+            <Button className="medication_list" onClick={handleShow}>{`Edit ${client.full_name}'s Medication List`}</Button>
           </Col>
         </Row>
 
@@ -226,6 +232,19 @@ const AddClientMedicationRecord = ({client}) => {
           <Button type="submit">Submit</Button>
           <Button className="add_button">Add Medication</Button>
         </Form>
+
+        <Modal
+          show={show}
+          onHide={handleClose}
+          backdrop="static"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>{`${client.full_name}'s Medication List`}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <ClientMedicationList client={client}/>
+          </Modal.Body>
+        </Modal>
 
       </Container>
     </ClientMedicationTableStyles>
