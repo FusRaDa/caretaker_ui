@@ -9,7 +9,7 @@ import Row from "react-bootstrap/Row"
 import ClientMedicationListStyles from "./ClientMedicationListStyles"
 
 
-const ClientMedicationList = ({client}) => {
+const ClientMedicationList = ({client, setMedications}) => {
 
   let {setUpdatingClients} = useContext(ClientContext)
   let {authTokens} = useContext(AuthContext)
@@ -97,6 +97,7 @@ const ClientMedicationList = ({client}) => {
     console.log(client)
     if (updating) {
       updateClientMedicationList()
+      setMedications(list)
     }
     setUpdating(false)
     // eslint-disable-next-line

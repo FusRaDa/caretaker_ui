@@ -23,7 +23,7 @@ const AddClientMedicationRecord = ({client}) => {
   let [year, setYear] = useState(null)
   let [daysOfWeek, setDaysOfWeek] = useState([])
 
-  let [medications, setMedications] = useState([])
+  let [medications, setMedications] = useState(client.medication_list !== null ? [...client.medication_list] : [])
 
   //modal
   let [show, setShow] = useState(false);
@@ -212,8 +212,9 @@ const AddClientMedicationRecord = ({client}) => {
 
                 <tbody>
 
-                  <tr>
-                    <td>medafadfadsfiadsfasdf</td>
+                  {medications.map((med) => (
+                  <tr key={medications.indexOf(med)}>
+                    <td>{med}</td>
                     <td id="sunday"><input type="checkbox"/></td>
                     <td id="monday"><input type="checkbox"/></td>
                     <td id="tuesday"><input type="checkbox"/></td>
@@ -222,6 +223,7 @@ const AddClientMedicationRecord = ({client}) => {
                     <td id="friday"><input type="checkbox"/></td>
                     <td id="saturday"><input type="checkbox"/></td>
                   </tr>
+                  ))}
 
                 </tbody>
 
@@ -242,7 +244,7 @@ const AddClientMedicationRecord = ({client}) => {
             <Modal.Title>{`${client.full_name}'s Medication List`}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <ClientMedicationList client={client}/>
+            <ClientMedicationList client={client} setMedications={setMedications}/>
           </Modal.Body>
         </Modal>
 
