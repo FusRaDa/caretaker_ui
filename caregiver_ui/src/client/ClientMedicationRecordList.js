@@ -29,6 +29,8 @@ const ClientMedicationRecordList = () => {
   let [previous, setPrevious] = useState(null)
   let [next, setNext] = useState(null)
 
+  let [updating, setUpdating] = useState(false)
+
   //modal
   let [show, setShow] = useState(false);
   let handleClose = () => setShow(false);
@@ -61,14 +63,13 @@ const ClientMedicationRecordList = () => {
 
   useEffect(() => {
     getClientMeds()
+    setUpdating(false)
     // eslint-disable-next-line
-  }, [pageNum, pageSize])
+  }, [pageNum, pageSize, updating])
 
-  let getMonthName = (monthNumber) => {
-    let date = new Date();
-    date.setMonth(monthNumber);
-
-    return date.toLocaleString('en-US', { month: 'long' });
+  let getMonthName = (year, month) => {
+    let date = new Date(year, month, 1);
+    return date.toLocaleString('en-us', { month: 'long' })
   }
 
 
@@ -132,11 +133,12 @@ const ClientMedicationRecordList = () => {
                   <tr key={t.pk} onClick={() => console.log(t.pk)}>
                     <td>
                     {
-                      t.week_of_month_number === 1 ? `1st Week of ${getMonthName(t.month_number)}-${t.year_number}` : 
-                      t.week_of_month_number === 2 ? `2nd Week of ${getMonthName(t.month_number)}-${t.year_number}` :
-                      t.week_of_month_number === 3 ? `3rd Week of ${getMonthName(t.month_number)}-${t.year_number}` :
-                      t.week_of_month_number === 4 ? `4th week of ${getMonthName(t.month_number)}}-${t.year_name}` :
-                      `5th week of ${getMonthName(t.month_number)}}-${t.year_name}`
+                      t.week_of_month_number === 1 ? `1st Week of ${getMonthName(t.year_number, t.month_number)}-${t.year_number}` : 
+                      t.week_of_month_number === 2 ? `2nd Week of ${getMonthName(t.year_number, t.month_number)}-${t.year_number}` :
+                      t.week_of_month_number === 3 ? `3rd Week of ${getMonthName(t.year_number, t.month_number)}-${t.year_number}` :
+                      t.week_of_month_number === 4 ? `4th week of ${getMonthName(t.year_number, t.month_number)}-${t.year_number}` :
+                      t.week_of_month_number == 5 ? `5th week of ${getMonthName(t.year_number, t.month_number)}-${t.year_number}` :
+                      `6th week of ${getMonthName(t.year_number, t.month_number)}-${t.year_number}`
                     }
                     </td>
                   </tr>
@@ -157,7 +159,7 @@ const ClientMedicationRecordList = () => {
             <Modal.Title>Add Weekly Medication Record</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <AddClientMedicationRecord client={state.data}/>
+            <AddClientMedicationRecord client={state.data} handleCloseAddRecord={handleClose} setUpdating={setUpdating}/>
           </Modal.Body>
         </Modal>
 
