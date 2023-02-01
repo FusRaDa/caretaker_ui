@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import AuthContext from "../context/AuthContext"
 import ServerAddress from "../utils/ServerAddress"
-import { useLocation, useParams } from "react-router-dom"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
@@ -20,6 +20,8 @@ const ClientMedicationRecordList = () => {
   let {pk} = useParams()
 
   const {state} = useLocation()
+
+  const navigate = useNavigate()
 
   let [list, setList] = useState([])
 
@@ -70,6 +72,20 @@ const ClientMedicationRecordList = () => {
   let getMonthName = (year, month) => {
     let date = new Date(year, month, 1);
     return date.toLocaleString('en-us', { month: 'long' })
+  }
+
+  let getFirstDayOfWeek = (w, y) => {
+    let date = new Date(y, 0, (1 + (w-1) * 7)); // 1st of January + 7 days for each week
+    let options = { month: 'short', day: 'numeric' }
+    let sunday = new Date(date.setDate(date.getDate() + (0 - date.getDay()))).toLocaleDateString('en-US', options)
+    return sunday
+  }
+
+  let getLastDayOfWeek = (w, y) => {
+    let date = new Date(y, 0, (1 + (w-1) * 7)); // 1st of January + 7 days for each week
+    let options = { month: 'short', day: 'numeric' }
+    let saturday = new Date(date.setDate(date.getDate() + (0 - date.getDay()) + 6)).toLocaleDateString('en-US', options)
+    return saturday
   }
 
 
@@ -130,16 +146,51 @@ const ClientMedicationRecordList = () => {
 
               <tbody>
                 {list.map(t => (
-                  <tr key={t.pk} onClick={() => console.log(t.pk)}>
+                  <tr key={t.pk} onClick={() => navigate(`/clients/${pk}/view_med_record/${t.pk}`, {state: {medicationRecord: t}})}>
                     <td>
-                    {
-                      t.week_of_month_number === 1 ? `1st Week of ${getMonthName(t.year_number, t.month_number)}-${t.year_number}` : 
-                      t.week_of_month_number === 2 ? `2nd Week of ${getMonthName(t.year_number, t.month_number)}-${t.year_number}` :
-                      t.week_of_month_number === 3 ? `3rd Week of ${getMonthName(t.year_number, t.month_number)}-${t.year_number}` :
-                      t.week_of_month_number === 4 ? `4th week of ${getMonthName(t.year_number, t.month_number)}-${t.year_number}` :
-                      t.week_of_month_number == 5 ? `5th week of ${getMonthName(t.year_number, t.month_number)}-${t.year_number}` :
-                      `6th week of ${getMonthName(t.year_number, t.month_number)}-${t.year_number}`
-                    }
+                      <Row>
+                        <Col>
+                          {
+                          t.week_of_month_number === 1 ? 
+                          `${getFirstDayOfWeek(t.week_number, t.year_number)} - ${getLastDayOfWeek(t.week_number, t.year_number)}` : 
+                          
+                          t.week_of_month_number === 2 ? 
+                          `${getFirstDayOfWeek(t.week_number, t.year_number)} - ${getLastDayOfWeek(t.week_number, t.year_number)}` :
+
+                          t.week_of_month_number === 3 ? 
+                          `${getFirstDayOfWeek(t.week_number, t.year_number)} - ${getLastDayOfWeek(t.week_number, t.year_number)}` :
+
+                          t.week_of_month_number === 4 ? 
+                          `${getFirstDayOfWeek(t.week_number, t.year_number)} - ${getLastDayOfWeek(t.week_number, t.year_number)}` :
+
+                          t.week_of_month_number === 5 ? 
+                          `${getFirstDayOfWeek(t.week_number, t.year_number)} - ${getLastDayOfWeek(t.week_number, t.year_number)}` :
+
+                          `${getFirstDayOfWeek(t.week_number, t.year_number)} - ${getLastDayOfWeek(t.week_number, t.year_number)}`
+                          }
+                        </Col>
+
+                        <Col>
+                          {
+                          t.week_of_month_number === 1 ? 
+                          `1st Week of ${getMonthName(t.year_number, t.month_number)} ${t.year_number}` : 
+                          
+                          t.week_of_month_number === 2 ? 
+                          `2nd Week of ${getMonthName(t.year_number, t.month_number)} ${t.year_number}` :
+
+                          t.week_of_month_number === 3 ? 
+                          `3rd Week of ${getMonthName(t.year_number, t.month_number)} ${t.year_number}` :
+
+                          t.week_of_month_number === 4 ? 
+                          `4th Week of ${getMonthName(t.year_number, t.month_number)} ${t.year_number}` :
+
+                          t.week_of_month_number === 5 ? 
+                          `5th Week of ${getMonthName(t.year_number, t.month_number)} ${t.year_number}` :
+
+                          `6th Week of ${getMonthName(t.year_number, t.month_number)} ${t.year_number}`
+                          }
+                        </Col>
+                      </Row>
                     </td>
                   </tr>
                 ))}

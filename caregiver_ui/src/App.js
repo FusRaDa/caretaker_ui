@@ -17,6 +17,7 @@ import { RecordProvider } from "./context/RecordContext";
 import RecordList from "./record/RecordList";
 import RecordPage from "./record/RecordPage";
 import ClientMedicationRecordList from "./client/ClientMedicationRecordList";
+import ViewClientMedicationRecord from "./client/ViewClientMedicationRecord";
 
 
 
@@ -42,6 +43,7 @@ function App() {
    
               <Route element={<Clients/>} exact path='/clients' />
               <Route element={<ClientMedicationRecordList/>} exact path='/clients/:pk' />
+              <Route element={<ViewClientMedicationRecord/>} exact path='/clients/:pk/view_med_record/:pk'/>
          
               <Route element={<TimeStamps/>} exact path='/timestamps' />
               

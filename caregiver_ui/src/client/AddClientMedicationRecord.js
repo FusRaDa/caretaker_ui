@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import ServerAddress from "../utils/ServerAddress"
 import AuthContext from "../context/AuthContext"
 
@@ -102,7 +102,6 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
    
   }
 
-
   let onChangeDate = (e) => {
 
     //parse string from date input
@@ -126,7 +125,7 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
   }
 
   let createMedicationRecord = () => {
-    let medicationRecord = {}
+    let medicationRecord = []
 
     for (var x = 0; x < medications.length; x++) {
 
@@ -138,20 +137,21 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
       let friday = document.getElementById(`friday-${x}`).checked
       let saturday = document.getElementById(`saturday-${x}`).checked
 
-      medicationRecord[`${medications[x]}`] = 
-      
-      [
-        {"sunday": sunday}, 
-        {"monday": monday}, 
-        {"tuesday": tuesday},
-        {"wednesday": wednesday},
-        {"thursday": thursday},
-        {"friday": friday},
-        {"saturday": saturday}
-      ]
+      let key = medications[x]
 
+      let obj = {
+        [key]: {
+            "sunday": sunday, 
+            "monday": monday, 
+            "tuesday": tuesday,
+            "wednesday": wednesday,
+            "thursday": thursday,
+            "friday": friday,
+            "saturday": saturday,
+        }
+      }
+      medicationRecord.push(obj)
     }
-
     return medicationRecord
   }
 
@@ -214,7 +214,8 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
                 weekOfMonth === 2 ? <h5>2nd Week of {date.toLocaleString('en-US', { month: 'long' })}-{date.getFullYear()}</h5> :
                 weekOfMonth === 3 ? <h5>3rd Week of {date.toLocaleString('en-US', { month: 'long' })}-{date.getFullYear()}</h5> :
                 weekOfMonth === 4 ? <h5>4th Week of {date.toLocaleString('en-US', { month: 'long' })}-{date.getFullYear()}</h5> :
-                <h5>5th Week of {date.toLocaleString('en-US', { month: 'long' })}-{date.getFullYear()}</h5>
+                weekOfMonth === 5 ? <h5>5th Week of {date.toLocaleString('en-US', { month: 'long' })}-{date.getFullYear()}</h5> :
+                <h5>6th Week of {date.toLocaleString('en-US', { month: 'long' })}-{date.getFullYear()}</h5>
                 }
               </div>
               }
