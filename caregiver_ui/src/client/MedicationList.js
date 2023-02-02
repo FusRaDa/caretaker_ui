@@ -149,7 +149,6 @@ const MedicationList = ({medications, client}) => {
         </Row>
 
         <Row>
-
           <Col>
             <table>
 

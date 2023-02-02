@@ -9,8 +9,7 @@ import Form from 'react-bootstrap/Form'
 import Button from "react-bootstrap/Button"
 import ClientMedicationTableStyles from "./ClientMedicationTableStyles"
 import Table from 'react-bootstrap/Table';
-import Modal from 'react-bootstrap/Modal'
-import ClientMedicationList from "./ClientMedicationList"
+
 
 
 const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) => {
@@ -25,11 +24,6 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
   let [daysOfWeek, setDaysOfWeek] = useState([])
 
   let [medications, setMedications] = useState(client.medication_list !== null ? [...client.medication_list] : [])
-
-  //modal
-  let [show, setShow] = useState(false);
-  let handleClose = () => setShow(false);
-  let handleShow = () => setShow(true);
 
   //get week number in the month - for aesthetic purposes only
   let getWeekMonth = (date) => {
@@ -168,6 +162,10 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
 
     let weeklyRecord = createMedicationRecord()
 
+    console.log(weeklyRecord)
+
+    return
+
     let response = await fetch(`${ServerAddress}/api/client_medication/create/`, {
       method: 'POST',
       headers: {
@@ -197,6 +195,12 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
   }
 
 
+  let edit = (e) => {
+    console.log(e)
+
+  }
+
+ 
   return (
     <ClientMedicationTableStyles>
       <Container>
@@ -219,9 +223,6 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
                 }
               </div>
               }
-            </Col>
-            <Col>
-              <Button className="medication_list" onClick={handleShow}>{`Edit ${client.full_name}'s Medication List`}</Button>
             </Col>
           </Row>
 
@@ -246,14 +247,76 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
 
                   {medications.map((med) => (
                   <tr key={medications.indexOf(med)}>
-                    <td>{med}</td>
-                    <td><input id={`sunday-${medications.indexOf(med)}`} type="checkbox" defaultChecked={false}/></td>
-                    <td><input id={`monday-${medications.indexOf(med)}`} type="checkbox" defaultChecked={false}/></td>
-                    <td><input id={`tuesday-${medications.indexOf(med)}`} type="checkbox" defaultChecked={false}/></td>
-                    <td><input id={`wednesday-${medications.indexOf(med)}`} type="checkbox" defaultChecked={false}/></td>
-                    <td><input id={`thursday-${medications.indexOf(med)}`} type="checkbox" defaultChecked={false}/></td>
-                    <td><input id={`friday-${medications.indexOf(med)}`} type="checkbox" defaultChecked={false}/></td>
-                    <td><input id={`saturday-${medications.indexOf(med)}`} type="checkbox" defaultChecked={false}/></td>
+                    <td>
+                      <Row>
+                        <Col sm={1}>
+                          <Button className="move_up">&#8593;</Button>
+                          <Button className="move_down">&#8595;</Button>
+                        </Col>
+
+                        <Col className="med_col" sm={11}>
+                          <input className="med_input" disabled defaultValue={med} draggable="false"/>
+                          <Button variant="danger" onClick={() => console.log('delete')}  className="delete">X</Button>
+                          <Button variant="warning" onClick={edit} className="edit">E</Button>
+                        </Col>
+                      </Row>
+                    </td>
+
+                    <td>
+                      <Row>
+                        <Col className="med_col_check">
+                          <input className="checkbox" id={`sunday-${medications.indexOf(med)}`} type="checkbox" defaultChecked={false}/>
+                        </Col>
+                      </Row>
+                    </td>
+
+                    <td>
+                      <Row>
+                        <Col className="med_col_check">
+                          <input className="checkbox" id={`monday-${medications.indexOf(med)}`} type="checkbox" defaultChecked={false}/>
+                        </Col>
+                      </Row>
+                    </td>
+
+                    <td>
+                      <Row>
+                        <Col className="med_col_check">
+                        <input className="checkbox" id={`tuesday-${medications.indexOf(med)}`} type="checkbox" defaultChecked={false}/>
+                        </Col>
+                      </Row>
+                    </td>
+
+                    <td>
+                      <Row>
+                        <Col className="med_col_check"> 
+                          <input className="checkbox" id={`wednesday-${medications.indexOf(med)}`} type="checkbox" defaultChecked={false}/>
+                        </Col>
+                      </Row>
+                    </td>
+
+                    <td>
+                      <Row>
+                        <Col className="med_col_check">
+                          <input className="checkbox" id={`thursday-${medications.indexOf(med)}`} type="checkbox" defaultChecked={false}/>
+                        </Col>
+                      </Row>
+                    </td>
+
+                    <td>
+                      <Row>
+                        <Col className="med_col_check">
+                          <input className="checkbox" id={`friday-${medications.indexOf(med)}`} type="checkbox" defaultChecked={false}/>
+                        </Col>
+                      </Row>
+                    </td>
+
+                    <td>
+                      <Row>
+                        <Col className="med_col_check">
+                          <input className="checkbox" id={`saturday-${medications.indexOf(med)}`} type="checkbox" defaultChecked={false}/>
+                        </Col>
+                      </Row>
+                    </td>
                   </tr>
                   ))}
 
@@ -264,21 +327,11 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
           </Row>
 
           <Button type="submit">Submit</Button>
+          
           <Button className="add_button">Add Medication</Button>
-        </Form>
+          <Button className="add_label">Add Label</Button>
 
-        <Modal
-          show={show}
-          onHide={handleClose}
-          backdrop="static"
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>{`${client.full_name}'s Medication List`}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <ClientMedicationList client={client} setMedications={setMedications}/>
-          </Modal.Body>
-        </Modal>
+        </Form>
 
       </Container>
     </ClientMedicationTableStyles>

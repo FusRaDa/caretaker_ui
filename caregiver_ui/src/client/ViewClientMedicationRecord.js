@@ -138,7 +138,6 @@ const ViewClientMedicationRecord = () => {
             </Col>
 
             <Col className="week_month">
-           
               <div>
                 {
                 weekOfMonth === 1 ? <h5>1st Week of {getMonthName(year, month)}-{year}</h5> : 
@@ -149,7 +148,6 @@ const ViewClientMedicationRecord = () => {
                 <h5>6th Week of {getMonthName(year, month)}-{year}</h5>
                 }
               </div>
-         
             </Col>
 
             <Col>
@@ -179,13 +177,13 @@ const ViewClientMedicationRecord = () => {
                   {weeklyMedications.map((med) => (
                   <tr key={weeklyMedications.indexOf(med)}>
                     <td>{Object.keys(med)}</td>
-                    <td><input id={`sunday-${weeklyMedications.indexOf(med)}`} type="checkbox" defaultChecked={false}/></td>
-                    <td><input id={`monday-${weeklyMedications.indexOf(med)}`} type="checkbox" defaultChecked={false}/></td>
-                    <td><input id={`tuesday-${weeklyMedications.indexOf(med)}`} type="checkbox" defaultChecked={false}/></td>
-                    <td><input id={`wednesday-${weeklyMedications.indexOf(med)}`} type="checkbox" defaultChecked={false}/></td>
-                    <td><input id={`thursday-${weeklyMedications.indexOf(med)}`} type="checkbox" defaultChecked={false}/></td>
-                    <td><input id={`friday-${weeklyMedications.indexOf(med)}`} type="checkbox" defaultChecked={false}/></td>
-                    <td><input id={`saturday-${weeklyMedications.indexOf(med)}`} type="checkbox" defaultChecked={false}/></td>
+                    <td><input id={`sunday-${weeklyMedications.indexOf(med)}`} type="checkbox" defaultChecked={med[Object.keys(med)].sunday}/></td>
+                    <td><input id={`monday-${weeklyMedications.indexOf(med)}`} type="checkbox" defaultChecked={med[Object.keys(med)].monday}/></td>
+                    <td><input id={`tuesday-${weeklyMedications.indexOf(med)}`} type="checkbox" defaultChecked={med[Object.keys(med)].tuesday}/></td>
+                    <td><input id={`wednesday-${weeklyMedications.indexOf(med)}`} type="checkbox" defaultChecked={med[Object.keys(med)].wednesday}/></td>
+                    <td><input id={`thursday-${weeklyMedications.indexOf(med)}`} type="checkbox" defaultChecked={med[Object.keys(med)].thursday}/></td>
+                    <td><input id={`friday-${weeklyMedications.indexOf(med)}`} type="checkbox" defaultChecked={med[Object.keys(med)].friday}/></td>
+                    <td><input id={`saturday-${weeklyMedications.indexOf(med)}`} type="checkbox" defaultChecked={med[Object.keys(med)].saturday}/></td>
                   </tr>
                   ))}
                 </tbody>
