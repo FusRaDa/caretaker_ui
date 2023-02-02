@@ -12,6 +12,7 @@ import Modal from 'react-bootstrap/Modal'
 import Table from 'react-bootstrap/Table'
 import Button from "react-bootstrap/Button"
 import ClientMedicationTableStyles from "./ClientMedicationTableStyles"
+import MedicationList from "./MedicationList"
 
 
 const ViewClientMedicationRecord = () => {
@@ -31,6 +32,7 @@ const ViewClientMedicationRecord = () => {
   let [daysOfWeek, setDaysOfWeek] = useState([])
 
   let [weeklyMedications, setweeklyMedications] = useState([...location.state.medicationRecord.weekly_record])
+  let [medications, setMedications] = useState([])
 
   //modal
   let [show, setShow] = useState(false);
@@ -109,14 +111,17 @@ const ViewClientMedicationRecord = () => {
    
   }
 
-
-
+  let listMedications = () => {
+    let list = weeklyMedications.map((med)=> (
+      (Object.keys(med)[0])
+    ))
+    setMedications(list)
+  }
 
   useEffect(() => {
     getDaysOfWeek(location.state.medicationRecord.week_number, location.state.medicationRecord.year_number)
-    console.log(location.state)
-
-
+    listMedications()
+    // eslint-disable-next-line
   }, [])
 
 
@@ -148,7 +153,7 @@ const ViewClientMedicationRecord = () => {
             </Col>
 
             <Col>
-              <Button className="medication_list" onClick={handleShow}>{`Edit ${client.full_name}'s Medication List`}</Button>
+              <Button className="medication_list" onClick={handleShow}>{`Edit Medication List`}</Button>
             </Col>
       
           </Row>
@@ -201,7 +206,7 @@ const ViewClientMedicationRecord = () => {
             <Modal.Title>{`Medication List`}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {/* <ClientMedicationList client={client} setMedications={setMedications}/> */} med list
+            <MedicationList medications={medications} client={client}/>
           </Modal.Body>
         </Modal>
         
