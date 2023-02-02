@@ -23,7 +23,8 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
   let [year, setYear] = useState(null)
   let [daysOfWeek, setDaysOfWeek] = useState([])
 
-  let [medications, setMedications] = useState(client.medication_list !== null ? [...client.medication_list] : [])
+  let [medications, setMedications] = useState(client.medication_list !== null ? [...client.medication_list] : []) //get list of medications from client api
+  let [weeklyRecord, setWeeklyRecord] = useState([]) 
 
   //get week number in the month - for aesthetic purposes only
   let getWeekMonth = (date) => {
@@ -65,9 +66,9 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
     
   }
 
+
   let getDaysOfWeek = (w, y) => {
     
-
     let date = new Date(y, 0, (1 + (w-1) * 7)); // 1st of January + 7 days for each week
 
     let options = {day: 'numeric', month: 'numeric' }
@@ -93,8 +94,8 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
     console.log(days)
 
     setDaysOfWeek(days)
-   
   }
+
 
   let onChangeDate = (e) => {
 
@@ -118,35 +119,35 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
     getDaysOfWeek(weekNumberData, yearData)
   }
 
-  let createMedicationRecord = () => {
+
+  let initializeMedicationRecord = () => {
+
+    if (medications.length < 1) {
+      console.log('medication_list is null')
+      return
+    }
+
     let medicationRecord = []
 
     for (var x = 0; x < medications.length; x++) {
 
-      let sunday = document.getElementById(`sunday-${x}`).checked
-      let monday = document.getElementById(`monday-${x}`).checked
-      let tuesday = document.getElementById(`tuesday-${x}`).checked
-      let wednesday = document.getElementById(`wednesday-${x}`).checked
-      let thursday = document.getElementById(`thursday-${x}`).checked
-      let friday = document.getElementById(`friday-${x}`).checked
-      let saturday = document.getElementById(`saturday-${x}`).checked
+      let medication = medications[x]
 
-      let key = medications[x]
-
-      let obj = {
-        [key]: {
-            "sunday": sunday, 
-            "monday": monday, 
-            "tuesday": tuesday,
-            "wednesday": wednesday,
-            "thursday": thursday,
-            "friday": friday,
-            "saturday": saturday,
+      let obj = 
+        {
+          "medication": medication,
+          "sunday": false, 
+          "monday": false, 
+          "tuesday": false,
+          "wednesday": false,
+          "thursday": false,
+          "friday": false,
+          "saturday": false,
         }
-      }
+
       medicationRecord.push(obj)
     }
-    return medicationRecord
+    setWeeklyRecord(medicationRecord)
   }
 
 
@@ -159,10 +160,6 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
       document.getElementById('date').value = ""
       return
     }
-
-    let weeklyRecord = createMedicationRecord()
-
-    console.log(weeklyRecord)
 
     return
 
@@ -194,11 +191,25 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
     }
   }
 
-
-  let edit = (e) => {
-    console.log(e)
+  let addMedication = () => {
 
   }
+
+  let removeMedication = (medication) => {
+
+  }
+
+  let handleCheckBox = (index, medication) => {
+
+  }
+
+
+
+  useEffect(() => {
+  
+    initializeMedicationRecord()
+    
+  }, [medications])
 
  
   return (
@@ -245,8 +256,8 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
 
                 <tbody>
 
-                  {medications.map((med) => (
-                  <tr key={medications.indexOf(med)}>
+                  {weeklyRecord.map((med) => (
+                  <tr key={weeklyRecord.indexOf(med)}>
                     <td>
                       <Row>
                         <Col sm={1}>
@@ -254,10 +265,10 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
                           <Button className="move_down">&#8595;</Button>
                         </Col>
 
-                        <Col className="med_col" sm={11}>
-                          <input className="med_input" disabled defaultValue={med} draggable="false"/>
-                          <Button variant="danger" onClick={() => console.log('delete')}  className="delete">X</Button>
-                          <Button variant="warning" onClick={edit} className="edit">E</Button>
+                        <Col key={`key_${med}`} className="med_col" sm={11}>
+                          <input className="med_input" defaultValue={med.medication}/>
+                          <Button variant="danger" onClick={() => removeMedication(med)} className="delete">X</Button>
+                          <Button variant="warning" onClick={() => console.log('edit')} className="edit">E</Button>
                         </Col>
                       </Row>
                     </td>
@@ -265,7 +276,12 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
                     <td>
                       <Row>
                         <Col className="med_col_check">
-                          <input className="checkbox" id={`sunday-${medications.indexOf(med)}`} type="checkbox" defaultChecked={false}/>
+                          <input 
+                            className="checkbox" 
+                            id={`sunday-${weeklyRecord.indexOf(med)}`} 
+                            onClick={() => handleCheckBox(weeklyRecord.indexOf(med), med)}
+                            type="checkbox" 
+                            defaultChecked={med.sunday}/>
                         </Col>
                       </Row>
                     </td>
@@ -273,7 +289,11 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
                     <td>
                       <Row>
                         <Col className="med_col_check">
-                          <input className="checkbox" id={`monday-${medications.indexOf(med)}`} type="checkbox" defaultChecked={false}/>
+                          <input 
+                            className="checkbox" 
+                            id={`monday-${weeklyRecord.indexOf(med)}`} 
+                            type="checkbox" 
+                            defaultChecked={med.monday}/>
                         </Col>
                       </Row>
                     </td>
@@ -281,7 +301,11 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
                     <td>
                       <Row>
                         <Col className="med_col_check">
-                        <input className="checkbox" id={`tuesday-${medications.indexOf(med)}`} type="checkbox" defaultChecked={false}/>
+                          <input 
+                          className="checkbox" 
+                          id={`tuesday-${weeklyRecord.indexOf(med)}`} 
+                          type="checkbox" 
+                          defaultChecked={med.tuesday}/>
                         </Col>
                       </Row>
                     </td>
@@ -289,7 +313,11 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
                     <td>
                       <Row>
                         <Col className="med_col_check"> 
-                          <input className="checkbox" id={`wednesday-${medications.indexOf(med)}`} type="checkbox" defaultChecked={false}/>
+                          <input 
+                            className="checkbox" 
+                            id={`wednesday-${weeklyRecord.indexOf(med)}`} 
+                            type="checkbox" 
+                            defaultChecked={med.wednesday}/>
                         </Col>
                       </Row>
                     </td>
@@ -297,7 +325,11 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
                     <td>
                       <Row>
                         <Col className="med_col_check">
-                          <input className="checkbox" id={`thursday-${medications.indexOf(med)}`} type="checkbox" defaultChecked={false}/>
+                          <input 
+                            className="checkbox" 
+                            id={`thursday-${weeklyRecord.indexOf(med)}`} 
+                            type="checkbox" 
+                            defaultChecked={med.thursday}/>
                         </Col>
                       </Row>
                     </td>
@@ -305,7 +337,11 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
                     <td>
                       <Row>
                         <Col className="med_col_check">
-                          <input className="checkbox" id={`friday-${medications.indexOf(med)}`} type="checkbox" defaultChecked={false}/>
+                          <input 
+                            className="checkbox" 
+                            id={`friday-${weeklyRecord.indexOf(med)}`} 
+                            type="checkbox" 
+                            defaultChecked={med.friday}/>
                         </Col>
                       </Row>
                     </td>
@@ -313,7 +349,11 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
                     <td>
                       <Row>
                         <Col className="med_col_check">
-                          <input className="checkbox" id={`saturday-${medications.indexOf(med)}`} type="checkbox" defaultChecked={false}/>
+                          <input 
+                            className="checkbox" 
+                            id={`saturday-${weeklyRecord.indexOf(med)}`} 
+                            type="checkbox" 
+                            defaultChecked={med.saturday}/>
                         </Col>
                       </Row>
                     </td>
@@ -328,8 +368,8 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
 
           <Button type="submit">Submit</Button>
           
-          <Button className="add_button">Add Medication</Button>
-          <Button className="add_label">Add Label</Button>
+          <Button className="add_button" onClick={() => addMedication()}>Add Medication</Button>
+          <Button className="add_label" onClick={(e) => console.log(e)}>Add Label</Button>
 
         </Form>
 
