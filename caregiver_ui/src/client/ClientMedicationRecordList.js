@@ -210,7 +210,7 @@ const ClientMedicationRecordList = () => {
             <Modal.Title>Add Weekly Medication Record</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <AddClientMedicationRecord client={state.data} handleCloseAddRecord={handleClose} setUpdating={setUpdating}/>
+            <AddClientMedicationRecord client={state.data} handleClose={handleClose} setUpdating={setUpdating}/>
           </Modal.Body>
         </Modal>
 

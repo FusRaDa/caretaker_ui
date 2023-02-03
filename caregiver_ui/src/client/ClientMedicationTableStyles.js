@@ -21,6 +21,7 @@ const ClientMedicationTableStyles = styled.div
   }
 
   .checkbox {
+    margin-top: 3px;
     width: 50px;
     height: 25px;
   }
@@ -31,8 +32,16 @@ const ClientMedicationTableStyles = styled.div
     padding: 0;
   }
 
-  .med_input {
+  .med_name {
     width: 75%;
+    border-style: solid;
+    border-width: 1px;
+    text-align: left;
+  }
+
+  h6 {
+    margin-top: 5px;
+    margin-bottom: 0;
   }
 
   .med_col {
@@ -51,7 +60,7 @@ const ClientMedicationTableStyles = styled.div
   .edit, .delete {
     font-size: 10px;
     text-align: center;
-    margin-bottom: 5px;
+    margin-bottom: 0px;
   }
 
   .medication_header {

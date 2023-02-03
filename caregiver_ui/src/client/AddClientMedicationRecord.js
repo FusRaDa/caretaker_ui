@@ -2,17 +2,18 @@ import { useContext, useEffect, useState } from "react"
 import ServerAddress from "../utils/ServerAddress"
 import AuthContext from "../context/AuthContext"
 
+import ClientMedicationTableStyles from "./ClientMedicationTableStyles"
 import Container from "react-bootstrap/Container"
 import Col from "react-bootstrap/Col"
 import Row from "react-bootstrap/Row"
 import Form from 'react-bootstrap/Form'
 import Button from "react-bootstrap/Button"
-import ClientMedicationTableStyles from "./ClientMedicationTableStyles"
-import Table from 'react-bootstrap/Table';
+import Table from 'react-bootstrap/Table'
+import Modal from 'react-bootstrap/Modal'
 
 
 
-const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) => {
+const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
 
   let {authTokens} = useContext(AuthContext)
 
@@ -23,8 +24,17 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
   let [year, setYear] = useState(null)
   let [daysOfWeek, setDaysOfWeek] = useState([])
 
-  let [medications, setMedications] = useState(client.medication_list !== null ? [...client.medication_list] : []) //get list of medications from client api
-  let [weeklyRecord, setWeeklyRecord] = useState([]) 
+  let [weeklyRecord, setWeeklyRecord] = useState([])
+
+  //modal to add medication
+  let [showA, setShowA] = useState(false);
+  let handleCloseA = () => setShowA(false);
+  let handleShowA = () => setShowA(true);
+
+  //modal to edit medication
+  let [showE, setShowE] = useState(false);
+  let handleCloseE = () => setShowE(false);
+  let handleShowE = () => setShowE(true);
 
   //get week number in the month - for aesthetic purposes only
   let getWeekMonth = (date) => {
@@ -122,7 +132,9 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
 
   let initializeMedicationRecord = () => {
 
-    if (medications.length < 1) {
+    let medications = client.medication_list
+
+    if (medications.length < 1 || medications === null) {
       console.log('medication_list is null')
       return
     }
@@ -183,7 +195,7 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
     })
 
     if (response.status === 201) {
-      handleCloseAddRecord()
+      handleClose()
       setUpdating(true)
 
     } else {
@@ -209,7 +221,7 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
   
     initializeMedicationRecord()
     
-  }, [medications])
+  }, [])
 
  
   return (
@@ -266,9 +278,7 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
                         </Col>
 
                         <Col key={`key_${med}`} className="med_col" sm={11}>
-                          <input className="med_input" defaultValue={med.medication}/>
-                          <Button variant="danger" onClick={() => removeMedication(med)} className="delete">X</Button>
-                          <Button variant="warning" onClick={() => console.log('edit')} className="edit">E</Button>
+                          <div className="med_name"><h6 onClick={handleShowE}>{med.medication}</h6></div> 
                         </Col>
                       </Row>
                     </td>
@@ -368,10 +378,38 @@ const AddClientMedicationRecord = ({client, handleCloseAddRecord, setUpdating}) 
 
           <Button type="submit">Submit</Button>
           
-          <Button className="add_button" onClick={() => addMedication()}>Add Medication</Button>
-          <Button className="add_label" onClick={(e) => console.log(e)}>Add Label</Button>
+          <Button className="add_button" onClick={handleShowA}>Add Medication</Button>
+          <Button className="add_label" onClick={(e) => console.log('label')}>Add Label</Button>
 
         </Form>
+
+        <Modal
+          show={showA}
+          onHide={handleCloseA}
+          backdrop="static"
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Add Medication</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Add med/label
+          </Modal.Body>
+        </Modal>
+
+        <Modal
+          show={showE}
+          onHide={handleCloseE}
+          backdrop="static"
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Edit Medication</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Edit
+          </Modal.Body>
+        </Modal>
 
       </Container>
     </ClientMedicationTableStyles>
