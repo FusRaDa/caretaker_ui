@@ -22,6 +22,11 @@ const EditMedicationRecord = ({weeklyRecord, setWeeklyRecord, handleClose, selec
 
     selection.medication = e.target.medication.value
 
+    if (weeklyRecord.contains(selection)) {
+      alert("medication is already in this list")
+      return
+    }
+
     if (index !== -1) {
       weeklyRecord[index] = selection
       setWeeklyRecord(weeklyRecord)
@@ -36,6 +41,11 @@ const EditMedicationRecord = ({weeklyRecord, setWeeklyRecord, handleClose, selec
     let index = weeklyRecord.indexOf(selection)
 
     selection.label = e.target.label.value
+
+    if (weeklyRecord.contains(selection)) {
+      alert("label is already in this list")
+      return
+    }
 
     if (index !== -1) {
       weeklyRecord[index] = selection

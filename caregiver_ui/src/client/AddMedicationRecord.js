@@ -27,6 +27,11 @@ const AddMedicationRecord = ({weeklyRecord, setWeeklyRecord, handleClose}) => {
           "friday": false,
           "saturday": false,
         }
+    
+    if (weeklyRecord.contains(obj)) {
+      alert("medication is already in this list")
+      return
+    }
 
     setWeeklyRecord([...weeklyRecord, obj])
 
@@ -42,6 +47,11 @@ const AddMedicationRecord = ({weeklyRecord, setWeeklyRecord, handleClose}) => {
         { 
           "label": e.target.label.value,
         }
+
+    if (weeklyRecord.contains(obj)) {
+      alert("label is already in this list")
+      return
+    }
 
     setWeeklyRecord([...weeklyRecord, obj])
 
