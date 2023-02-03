@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 import Container from "react-bootstrap/esm/Container"
 import Col from "react-bootstrap/Col"
@@ -27,9 +27,10 @@ const AddMedicationRecord = ({weeklyRecord, setWeeklyRecord, handleClose}) => {
           "friday": false,
           "saturday": false,
         }
-    
-    if (weeklyRecord.contains(obj)) {
-      alert("medication is already in this list")
+
+    let validation = weeklyRecord.filter((m => m.medication === obj.medication || m.label === obj.medication))
+    if (validation.length > 0) {
+      alert("Row already exists, input must be unique")
       return
     }
 
@@ -47,9 +48,10 @@ const AddMedicationRecord = ({weeklyRecord, setWeeklyRecord, handleClose}) => {
         { 
           "label": e.target.label.value,
         }
-
-    if (weeklyRecord.contains(obj)) {
-      alert("label is already in this list")
+    
+    let validation = weeklyRecord.filter((m => m.label === obj.label || m.medication === obj.label))
+    if (validation.length > 0) {
+      alert("Row already exists, input must be unique")
       return
     }
 

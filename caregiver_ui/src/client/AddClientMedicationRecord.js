@@ -179,6 +179,8 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
       return
     }
 
+    console.log(weeklyRecord)
+
     return
 
     let response = await fetch(`${ServerAddress}/api/client_medication/create/`, {
@@ -241,8 +243,10 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
     }
   }
 
-  let handleCheckBox = (index, medication) => {
-
+  let handleCheckBox = (e, medication) => {
+    let checked = e.target.checked
+    let day = e.target.value
+    medication[day] = checked
   }
 
   let handleSelection = (med) => {
@@ -254,10 +258,10 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
   useEffect(() => {
   
     initializeMedicationRecord()
-    
+    // eslint-disable-next-line
   }, [])
 
- 
+
   return (
     <ClientMedicationTableStyles>
       <Container>
@@ -303,7 +307,7 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
                 <tbody>
 
                   {weeklyRecord.map((med) => (
-                  <tr key={weeklyRecord.indexOf(med)}>
+                  <tr key={med.medication || med.label}>
 
                     {med.label !== undefined && 
                     <>
@@ -354,10 +358,10 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
                       <td>
                         <Row>
                           <Col className="med_col_check">
-                            <input 
+                            <input
+                              value="sunday"
                               className="checkbox" 
-                              id={`sunday-${weeklyRecord.indexOf(med)}`} 
-                              onClick={() => handleCheckBox(weeklyRecord.indexOf(med), med)}
+                              onClick={(e) => handleCheckBox(e, med)}
                               type="checkbox" 
                               defaultChecked={med.sunday}/>
                           </Col>
@@ -367,9 +371,10 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
                       <td>
                         <Row>
                           <Col className="med_col_check">
-                            <input 
+                            <input
+                              value="monday"
                               className="checkbox" 
-                              id={`monday-${weeklyRecord.indexOf(med)}`} 
+                              onClick={(e) => handleCheckBox(e, med)}
                               type="checkbox" 
                               defaultChecked={med.monday}/>
                           </Col>
@@ -380,10 +385,12 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
                         <Row>
                           <Col className="med_col_check">
                             <input 
-                            className="checkbox" 
-                            id={`tuesday-${weeklyRecord.indexOf(med)}`} 
-                            type="checkbox" 
-                            defaultChecked={med.tuesday}/>
+                              value="tuesday"
+                              className="checkbox" 
+                              onClick={(e) => handleCheckBox(e, med)}
+                              type="checkbox" 
+                              defaultChecked={med.tuesday}
+                            />
                           </Col>
                         </Row>
                       </td>
@@ -392,8 +399,9 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
                         <Row>
                           <Col className="med_col_check"> 
                             <input 
+                              value="wednesday"
                               className="checkbox" 
-                              id={`wednesday-${weeklyRecord.indexOf(med)}`} 
+                              onClick={(e) => handleCheckBox(e, med)}
                               type="checkbox" 
                               defaultChecked={med.wednesday}/>
                           </Col>
@@ -404,8 +412,9 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
                         <Row>
                           <Col className="med_col_check">
                             <input 
+                              value="thursday"
                               className="checkbox" 
-                              id={`thursday-${weeklyRecord.indexOf(med)}`} 
+                              onClick={(e) => handleCheckBox(e, med)}
                               type="checkbox" 
                               defaultChecked={med.thursday}/>
                           </Col>
@@ -416,8 +425,9 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
                         <Row>
                           <Col className="med_col_check">
                             <input 
+                              value="friday"
                               className="checkbox" 
-                              id={`friday-${weeklyRecord.indexOf(med)}`} 
+                              onClick={(e) => handleCheckBox(e, med)}
                               type="checkbox" 
                               defaultChecked={med.friday}/>
                           </Col>
@@ -428,8 +438,9 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
                         <Row>
                           <Col className="med_col_check">
                             <input 
+                              value="saturday"
                               className="checkbox" 
-                              id={`saturday-${weeklyRecord.indexOf(med)}`} 
+                              onClick={(e) => handleCheckBox(e, med)}
                               type="checkbox" 
                               defaultChecked={med.saturday}/>
                           </Col>

@@ -5,13 +5,12 @@ import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
 import Button from "react-bootstrap/esm/Button"
 import Form from 'react-bootstrap/Form'
-import { useEffect } from "react"
 
 
 const EditMedicationRecord = ({weeklyRecord, setWeeklyRecord, handleClose, selection}) => {
 
   let deleteMedication = () => {
-    let data = weeklyRecord.filter(m => m != selection)
+    let data = weeklyRecord.filter(m => m !== selection)
     setWeeklyRecord(data)
     handleClose()
   }
@@ -20,13 +19,18 @@ const EditMedicationRecord = ({weeklyRecord, setWeeklyRecord, handleClose, selec
     e.preventDefault()
     let index = weeklyRecord.indexOf(selection)
 
-    selection.medication = e.target.medication.value
-
-    if (weeklyRecord.contains(selection)) {
-      alert("medication is already in this list")
+    if (selection.medication === e.target.medication.value) {
+      handleClose()
       return
     }
 
+    let validation = weeklyRecord.filter(m => m.medication === e.target.medication.value || m.label === e.target.medication.value )
+    if (validation.length > 0) {
+      alert("Row already exists, input must be unique")
+      return
+    }
+
+    selection.medication = e.target.medication.value
     if (index !== -1) {
       weeklyRecord[index] = selection
       setWeeklyRecord(weeklyRecord)
@@ -40,13 +44,18 @@ const EditMedicationRecord = ({weeklyRecord, setWeeklyRecord, handleClose, selec
     e.preventDefault()
     let index = weeklyRecord.indexOf(selection)
 
-    selection.label = e.target.label.value
-
-    if (weeklyRecord.contains(selection)) {
-      alert("label is already in this list")
+    if (selection.label === e.target.label.value) {
+      handleClose()
       return
     }
 
+    let validation = weeklyRecord.filter(m => m.label === e.target.label.value || m.medication === e.target.label.value)
+    if (validation.length > 0) {
+      alert("Row already exists, input must be unique")
+      return
+    }
+
+    selection.label = e.target.label.value
     if (index !== -1) {
       weeklyRecord[index] = selection
       setWeeklyRecord(weeklyRecord)
@@ -56,9 +65,6 @@ const EditMedicationRecord = ({weeklyRecord, setWeeklyRecord, handleClose, selec
     handleClose()
   }
 
-  useEffect(() => {
-    console.log(selection)
-  }, [])
 
   return (
     <Container>
