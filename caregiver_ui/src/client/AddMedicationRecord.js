@@ -14,6 +14,7 @@ const AddMedicationRecord = ({weeklyRecord, setWeeklyRecord, handleClose}) => {
   let addMedication = (e) => {
 
     let obj = 
+    
         {
           "medication": e.target.medication.value,
           "sunday": false, 
@@ -26,18 +27,25 @@ const AddMedicationRecord = ({weeklyRecord, setWeeklyRecord, handleClose}) => {
         }
 
     let data = weeklyRecord.push(obj)
+
     setWeeklyRecord(data)
+
+    handleClose()
   }
 
   let addLabel = (e) => {
 
     let obj = 
+
         { 
           "label": e.target.label.value,
         }
 
     let data = weeklyRecord.push(obj)
+
     setWeeklyRecord(data)
+
+    handleClose()
   }
 
 
