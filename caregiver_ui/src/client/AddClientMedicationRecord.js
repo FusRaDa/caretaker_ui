@@ -10,6 +10,7 @@ import Form from 'react-bootstrap/Form'
 import Button from "react-bootstrap/Button"
 import Table from 'react-bootstrap/Table'
 import Modal from 'react-bootstrap/Modal'
+import AddMedicationRecord from "./AddMedicationRecord"
 
 
 
@@ -270,103 +271,129 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
 
                   {weeklyRecord.map((med) => (
                   <tr key={weeklyRecord.indexOf(med)}>
-                    <td>
-                      <Row>
-                        <Col sm={1}>
-                          <Button className="move_up">&#8593;</Button>
-                          <Button className="move_down">&#8595;</Button>
-                        </Col>
 
-                        <Col key={`key_${med}`} className="med_col" sm={11}>
-                          <div className="med_name"><h6 onClick={handleShowE}>{med.medication}</h6></div> 
-                        </Col>
-                      </Row>
-                    </td>
+                    {med.label !== undefined && 
+                    <>
+                      <td>
+                        <Row>
+                          <Col sm={1}>
+                            <Button className="move_up">&#8593;</Button>
+                            <Button className="move_down">&#8595;</Button>
+                          </Col>
 
-                    <td>
-                      <Row>
-                        <Col className="med_col_check">
-                          <input 
+                          <Col key={`key_${med}`} className="med_col" sm={11}>
+                            <div className="med_name"><h6 onClick={handleShowE}>{med.label}</h6></div> 
+                          </Col>
+                        </Row>
+                      </td>
+                      <td>-----</td>
+                      <td>-----</td>
+                      <td>-----</td>
+                      <td>-----</td>
+                      <td>-----</td>
+                      <td>-----</td>
+                    </>}
+
+                    {med.label === undefined && 
+                    <>
+                      <td>
+                        <Row>
+                          <Col sm={1}>
+                            <Button className="move_up">&#8593;</Button>
+                            <Button className="move_down">&#8595;</Button>
+                          </Col>
+
+                          <Col key={`key_${med}`} className="med_col" sm={11}>
+                            <div className="med_name"><h6 onClick={handleShowE}>{med.medication}</h6></div> 
+                          </Col>
+                        </Row>
+                      </td>
+
+                      <td>
+                        <Row>
+                          <Col className="med_col_check">
+                            <input 
+                              className="checkbox" 
+                              id={`sunday-${weeklyRecord.indexOf(med)}`} 
+                              onClick={() => handleCheckBox(weeklyRecord.indexOf(med), med)}
+                              type="checkbox" 
+                              defaultChecked={med.sunday}/>
+                          </Col>
+                        </Row>
+                      </td>
+
+                      <td>
+                        <Row>
+                          <Col className="med_col_check">
+                            <input 
+                              className="checkbox" 
+                              id={`monday-${weeklyRecord.indexOf(med)}`} 
+                              type="checkbox" 
+                              defaultChecked={med.monday}/>
+                          </Col>
+                        </Row>
+                      </td>
+
+                      <td>
+                        <Row>
+                          <Col className="med_col_check">
+                            <input 
                             className="checkbox" 
-                            id={`sunday-${weeklyRecord.indexOf(med)}`} 
-                            onClick={() => handleCheckBox(weeklyRecord.indexOf(med), med)}
+                            id={`tuesday-${weeklyRecord.indexOf(med)}`} 
                             type="checkbox" 
-                            defaultChecked={med.sunday}/>
-                        </Col>
-                      </Row>
-                    </td>
+                            defaultChecked={med.tuesday}/>
+                          </Col>
+                        </Row>
+                      </td>
 
-                    <td>
-                      <Row>
-                        <Col className="med_col_check">
-                          <input 
-                            className="checkbox" 
-                            id={`monday-${weeklyRecord.indexOf(med)}`} 
-                            type="checkbox" 
-                            defaultChecked={med.monday}/>
-                        </Col>
-                      </Row>
-                    </td>
+                      <td>
+                        <Row>
+                          <Col className="med_col_check"> 
+                            <input 
+                              className="checkbox" 
+                              id={`wednesday-${weeklyRecord.indexOf(med)}`} 
+                              type="checkbox" 
+                              defaultChecked={med.wednesday}/>
+                          </Col>
+                        </Row>
+                      </td>
 
-                    <td>
-                      <Row>
-                        <Col className="med_col_check">
-                          <input 
-                          className="checkbox" 
-                          id={`tuesday-${weeklyRecord.indexOf(med)}`} 
-                          type="checkbox" 
-                          defaultChecked={med.tuesday}/>
-                        </Col>
-                      </Row>
-                    </td>
+                      <td>
+                        <Row>
+                          <Col className="med_col_check">
+                            <input 
+                              className="checkbox" 
+                              id={`thursday-${weeklyRecord.indexOf(med)}`} 
+                              type="checkbox" 
+                              defaultChecked={med.thursday}/>
+                          </Col>
+                        </Row>
+                      </td>
 
-                    <td>
-                      <Row>
-                        <Col className="med_col_check"> 
-                          <input 
-                            className="checkbox" 
-                            id={`wednesday-${weeklyRecord.indexOf(med)}`} 
-                            type="checkbox" 
-                            defaultChecked={med.wednesday}/>
-                        </Col>
-                      </Row>
-                    </td>
+                      <td>
+                        <Row>
+                          <Col className="med_col_check">
+                            <input 
+                              className="checkbox" 
+                              id={`friday-${weeklyRecord.indexOf(med)}`} 
+                              type="checkbox" 
+                              defaultChecked={med.friday}/>
+                          </Col>
+                        </Row>
+                      </td>
 
-                    <td>
-                      <Row>
-                        <Col className="med_col_check">
-                          <input 
-                            className="checkbox" 
-                            id={`thursday-${weeklyRecord.indexOf(med)}`} 
-                            type="checkbox" 
-                            defaultChecked={med.thursday}/>
-                        </Col>
-                      </Row>
-                    </td>
-
-                    <td>
-                      <Row>
-                        <Col className="med_col_check">
-                          <input 
-                            className="checkbox" 
-                            id={`friday-${weeklyRecord.indexOf(med)}`} 
-                            type="checkbox" 
-                            defaultChecked={med.friday}/>
-                        </Col>
-                      </Row>
-                    </td>
-
-                    <td>
-                      <Row>
-                        <Col className="med_col_check">
-                          <input 
-                            className="checkbox" 
-                            id={`saturday-${weeklyRecord.indexOf(med)}`} 
-                            type="checkbox" 
-                            defaultChecked={med.saturday}/>
-                        </Col>
-                      </Row>
-                    </td>
+                      <td>
+                        <Row>
+                          <Col className="med_col_check">
+                            <input 
+                              className="checkbox" 
+                              id={`saturday-${weeklyRecord.indexOf(med)}`} 
+                              type="checkbox" 
+                              defaultChecked={med.saturday}/>
+                          </Col>
+                        </Row>
+                      </td>
+                    </>}
                   </tr>
                   ))}
 
@@ -393,7 +420,7 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
             <Modal.Title>Add Medication</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            Add med/label
+            <AddMedicationRecord weeklyRecord={weeklyRecord} setWeeklyRecord={setWeeklyRecord} handleClose={handleCloseA}/>
           </Modal.Body>
         </Modal>
 
