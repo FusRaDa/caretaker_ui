@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import Container from "react-bootstrap/esm/Container"
 import Col from "react-bootstrap/Col"
@@ -13,6 +13,8 @@ const AddMedicationRecord = ({weeklyRecord, setWeeklyRecord, handleClose}) => {
 
   let addMedication = (e) => {
 
+    e.preventDefault()
+
     let obj = 
     
         {
@@ -26,14 +28,14 @@ const AddMedicationRecord = ({weeklyRecord, setWeeklyRecord, handleClose}) => {
           "saturday": false,
         }
 
-    let data = weeklyRecord.push(obj)
-
-    setWeeklyRecord(data)
+    setWeeklyRecord([...weeklyRecord, obj])
 
     handleClose()
   }
 
   let addLabel = (e) => {
+
+    e.preventDefault()
 
     let obj = 
 
@@ -41,9 +43,7 @@ const AddMedicationRecord = ({weeklyRecord, setWeeklyRecord, handleClose}) => {
           "label": e.target.label.value,
         }
 
-    let data = weeklyRecord.push(obj)
-
-    setWeeklyRecord(data)
+    setWeeklyRecord([...weeklyRecord, obj])
 
     handleClose()
   }
@@ -71,9 +71,13 @@ const AddMedicationRecord = ({weeklyRecord, setWeeklyRecord, handleClose}) => {
       {addMed && 
       <Row>
         <Col>
-          <Form>
-            <Form.Group onSubmit={addMedication}>
-              <Form.Control required name="medication" type="text" placeholder="Enter name of medication"/>
+          <Form onSubmit={addMedication}>
+            <Form.Group>
+              <Form.Control 
+                required 
+                name="medication" 
+                type="text" 
+                placeholder="Enter name of medication"/>
             </Form.Group>
             <Button variant="success" type="submit">Add Medication</Button>
           </Form>
@@ -83,9 +87,13 @@ const AddMedicationRecord = ({weeklyRecord, setWeeklyRecord, handleClose}) => {
       {!addMed && 
       <Row>
         <Col>
-          <Form>
-            <Form.Group onSubmit={addLabel}>
-              <Form.Control required name="label" type="text" placeholder="Enter name of label"/>
+          <Form onSubmit={addLabel}>
+            <Form.Group>
+              <Form.Control 
+                required 
+                name="label" 
+                type="text" 
+                placeholder="Enter name of label"/>
             </Form.Group>
             <Button variant="success" type="submit">Add Label</Button>
           </Form>

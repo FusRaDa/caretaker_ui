@@ -1,6 +1,10 @@
 import { useContext, useEffect, useState } from "react"
 import ServerAddress from "../utils/ServerAddress"
+import AddMedicationRecord from "./AddMedicationRecord"
+import EditMedicationRecord from "./EditMedicationRecord"
+
 import AuthContext from "../context/AuthContext"
+import ClientContext from "../context/ClientContext"
 
 import ClientMedicationTableStyles from "./ClientMedicationTableStyles"
 import Container from "react-bootstrap/Container"
@@ -10,14 +14,12 @@ import Form from 'react-bootstrap/Form'
 import Button from "react-bootstrap/Button"
 import Table from 'react-bootstrap/Table'
 import Modal from 'react-bootstrap/Modal'
-import AddMedicationRecord from "./AddMedicationRecord"
-import EditMedicationRecord from "./EditMedicationRecord"
-
 
 
 const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
 
   let {authTokens} = useContext(AuthContext)
+  let {setUpdatingClients} = useContext(ClientContext)
 
   let [date, setDate] = useState(null)
   let [weekOfMonth, setWeekOfMonth] = useState(null)
@@ -199,9 +201,41 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
     })
 
     if (response.status === 201) {
-      handleClose()
-      setUpdating(true)
 
+      updateClientMedicationList()
+      setUpdating(true)
+      handleClose()
+    } else {
+      alert('something went wrong!')
+    }
+  }
+
+  const updateClientMedicationList = async () => {
+
+    let medicationList = weeklyRecord.map((m) => (
+      m.label || m.medication
+    ))
+
+    console.log(medicationList)
+
+    return
+
+    let response = await fetch(`${ServerAddress}/api/client/${client.pk}/update/`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + String(authTokens.access)
+      },
+      body: JSON.stringify({
+        'medication_list': medicationList
+      })
+    })
+    .catch(() => {
+      alert('server response failed!')
+    })
+
+    if (response.status === 200) {
+      setUpdatingClients(true)
     } else {
       alert('something went wrong!')
     }
@@ -280,11 +314,16 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
                             <Button className="move_down">&#8595;</Button>
                           </Col>
 
-                          <Col key={`key_${med}`} className="med_col" sm={11} onClick={() => handleSelection(med)}>
-                            <div className="med_name"><h6>{med.label}</h6></div> 
+                          <Col 
+                            key={`key_${med}`} 
+                            className="med_col" 
+                            sm={11} 
+                          >
+                            <div className="med_name"><h6 onClick={() => handleSelection(med)}>{med.label}</h6></div> 
                           </Col>
                         </Row>
                       </td>
+                      <td>-----</td>
                       <td>-----</td>
                       <td>-----</td>
                       <td>-----</td>
@@ -302,8 +341,12 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
                             <Button className="move_down">&#8595;</Button>
                           </Col>
 
-                          <Col key={`key_${med}`} className="med_col" sm={11}>
-                            <div className="med_name"><h6 onClick={handleShowE}>{med.medication}</h6></div> 
+                          <Col 
+                            key={`key_${med}`} 
+                            className="med_col" 
+                            sm={11}
+                          >
+                            <div className="med_name"><h6 onClick={() => handleSelection(med)}>{med.medication}</h6></div> 
                           </Col>
                         </Row>
                       </td>
@@ -404,8 +447,7 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
 
           <Button type="submit">Submit</Button>
           
-          <Button className="add_button" onClick={handleShowA}>Add Medication</Button>
-          <Button className="add_label" onClick={(e) => console.log('label')}>Add Label</Button>
+          <Button className="add_button" onClick={handleShowA}>Add Medication/Label</Button>
 
         </Form>
 
@@ -433,7 +475,7 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
           centered
         >
           <Modal.Header closeButton>
-            <Modal.Title>Edit Medication</Modal.Title>
+            <Modal.Title>{selection !== null && selection.label === undefined ? "Edit Medication" : "Edit Label"}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <EditMedicationRecord 
@@ -441,7 +483,6 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
               setWeeklyRecord={setWeeklyRecord} 
               handleClose={handleCloseE}
               selection={selection}
-              setSelection={setSelection}
             />
           </Modal.Body>
         </Modal>

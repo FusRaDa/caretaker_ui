@@ -4,25 +4,27 @@ import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
 import Button from "react-bootstrap/esm/Button"
+import Form from 'react-bootstrap/Form'
+import { useEffect } from "react"
 
 
-const EditMedicationRecord = ({weeklyRecord, setWeeklyRecord, handleClose, selection, setSelection}) => {
+const EditMedicationRecord = ({weeklyRecord, setWeeklyRecord, handleClose, selection}) => {
 
   let deleteMedication = () => {
     let data = weeklyRecord.filter(m => m != selection)
     setWeeklyRecord(data)
-    setSelection(null)
     handleClose()
   }
 
   let editMedication = (e) => {
+    e.preventDefault()
     let index = weeklyRecord.indexOf(selection)
 
     selection.medication = e.target.medication.value
 
     if (index !== -1) {
-      let data = weeklyRecord[index] = selection
-      setWeeklyRecord(data)
+      weeklyRecord[index] = selection
+      setWeeklyRecord(weeklyRecord)
     } else {
       alert('item not found')
     }
@@ -30,18 +32,23 @@ const EditMedicationRecord = ({weeklyRecord, setWeeklyRecord, handleClose, selec
   }
 
   let editLabel = (e) => {
+    e.preventDefault()
     let index = weeklyRecord.indexOf(selection)
 
     selection.label = e.target.label.value
 
     if (index !== -1) {
-      let data = weeklyRecord[index] = selection
-      setWeeklyRecord(data)
+      weeklyRecord[index] = selection
+      setWeeklyRecord(weeklyRecord)
     } else {
       alert('item not found')
     }
     handleClose()
   }
+
+  useEffect(() => {
+    console.log(selection)
+  }, [])
 
   return (
     <Container>
@@ -54,21 +61,29 @@ const EditMedicationRecord = ({weeklyRecord, setWeeklyRecord, handleClose, selec
 
       <Row>
 
-        {selectedMedication.label === undefined && 
+        {selection.label === undefined && 
         <Col>
           <Form onSubmit={editMedication}>
-            <Form.Group onSubmit={addLabel}>
-              <Form.Control required name="medication" type="text" placeholder="Enter name of medication"/>
+            <Form.Group>
+              <Form.Control 
+                defaultValue={selection.medication}
+                required name="medication" 
+                type="text" 
+                placeholder="Enter name of medication"/>
             </Form.Group>
             <Button variant="success" type="submit">Edit Medication</Button>
           </Form>
         </Col>}
 
-        {selectedMedication.label !== undefined && 
+        {selection.label !== undefined && 
         <Col>
           <Form onSubmit={editLabel}>
-            <Form.Group onSubmit={addLabel}>
-              <Form.Control required name="label" type="text" placeholder="Enter name of label"/>
+            <Form.Group>
+              <Form.Control 
+                defaultValue={selection.label}
+                required name="label" 
+                type="text" 
+                placeholder="Enter name of label"/>
             </Form.Group>
             <Button variant="success" type="submit">Edit Label</Button>
           </Form>
