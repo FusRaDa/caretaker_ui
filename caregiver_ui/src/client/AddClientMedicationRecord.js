@@ -11,6 +11,7 @@ import Button from "react-bootstrap/Button"
 import Table from 'react-bootstrap/Table'
 import Modal from 'react-bootstrap/Modal'
 import AddMedicationRecord from "./AddMedicationRecord"
+import EditMedicationRecord from "./EditMedicationRecord"
 
 
 
@@ -24,6 +25,8 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
   let [month, setMonth] = useState(null)
   let [year, setYear] = useState(null)
   let [daysOfWeek, setDaysOfWeek] = useState([])
+
+  let [selection, setSelection] = useState(null)
 
   let [weeklyRecord, setWeeklyRecord] = useState([])
 
@@ -204,18 +207,14 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
     }
   }
 
-  let addMedication = () => {
-
-  }
-
-  let removeMedication = (medication) => {
-
-  }
-
   let handleCheckBox = (index, medication) => {
 
   }
 
+  let handleSelection = (med) => {
+    setSelection(med)
+    handleShowE()
+  }
 
 
   useEffect(() => {
@@ -281,8 +280,8 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
                             <Button className="move_down">&#8595;</Button>
                           </Col>
 
-                          <Col key={`key_${med}`} className="med_col" sm={11}>
-                            <div className="med_name"><h6 onClick={handleShowE}>{med.label}</h6></div> 
+                          <Col key={`key_${med}`} className="med_col" sm={11} onClick={() => handleSelection(med)}>
+                            <div className="med_name"><h6>{med.label}</h6></div> 
                           </Col>
                         </Row>
                       </td>
@@ -420,7 +419,10 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
             <Modal.Title>Add Medication</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <AddMedicationRecord weeklyRecord={weeklyRecord} setWeeklyRecord={setWeeklyRecord} handleClose={handleCloseA}/>
+            <AddMedicationRecord 
+              weeklyRecord={weeklyRecord} 
+              setWeeklyRecord={setWeeklyRecord} 
+              handleClose={handleCloseA}/>
           </Modal.Body>
         </Modal>
 
@@ -434,7 +436,13 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
             <Modal.Title>Edit Medication</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            Edit
+            <EditMedicationRecord 
+              weeklyRecord={weeklyRecord} 
+              setWeeklyRecord={setWeeklyRecord} 
+              handleClose={handleCloseE}
+              selection={selection}
+              setSelection={setSelection}
+            />
           </Modal.Body>
         </Modal>
 
