@@ -138,33 +138,41 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
 
   let initializeMedicationRecord = () => {
 
-    let medications = client.medication_list
+    let medicationsList = client.medication_list
 
-    if (medications.length < 1 || medications === null) {
+    if (medicationsList.length < 1 || medicationsList === null) {
       console.log('medication_list is null')
       return
     }
 
     let medicationRecord = []
 
-    for (var x = 0; x < medications.length; x++) {
+    for (var x = 0; x < medicationsList.length; x++) {
 
-      let medication = medications[x]
-
-      let obj = 
-        {
-          "medication": medication,
-          "sunday": false, 
-          "monday": false, 
-          "tuesday": false,
-          "wednesday": false,
-          "thursday": false,
-          "friday": false,
-          "saturday": false,
-        }
-
-      medicationRecord.push(obj)
+      if (medicationsList[x].medication !== undefined) {
+        let medication = medicationsList[x].medication
+        let objMed = 
+          {
+            "medication": medication,
+            "sunday": false, 
+            "monday": false, 
+            "tuesday": false,
+            "wednesday": false,
+            "thursday": false,
+            "friday": false,
+            "saturday": false,
+          }
+        medicationRecord.push(objMed)
+      } else {
+        let label = medicationsList[x].label
+        let objLabel =
+          {
+            "label": label
+          }
+        medicationRecord.push(objLabel)
+      }
     }
+    
     setWeeklyRecord(medicationRecord)
   }
 
@@ -180,6 +188,8 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
     }
 
     console.log(weeklyRecord)
+
+    updateClientMedicationList()
 
     return
 
@@ -215,7 +225,7 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
   const updateClientMedicationList = async () => {
 
     let medicationList = weeklyRecord.map((m) => (
-      m.label || m.medication
+      m.medication !== undefined ? {...{"medication": m.medication} } : {...{"label": m.label} }
     ))
 
     console.log(medicationList)
@@ -254,9 +264,28 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
     handleShowE()
   }
 
+  let moveUp = (med) => {
+    let index = weeklyRecord.indexOf(med)
+    if (index === 0) {
+      return
+    }
+    let record = weeklyRecord.splice(index, 1)[0]
+    weeklyRecord.splice(index-1, 0, record)
+    setWeeklyRecord([...weeklyRecord])
+  }
+
+  let moveDown = (med) => {
+    let index = weeklyRecord.indexOf(med)
+    if (index === weeklyRecord.length) {
+      return
+    }
+    let record = weeklyRecord.splice(index, 1)[0]
+    weeklyRecord.splice(index+1, 0, record)
+    setWeeklyRecord([...weeklyRecord])
+  }
+
 
   useEffect(() => {
-  
     initializeMedicationRecord()
     // eslint-disable-next-line
   }, [])
@@ -314,8 +343,8 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
                       <td>
                         <Row>
                           <Col sm={1}>
-                            <Button className="move_up">&#8593;</Button>
-                            <Button className="move_down">&#8595;</Button>
+                            <Button className="move_up" onClick={() => moveUp(med)}>&#8593;</Button>
+                            <Button className="move_down" onClick={() => moveDown(med)}>&#8595;</Button>
                           </Col>
 
                           <Col 
@@ -341,8 +370,8 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
                       <td>
                         <Row>
                           <Col sm={1}>
-                            <Button className="move_up">&#8593;</Button>
-                            <Button className="move_down">&#8595;</Button>
+                            <Button className="move_up" onClick={() => moveUp(med)}>&#8593;</Button>
+                            <Button className="move_down" onClick={() => moveDown(med)}>&#8595;</Button>
                           </Col>
 
                           <Col 
