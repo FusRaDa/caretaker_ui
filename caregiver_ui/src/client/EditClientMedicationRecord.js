@@ -16,23 +16,24 @@ import Table from 'react-bootstrap/Table'
 import Modal from 'react-bootstrap/Modal'
 
 
-const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
+const EditClientMedicationRecord = ({client, selectedMedRecord, handleClose, setUpdating}) => {
 
   let {authTokens} = useContext(AuthContext)
   let {setUpdatingClients} = useContext(ClientContext)
 
   let [date, setDate] = useState(null)
 
-  let [weekOfMonth, setWeekOfMonth] = useState(null)
-  let [weekNumber, setWeekNumber] = useState(null)
-  let [month, setMonth] = useState(null)
-  let [year, setYear] = useState(null)
+  let [weekOfMonth, setWeekOfMonth] = useState(selectedMedRecord.week_of_month_number)
+  let [weekNumber, setWeekNumber] = useState(selectedMedRecord.week_number)
+  let [month, setMonth] = useState(selectedMedRecord.month_number)
+  let [year, setYear] = useState(selectedMedRecord.year_number)
+  let [weeklyRecord, setWeeklyRecord] = useState(selectedMedRecord.weekly_record)
 
+  //days of week based on date selected
   let [daysOfWeek, setDaysOfWeek] = useState([])
 
+  //select medication being edited
   let [selection, setSelection] = useState(null)
-
-  let [weeklyRecord, setWeeklyRecord] = useState([])
 
   //modal to add medication
   let [showA, setShowA] = useState(false);
@@ -43,6 +44,12 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
   let [showE, setShowE] = useState(false);
   let handleCloseE = () => setShowE(false);
   let handleShowE = () => setShowE(true);
+
+  useEffect(() => {
+    let date = new Date(year, 0, (1 + (weekNumber-1) * 7));
+    let sunday = new Date(date.setDate(date.getDate() + (0 - date.getDay())))
+    setDate(sunday)
+  }, [])
 
   //get week number in the month - for aesthetic purposes only
   let getWeekMonth = (date) => {
@@ -138,47 +145,6 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
   }
 
 
-  let initializeMedicationRecord = () => {
-
-    let medicationsList = client.medication_list
-
-    if (medicationsList.length < 1 || medicationsList === null) {
-      console.log('medication_list is null')
-      return
-    }
-
-    let medicationRecord = []
-
-    for (var x = 0; x < medicationsList.length; x++) {
-
-      if (medicationsList[x].medication !== undefined) {
-        let medication = medicationsList[x].medication
-        let objMed = 
-          {
-            "medication": medication,
-            "sunday": false, 
-            "monday": false, 
-            "tuesday": false,
-            "wednesday": false,
-            "thursday": false,
-            "friday": false,
-            "saturday": false,
-          }
-        medicationRecord.push(objMed)
-      } else {
-        let label = medicationsList[x].label
-        let objLabel =
-          {
-            "label": label
-          }
-        medicationRecord.push(objLabel)
-      }
-    }
-    
-    setWeeklyRecord(medicationRecord)
-  }
-
-
   const addMedicationRecord = async (e) => {
     e.preventDefault()
 
@@ -195,8 +161,8 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
 
     return
 
-    let response = await fetch(`${ServerAddress}/api/client_medication/create/`, {
-      method: 'POST',
+    let response = await fetch(`${ServerAddress}/api/client_medication/${selectedMedRecord.pk}/update/`, {
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + String(authTokens.access)
@@ -285,12 +251,6 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
     weeklyRecord.splice(index+1, 0, record)
     setWeeklyRecord([...weeklyRecord])
   }
-
-
-  useEffect(() => {
-    initializeMedicationRecord()
-    // eslint-disable-next-line
-  }, [])
 
 
   return (
@@ -535,4 +495,4 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
 
 }
 
-export default AddClientMedicationRecord
+export default EditClientMedicationRecord

@@ -10,6 +10,7 @@ import Button from "react-bootstrap/Button"
 import Modal from 'react-bootstrap/Modal'
 import ClientMedicationListStyles from "./ClientMedicationStyles"
 import AddClientMedicationRecord from "./AddClientMedicationRecord"
+import EditClientMedicationRecord from "./EditClientMedicationRecord"
 
 
 
@@ -21,8 +22,6 @@ const ClientMedicationRecordList = () => {
 
   const {state} = useLocation()
 
-  const navigate = useNavigate()
-
   let [list, setList] = useState([])
 
   let [pageNum, setPageNum] = useState(localStorage.getItem('clientListPage') !== null ? localStorage.getItem('clientListPage') : 1)
@@ -33,10 +32,16 @@ const ClientMedicationRecordList = () => {
 
   let [updating, setUpdating] = useState(false)
 
+  let [selectedMedRecord, setSelectedMedRecord] = useState(null)
+
   //modal
   let [show, setShow] = useState(false);
   let handleClose = () => setShow(false);
   let handleShow = () => setShow(true);
+
+  let [showE, setShowE] = useState(false);
+  let handleCloseE = () => setShowE(false);
+  let handleShowE = () => setShowE(true);
 
 
   let getClientMeds = async () => {
@@ -86,6 +91,12 @@ const ClientMedicationRecordList = () => {
     let options = { month: 'short', day: 'numeric' }
     let saturday = new Date(date.setDate(date.getDate() + (0 - date.getDay()) + 6)).toLocaleDateString('en-US', options)
     return saturday
+  }
+
+  let editMedicationRecord = (medRecord) => {
+    console.log(medRecord)
+    setSelectedMedRecord(medRecord)
+    handleShowE()
   }
 
 
@@ -146,7 +157,7 @@ const ClientMedicationRecordList = () => {
 
               <tbody>
                 {list.map(t => (
-                  <tr key={t.pk} onClick={() => navigate(`/clients/${pk}/view_med_record/${t.pk}`, {state: {medicationRecord: t}})}>
+                  <tr key={t.pk} onClick={() => editMedicationRecord(t)}>
                     <td>
                       <Row>
                         <Col>
@@ -210,7 +221,28 @@ const ClientMedicationRecordList = () => {
             <Modal.Title>Add Weekly Medication Record</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <AddClientMedicationRecord client={state.data} handleClose={handleClose} setUpdating={setUpdating}/>
+            <AddClientMedicationRecord 
+              client={state.data} 
+              handleClose={handleClose} 
+              setUpdating={setUpdating}/>
+          </Modal.Body>
+        </Modal>
+
+        <Modal
+          show={showE}
+          onHide={handleCloseE}
+          backdrop="static"
+          fullscreen
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Edit Weekly Medication Record</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <EditClientMedicationRecord 
+              client={state.data} 
+              selectedMedRecord={selectedMedRecord} 
+              handleClose={handleClose} 
+              setUpdating={setUpdating}/>
           </Modal.Body>
         </Modal>
 
