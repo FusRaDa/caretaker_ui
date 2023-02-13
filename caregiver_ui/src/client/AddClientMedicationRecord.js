@@ -189,11 +189,7 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
       return
     }
 
-    console.log(weeklyRecord)
-
     updateClientMedicationList()
-
-    return
 
     let response = await fetch(`${ServerAddress}/api/client_medication/create/`, {
       method: 'POST',
@@ -229,10 +225,6 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
     let medicationList = weeklyRecord.map((m) => (
       m.medication !== undefined ? {...{"medication": m.medication} } : {...{"label": m.label} }
     ))
-
-    console.log(medicationList)
-
-    return
 
     let response = await fetch(`${ServerAddress}/api/client/${client.pk}/update/`, {
       method: 'PATCH',

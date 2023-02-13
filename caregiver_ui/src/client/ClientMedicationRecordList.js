@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import AuthContext from "../context/AuthContext"
 import ServerAddress from "../utils/ServerAddress"
-import { useLocation, useNavigate, useParams } from "react-router-dom"
+import { useLocation, useParams } from "react-router-dom"
 
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
@@ -231,6 +231,7 @@ const ClientMedicationRecordList = () => {
         <Modal
           show={showE}
           onHide={handleCloseE}
+          onExited={() => setSelectedMedRecord(null)}
           backdrop="static"
           fullscreen
         >
@@ -240,7 +241,7 @@ const ClientMedicationRecordList = () => {
           <Modal.Body>
             <EditClientMedicationRecord 
               client={state.data} 
-              selectedMedRecord={selectedMedRecord} 
+              selectedMedRecord={selectedMedRecord}
               handleClose={handleClose} 
               setUpdating={setUpdating}/>
           </Modal.Body>

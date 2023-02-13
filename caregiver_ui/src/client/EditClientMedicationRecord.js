@@ -16,18 +16,40 @@ import Table from 'react-bootstrap/Table'
 import Modal from 'react-bootstrap/Modal'
 
 
-const EditClientMedicationRecord = ({client, selectedMedRecord, handleClose, setUpdating}) => {
+const EditClientMedicationRecord = ({client, handleClose, setUpdating, selectedMedRecord}) => {
 
   let {authTokens} = useContext(AuthContext)
   let {setUpdatingClients} = useContext(ClientContext)
 
   let [date, setDate] = useState(null)
+  let [dateString, setDateString] = useState("")
 
   let [weekOfMonth, setWeekOfMonth] = useState(selectedMedRecord.week_of_month_number)
   let [weekNumber, setWeekNumber] = useState(selectedMedRecord.week_number)
   let [month, setMonth] = useState(selectedMedRecord.month_number)
   let [year, setYear] = useState(selectedMedRecord.year_number)
-  let [weeklyRecord, setWeeklyRecord] = useState(selectedMedRecord.weekly_record)
+  
+  let [weeklyRecord, setWeeklyRecord] = useState([])
+
+  //create a deep copy of the array
+  useEffect(() => {
+    let copy = JSON.parse(JSON.stringify(selectedMedRecord.weekly_record))
+    console.log(copy)
+    setWeeklyRecord(copy)
+  }, [])
+
+  useEffect(() => {
+    let date = new Date(year, 0, (1 + (weekNumber-1) * 7))
+    let dateString = date.toLocaleDateString()
+    setDate(new Date(dateString))
+
+    let inputString = year + '-' + ('0' + (date.getMonth()+1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
+    setDateString(inputString)
+  }, [])
+
+  useEffect(() => {
+    getDaysOfWeek(weekNumber, year)
+  }, [date])
 
   //days of week based on date selected
   let [daysOfWeek, setDaysOfWeek] = useState([])
@@ -44,53 +66,6 @@ const EditClientMedicationRecord = ({client, selectedMedRecord, handleClose, set
   let [showE, setShowE] = useState(false);
   let handleCloseE = () => setShowE(false);
   let handleShowE = () => setShowE(true);
-
-  useEffect(() => {
-    let date = new Date(year, 0, (1 + (weekNumber-1) * 7));
-    let sunday = new Date(date.setDate(date.getDate() + (0 - date.getDay())))
-    setDate(sunday)
-  }, [])
-
-  //get week number in the month - for aesthetic purposes only
-  let getWeekMonth = (date) => {
-    let monthStart = new Date(date)
-    monthStart.setDate(0)
-    let offset = (monthStart.getDay() + 1) % 7 //set to Sunday as start of week
-    return Math.ceil((date.getDate() + offset) / 7)
-  }
-
-  let getWeekNumber = (date) => {
-    
-    const oneDay = 24 * 60 * 60 * 1000
-    
-    //beginning of year - Jan 1
-    let yearStart = new Date(date.getFullYear(), 0, 1)
-
-    //include offset of day in month
-    let monthStart = new Date(date)
-    monthStart.setDate(0)
-    let offset = (monthStart.getDay() + 1) % 7 //set to Sunday as start of week
-    console.log("offset: " + offset)
-    
-    //calculate week of month
-    let weekMonth = Math.ceil((date.getDate() + offset) / 7)
-    console.log("weekMonth: " + weekMonth)
-    
-    //calculate week of year subtract by offset, +1 to add the missing day from subraction   
-    let days = Math.floor((date - yearStart) / oneDay) + 1 - offset - date.getDate()
-    if (days < 0) {
-        days = 0
-    }
-    let remainingWeeks = Math.ceil(days / 7 )
-    console.log("days:" + days)
-    console.log("remainingWeeks: " + remainingWeeks)
-    
-    let totalWeeks = weekMonth + remainingWeeks
-    
-    return totalWeeks
-    
-  }
-
 
   let getDaysOfWeek = (w, y) => {
     
@@ -120,30 +95,6 @@ const EditClientMedicationRecord = ({client, selectedMedRecord, handleClose, set
 
     setDaysOfWeek(days)
   }
-
-
-  let onChangeDate = (e) => {
-
-    //parse string from date input
-    let dateString = e.target.value
-    let b = dateString.split(/\D/)
-    let date = new Date(b[0], --b[1], b[2])
-
-    setDate(date)
-
-    let weekMonthData = getWeekMonth(date)
-    let weekNumberData = getWeekNumber(date)
-    let monthNumberData = date.getMonth()
-    let yearData = date.getFullYear()
-    
-    setWeekOfMonth(weekMonthData)
-    setWeekNumber(weekNumberData)
-    setMonth(monthNumberData)
-    setYear(yearData)
-
-    getDaysOfWeek(weekNumberData, yearData)
-  }
-
 
   const addMedicationRecord = async (e) => {
     e.preventDefault()
@@ -260,7 +211,7 @@ const EditClientMedicationRecord = ({client, selectedMedRecord, handleClose, set
         <Form onSubmit={addMedicationRecord}>
           <Row>
             <Col>
-              Date: <input required onChange={onChangeDate} id="date" name="date" type="date"/>
+              Date: <input defaultValue={dateString} disabled id="date" name="date" type="date"/>
             </Col>
             <Col className="week_month">
               {date !== null && 
