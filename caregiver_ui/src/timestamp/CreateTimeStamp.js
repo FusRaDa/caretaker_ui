@@ -173,7 +173,7 @@ const CreateTimeStamp = ({handleClose}) => {
             <Form.Label>Hourly Rate</Form.Label>
               <InputGroup>
                 <InputGroup.Text>$</InputGroup.Text>
-                <Form.Control name="hourly_rate" type="number" placeholder="Rate per hour" step="0.01" defaultValue="0.50" required/>
+                <Form.Control name="hourly_rate" type="number" placeholder="Rate per hour" step="0.01" required/>
               </InputGroup>
             </Form.Group>
 

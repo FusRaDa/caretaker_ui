@@ -242,7 +242,7 @@ const ClientMedicationRecordList = () => {
             <EditClientMedicationRecord 
               client={state.data} 
               selectedMedRecord={selectedMedRecord}
-              handleClose={handleClose} 
+              handleClose={handleCloseE} 
               setUpdating={setUpdating}/>
           </Modal.Body>
         </Modal>

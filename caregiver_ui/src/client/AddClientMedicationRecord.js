@@ -34,6 +34,8 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
 
   let [weeklyRecord, setWeeklyRecord] = useState([])
 
+  let [medicationsList, setMedicationsList] = useState([])
+
   //modal to add medication
   let [showA, setShowA] = useState(false);
   let handleCloseA = () => setShowA(false);
@@ -43,6 +45,31 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
   let [showE, setShowE] = useState(false);
   let handleCloseE = () => setShowE(false);
   let handleShowE = () => setShowE(true);
+
+  useEffect(() => {
+    getClient()
+  }, [])
+
+  let getClient = async () => {
+    let response = await fetch(`${ServerAddress}/api/client/${client.pk}/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type':'application/json',
+        'Authorization':'Bearer ' + String(authTokens.access)
+      }
+    })
+    .catch(() => {
+      console.log('server failed')
+    })
+
+    let data = await response.json()
+    if (response.status === 200) {
+      setMedicationsList(data.medication_list)
+    } else {
+      console.log('error')
+    }
+  }
+
 
   //get week number in the month - for aesthetic purposes only
   let getWeekMonth = (date) => {
@@ -140,9 +167,7 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
 
   let initializeMedicationRecord = () => {
 
-    let medicationsList = client.medication_list
-
-    if (medicationsList.length < 1 || medicationsList === null) {
+    if (medicationsList === null || medicationsList.length < 1) {
       console.log('medication_list is null')
       return
     }
@@ -282,7 +307,7 @@ const AddClientMedicationRecord = ({client, handleClose, setUpdating}) => {
   useEffect(() => {
     initializeMedicationRecord()
     // eslint-disable-next-line
-  }, [])
+  }, [medicationsList])
 
 
   return (

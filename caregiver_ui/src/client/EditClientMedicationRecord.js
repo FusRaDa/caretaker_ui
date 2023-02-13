@@ -36,6 +36,7 @@ const EditClientMedicationRecord = ({client, handleClose, setUpdating, selectedM
     let copy = JSON.parse(JSON.stringify(selectedMedRecord.weekly_record))
     console.log(copy)
     setWeeklyRecord(copy)
+    // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
@@ -45,10 +46,12 @@ const EditClientMedicationRecord = ({client, handleClose, setUpdating, selectedM
 
     let inputString = year + '-' + ('0' + (date.getMonth()+1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
     setDateString(inputString)
+    // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
     getDaysOfWeek(weekNumber, year)
+    // eslint-disable-next-line
   }, [date])
 
   //days of week based on date selected
@@ -110,8 +113,6 @@ const EditClientMedicationRecord = ({client, handleClose, setUpdating, selectedM
 
     updateClientMedicationList()
 
-    return
-
     let response = await fetch(`${ServerAddress}/api/client_medication/${selectedMedRecord.pk}/update/`, {
       method: 'PATCH',
       headers: {
@@ -131,8 +132,7 @@ const EditClientMedicationRecord = ({client, handleClose, setUpdating, selectedM
       alert('server response failed!')
     })
 
-    if (response.status === 201) {
-
+    if (response.status === 200) {
       updateClientMedicationList()
       setUpdating(true)
       handleClose()
@@ -148,8 +148,6 @@ const EditClientMedicationRecord = ({client, handleClose, setUpdating, selectedM
     ))
 
     console.log(medicationList)
-
-    return
 
     let response = await fetch(`${ServerAddress}/api/client/${client.pk}/update/`, {
       method: 'PATCH',
